@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Goal Based Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      /* Header Styling */
+      header {
+        background: var(--card, white);
+        border-bottom: 1px solid var(--border, #d1e7e4);
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 3vw, 40px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      nav {
+        display: flex;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .nav-links a {
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-links a:hover {
+        color: var(--brand, #0d9488);
+      }
+      
+      @media (max-width: 700px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+        
+        nav {
+          display: none;
+        }
+        
+        nav.active {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: var(--card, white);
+          border-bottom: 1px solid var(--border, #d1e7e4);
+          padding: 16px;
+        }
+        
+        .nav-links {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+
+      :root {
+        --section-gap: clamp(16px, 3vw, 20px);
+        --card-padding: clamp(14px, 3vw, 20px);
+        --bg: #f0fdf9;
+        --ink: #0f2f2e;
+        --muted: #64748b;
+        --brand: #0d9488;
+        --accent: #5eead4;
+        --card: #ffffff;
+        --border: #d1e7e4;
+        --shadow: 0 12px 32px rgba(13, 148, 136, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .wrap {
+        width: 100%;
+        padding: var(--section-gap);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .logo {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--brand);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(26px, 3.4vw, 34px);
+        line-height: 1.2;
+        font-weight: 600;
+      }
+
+      .sub {
+        color: var(--muted);
+        max-width: 560px;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .pill {
+        background: #eafaf5;
+        color: #129a79;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 0.7fr 0.5fr 0.75fr;
+        gap: var(--section-gap);
+        margin-top: var(--section-gap);
+      }
+
+      /* Ensure min-width for main cards and limit grid gap to 10px for wide screens */
+      @media (min-width: 1000px) {
+        section[style*="grid-template-columns"] {
+          gap: 10px !important;
+        }
+        .main-card-min {
+          min-width: 420px;
+        }
+        .results-card-min {
+          min-width: 400px;
+        }
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: var(--card-padding);
+        min-width: 0;
+        width: 100%;
+      }
+
+      .field {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        font-weight: 600;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .unit {
+        font-size: 14px;
+        color: var(--muted);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 130px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--brand);
+      }
+
+      input[type="number"],
+      input[type="text"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+        text-align: right;
+      }
+
+      .summary {
+        display: grid;
+        gap: 8px;
+      }
+
+      .summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        padding: 10px 12px;
+        background: #f8f9fb;
+        border-radius: 10px;
+      }
+
+      .summary-row span {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .chart {
+        margin-top: 16px;
+        display: grid;
+        place-items: center;
+        position: relative;
+        height: 200px;
+      }
+
+      .ring {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: conic-gradient(
+          var(--brand) 0deg,
+          var(--brand) 120deg,
+          var(--accent) 120deg,
+          var(--accent) 360deg
+        );
+        display: grid;
+        place-items: center;
+      }
+
+      .ring::after {
+        content: "";
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: inset 0 0 0 1px var(--border);
+      }
+
+      .ring-label {
+        position: absolute;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: #1f2937;
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin-top: 4px;
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 8px;
+        background: currentColor;
+      }
+
+      .legend .invested {
+        color: var(--brand);
+      }
+
+      .legend .returns {
+        color: var(--accent);
+      }
+
+      .foot {
+        margin-top: 12px;
+        color: #9aa3b2;
+        font-size: 12px;
+      }
+
+      @media (max-width: 1200px) {
+        .wrap {
+          padding: 24px 2vw 60px 2vw;
+        }
+        .grid,
+        section[style*="grid-template-columns"] {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .wrap {
+          padding: 12px 1vw 30px 1vw;
+        }
+        .grid,
+        section[style*="grid-template-columns"] {
+          grid-template-columns: 1fr !important;
+        }
+        .card {
+          padding: 12px 6px !important;
+        }
+        .summary, .chart, .legend, .foot {
+          font-size: 13px;
+        }
+        h1, h2 {
+          font-size: 1.1rem !important;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .wrap {
+          padding: 4px 0 10px 0;
+        }
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+        .card {
+          padding: 8px 2px !important;
+          border-radius: 10px;
+        }
+        .summary, .chart, .legend, .foot {
+          font-size: 11px;
+        }
+        h1, h2 {
+          font-size: 1rem !important;
+        }
+        section[style*="grid-template-columns"], .grid {
+          grid-template-columns: 1fr !important;
+        }
+        section[style*="grid-template-columns"] > div,
+        .grid > div {
+          min-width: 0;
+          width: 100% !important;
+          max-width: 100vw;
+        }
+      }
+    
+      /* SEO Content Cards */
+      .seo-section {
+        width: 100%;
+        margin: var(--section-gap) 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--section-gap);
+        padding: 0;
+      }
+      .seo-card {
+        background: var(--card);
+        border: 1.5px solid var(--border);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(13, 148, 136, 0.10);
+        padding: var(--card-padding);
+        line-height: 1.85;
+        font-size: 1.06rem;
+        color: #18313a;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .seo-card h2 {
+        font-size: 1.45rem;
+        margin-bottom: 18px;
+        color: var(--brand);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+      .seo-card p, .seo-card ul, .seo-card ol {
+        margin-bottom: 16px;
+      }
+      .seo-card ul, .seo-card ol {
+        padding-left: 24px;
+        margin-top: 0;
+      }
+      .seo-card li {
+        margin-bottom: 10px;
+        line-height: 1.7;
+      }
+      .seo-card strong { color: var(--brand); }
+      .seo-card em { color: #64748b; font-style: italic; }
+
+    </style>
+  
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"FAQPage",
+      "mainEntity":[
+        {
+          "@type":"Question",
+          "name":"Is this calculator accurate?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"This calculator is for illustrative purposes only. Results are based on the inputs provided and assumed returns. Actual results may vary based on market conditions, taxes, and other factors."
+          }
+        },
+        {
+          "@type":"Question",
+          "name":"What assumptions does this calculator use?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"The calculator assumes consistent returns, no taxes or fees, and the specified time period. Please consult with a financial advisor for personalized advice."
+          }
+        }
+      ]
+    }
+    </script>
+
+</head>
+  <body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">💰 FinancialCalc.Ai</a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#investing">Investing</a></li>
+          <li><a href="index.html#home-decisions">House Decisions</a></li>
+          <li><a href="index.html#loans">Loans</a></li>
+          <li><a href="index.html#retirement">Retirement</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <div class="wrap">
+      
+
+      <div class="hero">
+        <div>
+          <h1>Goal Based Calculator</h1>
+          <p class="sub">Estimate the monthly SIP required to reach a target amount by your goal date.</p>
+        </div>
+        <div class="pill">Goal Planning</div>
+      </div>
+
+      <section style="display: grid; grid-template-columns: 0.7fr 0.5fr 0.75fr; gap: var(--section-gap); margin-top: var(--section-gap);">
+        <div class="card main-card-min">
+          <div class="field">
+            <label>Goal Amount <span class="unit">INR</span></label>
+            <div class="input-row">
+              <input id="goalRange" type="range" min="100000" max="50000000" step="50000" / aria-label="Goal Amount Slider">
+              <input id="goalInput" type="text" placeholder="0" / aria-label="Goal Amount Input">
+            </div>
+          </div>
+          <div class="field">
+            <label>Time to Goal <span class="unit">Years</span></label>
+            <div class="input-row">
+              <input id="yearsRange" type="range" min="1" max="40" step="1" / aria-label="Time to Goal in Years Slider">
+              <input id="yearsInput" type="number" min="1" max="40" step="1" / aria-label="Time to Goal in Years Input">
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <label>Expected Return (CAGR) <span class="unit">% p.a.</span></label>
+            <div class="input-row">
+              <input id="cagrRange" type="range" min="0" max="30" step="0.1" / aria-label="Expected Return CAGR Slider">
+              <input id="cagrInput" type="text" inputmode="decimal" placeholder="0.0" / aria-label="Expected Return CAGR Input">
+            </div>
+          </div>
+        </div>
+
+        <div class="card results-card-min">
+          <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Results</h2>
+          <div class="summary">
+            <div class="summary-row">
+              <span>Required Monthly SIP</span>
+              <strong id="sipValue">₹ 0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Total Investment</span>
+              <strong id="investedValue">₹ 0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Expected Gains</span>
+              <strong id="gainsValue">₹ 0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Target Corpus</span>
+              <strong id="goalValue">₹ 0</strong>
+            </div>
+          </div>
+
+          <div class="chart">
+            <div class="ring" id="ring"></div>
+            <div class="ring-label" id="ringLabel">Target</div>
+          </div>
+          <div class="legend">
+            <span class="invested">Invested</span>
+            <span class="returns">Gains</span>
+          </div>
+
+          <div class="foot">For illustration only. Returns are assumed and not guaranteed.</div>
+        </div>
+
+        <div class="card" style="height: 100%; display: flex; flex-direction: column;">
+          <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Growth Projection</h2>
+          <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0;">
+            <canvas id="growthChart" style="max-height: 350px; max-width: 100%;"></canvas>
+          </div>
+        </div>
+      </section>
+    
+      <!-- SEO Content -->
+      <div class="seo-section" style="margin-top: var(--section-gap);">
+        <div class="seo-card">
+          <h2>What Is Goal-Based Investing?</h2>
+          <p>Goal-based investing is a practical way to invest with a clear outcome in mind—such as building a house fund, planning a child’s education, or creating a retirement corpus. Instead of investing “randomly”, you define the <strong>goal amount</strong> and the <strong>time to goal</strong>, then invest systematically to reach it.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>What This Goal Based Calculator Does</h2>
+          <p>This calculator estimates the <strong>monthly SIP required</strong> to reach your target amount within your chosen timeline, using your expected return (CAGR).</p>
+          <ul>
+            <li><strong>Required Monthly SIP</strong> to reach the goal</li>
+            <li><strong>Total Investment</strong> over the period</li>
+            <li><strong>Expected Gains</strong> from compounding</li>
+            <li><strong>Target Corpus</strong> comparison and projection</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>How the Calculator Works</h2>
+          <p>The calculator uses monthly compounding to reverse-calculate the SIP amount needed to accumulate your target corpus. Higher expected returns or a longer time horizon reduces the required SIP. A larger goal amount or shorter time horizon increases it.</p>
+          <p><strong>Tip:</strong> Use this as a goal-seek tool—adjust the goal years or expected return to see how much your SIP changes.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Why Use a Goal Based SIP Plan?</h2>
+          <ul>
+            <li>Creates clarity on what is required each month</li>
+            <li>Helps you decide if the goal is realistic</li>
+            <li>Makes trade-offs visible: time vs SIP vs return expectations</li>
+            <li>Encourages disciplined, long-term investing</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Key Assumptions</h2>
+          <ul>
+            <li>Returns are compounded monthly based on the expected CAGR</li>
+            <li>SIP contributions are assumed to be consistent every month</li>
+            <li>Taxes, exit loads, and expense ratios are not included</li>
+            <li>Results are illustrative and not guaranteed</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Understanding the Growth Projection</h2>
+          <p>The chart shows how your projected corpus grows year by year. Early growth looks slow, but over time compounding accelerates—especially in the later years. This is why increasing the time horizon can dramatically reduce the SIP required.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Who Should Use This Calculator?</h2>
+          <ul>
+            <li>Investors planning goals like home purchase, education, travel, or retirement</li>
+            <li>Beginners who want a simple SIP target</li>
+            <li>Anyone comparing multiple goal timelines</li>
+            <li>Families planning large future expenses</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Calculators</h2>
+          <ul>
+            <li><a href="simple-sip-calculator.html">SIP Calculator</a></li>
+            <li><a href="step-up-sip-calculator.html">Step-Up SIP Calculator</a></li>
+            <li><a href="investment-calculator.html">Investment Calculator (SIP + Lumpsum)</a></li>
+            <li><a href="lumpsum-calculator.html">Lumpsum Calculator</a></li>
+            <li><a href="fd-calculator.html">FD Calculator</a></li>
+            <li><a href="emi-calculator.html">EMI Calculator</a></li>
+            <li><a href="nps-calculator.html">NPS Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Final Note and Disclaimer</h2>
+          <p>This calculator is for educational and planning purposes only and does not constitute financial advice. Actual outcomes can vary based on market conditions and product-specific costs. Consider consulting a qualified financial advisor before making investment decisions.</p>
+        </div>
+      </div>
+
+      </div>
+
+    <script>
+      const fmt = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0,
+      });
+
+      function formatNumberWithCommas(num) {
+        const numStr = num.toString();
+        const reversed = numStr.split('').reverse();
+        let result = '';
+        for (let i = 0; i < reversed.length; i++) {
+          if (i === 3 || (i > 3 && (i - 3) % 2 === 0)) {
+            result += ',';
+          }
+          result += reversed[i];
+        }
+        return result.split('').reverse().join('');
+      }
+
+      const state = {
+        goal: 2500000,
+        years: 10,
+        cagr: 12.0,
+      };
+
+      const els = {
+        goalRange: document.getElementById("goalRange"),
+        goalInput: document.getElementById("goalInput"),
+        yearsRange: document.getElementById("yearsRange"),
+        yearsInput: document.getElementById("yearsInput"),
+        cagrRange: document.getElementById("cagrRange"),
+        cagrInput: document.getElementById("cagrInput"),
+        sipValue: document.getElementById("sipValue"),
+        investedValue: document.getElementById("investedValue"),
+        gainsValue: document.getElementById("gainsValue"),
+        goalValue: document.getElementById("goalValue"),
+      };
+
+      function syncInput(rangeEl, inputEl, key) {
+        let autoFormatTimer = null;
+
+        const updateFromRange = (value) => {
+          let num = parseFloat(value);
+          if (isNaN(num)) return;
+          state[key] = num;
+          rangeEl.value = num;
+          if (key === 'cagr') {
+            inputEl.value = num.toFixed(1);
+          } else if (key === 'goal') {
+            inputEl.value = formatNumberWithCommas(Math.round(num));
+          } else {
+            inputEl.value = num;
+          }
+          calculate();
+        };
+
+        const formatValue = (value) => {
+          if (value === '') return;
+          let num = parseFloat(value.replace(/,/g, ''));
+          if (isNaN(num)) return;
+
+          const min = parseFloat(rangeEl.min);
+          const max = parseFloat(rangeEl.max);
+
+          if (num < min) num = min;
+          if (num > max) num = max;
+
+          if (key === 'cagr') {
+            num = Math.round(num * 10) / 10;
+          }
+
+          state[key] = num;
+          if (key === 'cagr') {
+            inputEl.value = num.toFixed(1);
+          } else if (key === 'goal') {
+            inputEl.value = formatNumberWithCommas(Math.round(num));
+          } else {
+            inputEl.value = num;
+          }
+          rangeEl.value = num;
+
+          calculate();
+        };
+
+        const updateFromInput = (value) => {
+          if (value === '') return;
+          let num = parseFloat(value.replace(/,/g, ''));
+          if (isNaN(num)) return;
+
+          state[key] = num;
+
+          const min = parseFloat(rangeEl.min);
+          const max = parseFloat(rangeEl.max);
+          if (num < min) {
+            rangeEl.value = min;
+          } else if (num > max) {
+            rangeEl.value = max;
+          } else {
+            rangeEl.value = num;
+          }
+
+          calculate();
+
+          if (key === 'cagr') {
+            clearTimeout(autoFormatTimer);
+            autoFormatTimer = setTimeout(() => {
+              formatValue(inputEl.value);
+            }, 500);
+          }
+        };
+
+        rangeEl.addEventListener("input", (e) => updateFromRange(e.target.value));
+        inputEl.addEventListener("input", (e) => updateFromInput(e.target.value));
+        inputEl.addEventListener("blur", (e) => {
+          if (key === 'cagr') {
+            clearTimeout(autoFormatTimer);
+            formatValue(e.target.value);
+          } else if (key === 'goal') {
+            formatValue(e.target.value);
+          }
+        });
+      }
+
+      function sipRequiredForGoal(goal, annualRate, months) {
+        const m = Math.max(1, Math.round(months));
+        const r = ((1 + annualRate / 100) ** (1 / 12)) - 1;
+        if (r === 0) return goal / m;
+        const factor = (Math.pow(1 + r, m) - 1) / r;
+        return goal / factor;
+      }
+
+      function futureValueFromSip(sip, annualRate, months) {
+        const m = Math.max(1, Math.round(months));
+        const r = ((1 + annualRate / 100) ** (1 / 12)) - 1;
+        if (r === 0) return sip * m;
+        const factor = (Math.pow(1 + r, m) - 1) / r;
+        return sip * factor;
+      }
+
+      function fmtCompact(value) {
+        if (!Number.isFinite(value) || value <= 0) return "₹ 0";
+        const abs = Math.abs(value);
+        if (abs >= 1e7) return "₹ " + (value / 1e7).toFixed(2) + " Cr";
+        if (abs >= 1e5) return "₹ " + (value / 1e5).toFixed(2) + " L";
+        return fmt.format(value);
+      }
+
+      function updateRingChart(invested, gains, goal) {
+        const total = invested + gains;
+        const investedPct = total > 0 ? Math.min(100, (invested / total) * 100) : 0;
+        const investedDeg = Math.round((investedPct / 100) * 360);
+        const ring = document.getElementById("ring");
+        const ringLabel = document.getElementById("ringLabel");
+        if (ring && ringLabel) {
+          ring.style.background = `conic-gradient(
+            var(--brand) 0deg,
+            var(--brand) ${investedDeg}deg,
+            var(--accent) ${investedDeg}deg,
+            var(--accent) 360deg
+          )`;
+          ringLabel.textContent = `Target ${fmtCompact(goal)}`;
+        }
+      }
+
+      let growthChart = null;
+      function updateGrowthChart(sip, years, rate) {
+        const labels = [];
+        const corpusData = [];
+        const totalYears = Math.max(1, Math.round(years));
+
+        for (let y = 0; y <= totalYears; y += 1) {
+          labels.push(`Year ${y}`);
+          const months = y * 12;
+          const corpus = futureValueFromSip(sip, rate, months);
+          corpusData.push(Math.round(corpus));
+        }
+
+        const ctx = document.getElementById("growthChart").getContext("2d");
+        if (growthChart) {
+          growthChart.data.labels = labels;
+          growthChart.data.datasets[0].data = corpusData;
+          growthChart.update();
+        } else {
+          growthChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels,
+              datasets: [
+                {
+                  label: "Projected Corpus",
+                  data: corpusData,
+                  borderColor: "#0d9488",
+                  backgroundColor: "rgba(13, 148, 136, 0.15)",
+                  fill: true,
+                  tension: 0,
+                  pointRadius: 3,
+                  pointBackgroundColor: "#0d9488",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointHoverRadius: 5,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: {
+                legend: { display: true, labels: { font: { size: 13 } } },
+                tooltip: {
+                  backgroundColor: "rgba(31, 36, 48, 0.9)",
+                  padding: 12,
+                  titleFont: { size: 14, weight: "600" },
+                  bodyFont: { size: 13 },
+                  callbacks: {
+                    label: function (context) {
+                      return fmtCompact(context.parsed.y);
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: {
+                    color: "rgba(230, 232, 240, 0.5)",
+                  },
+                  ticks: {
+                    callback: function (value) {
+                      return fmtCompact(value);
+                    },
+                  },
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Years",
+                  },
+                  grid: {
+                    display: false,
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+      function calculate() {
+        const months = Math.max(1, Math.round(state.years * 12));
+        const sip = sipRequiredForGoal(state.goal, state.cagr, months);
+        const invested = sip * months;
+        const gains = Math.max(0, state.goal - invested);
+
+        els.sipValue.textContent = fmtCompact(sip);
+        els.investedValue.textContent = fmtCompact(invested);
+        els.gainsValue.textContent = fmtCompact(gains);
+        els.goalValue.textContent = fmtCompact(state.goal);
+
+        updateRingChart(invested, gains, state.goal);
+        updateGrowthChart(sip, state.years, state.cagr);
+      }
+
+      els.goalRange.value = state.goal;
+      els.goalInput.value = formatNumberWithCommas(Math.round(state.goal));
+      els.yearsRange.value = state.years;
+      els.yearsInput.value = state.years;
+      els.cagrRange.value = state.cagr;
+      els.cagrInput.value = state.cagr.toFixed(1);
+
+      syncInput(els.goalRange, els.goalInput, "goal");
+      syncInput(els.yearsRange, els.yearsInput, "years");
+      syncInput(els.cagrRange, els.cagrInput, "cagr");
+
+      calculate();
+    </script>
+  </body>
+</html>

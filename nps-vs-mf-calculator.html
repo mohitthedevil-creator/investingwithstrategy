@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NPS vs Mutual Fund SIP Calculator | Retirement Corpus & Monthly Pension at 60</title>
+    <meta name="description" content="Compare NPS vs Mutual Fund SIP in India. Enter monthly contribution and current age to estimate retirement corpus at 60, NPS lump sum + annuity split, MF post-tax corpus, and estimated monthly pension." />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://financialcalc.ai/nps-vs-mf-calculator" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NPS vs MF SIP Calculator | Retirement Corpus Comparison" />
+    <meta property="og:description" content="Estimate NPS vs MF SIP retirement corpus at age 60 with post-tax comparison and monthly pension estimate." />
+    <meta property="og:url" content="https://financialcalc.ai/nps-vs-mf-calculator" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"FAQPage",
+      "mainEntity":[
+        {
+          "@type":"Question",
+          "name":"What is the difference between NPS and Mutual Fund SIP?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"NPS is a government-backed pension scheme with tax benefits but limited withdrawal until age 60. Mutual Fund SIP offers more flexibility, liquidity, and no withdrawal restrictions, but different tax treatment."
+          }
+        },
+        {
+          "@type":"Question",
+          "name":"Which is better for retirement: NPS or Mutual Fund?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"It depends on your goals. NPS offers additional tax benefits under 80CCD(1B) and disciplined retirement savings. Mutual Funds offer better liquidity and flexibility. Many investors use both as part of a diversified retirement strategy."
+          }
+        },
+        {
+          "@type":"Question",
+          "name":"Does this calculator include taxes?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"Yes. The calculator applies 10% LTCG tax above ₹1 lakh for mutual funds and NPS annuity income is shown separately. However, individual tax situations vary, so consult a tax advisor."
+          }
+        }
+      ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Header Styling */
+      header {
+        background: var(--card, white);
+        border-bottom: 1px solid var(--border, #d1e7e4);
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .header-content {
+        max-width: 1700px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 3vw, 40px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      nav {
+        display: flex;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .nav-links a {
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-links a:hover {
+        color: var(--brand, #0d9488);
+      }
+      
+      @media (max-width: 700px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+        
+        nav {
+          display: none;
+        }
+        
+        nav.active {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: var(--card, white);
+          border-bottom: 1px solid var(--border, #d1e7e4);
+          padding: 16px;
+        }
+        
+        .nav-links {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+
+      :root {
+        --section-gap: clamp(14px, 2.5vw, 32px);
+        --card-padding: clamp(12px, 2.5vw, 24px);
+        --bg: #f0fdf9;
+        --ink: #0f2f2e;
+        --muted: #64748b;
+        --brand: #0d9488;
+        --accent: #5eead4;
+        --card: #ffffff;
+        --border: #d1e7e4;
+        --shadow: 0 12px 32px rgba(13, 148, 136, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .wrap {
+        max-width: 1700px;
+        margin: 0 auto;
+        padding: var(--section-gap);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .logo {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--brand);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(26px, 3.4vw, 34px);
+        line-height: 1.2;
+        font-weight: 600;
+      }
+
+      .sub {
+        color: var(--muted);
+        max-width: 1700px;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .pill {
+        background: #eafaf5;
+        color: #129a79;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        gap: var(--section-gap);
+        margin-top: var(--section-gap);
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: var(--card-padding);
+        min-width: 0;
+        width: 100%;
+      }
+
+      .field {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        font-weight: 600;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .unit {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 130px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--brand);
+      }
+
+      input[type="number"],
+      input[type="text"],
+      input[readonly] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+        text-align: right;
+      }
+
+      input[readonly] {
+        background: #f1f5f9;
+        color: #334155;
+      }
+
+      .summary {
+        display: grid;
+        gap: 8px;
+      }
+
+      .summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        padding: 10px 12px;
+        background: #f8f9fb;
+        border-radius: 10px;
+      }
+
+      .summary-row span {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .mini {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+      }
+
+      .mini h3 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        color: var(--brand);
+      }
+
+      .note {
+        margin-top: 10px;
+        color: #9aa3b2;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #0f766e;
+        background: #eafaf5;
+        padding: 4px 8px;
+        border-radius: 999px;
+      }
+
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .input-row {
+          grid-template-columns: 1fr;
+        }
+
+        .split {
+          grid-template-columns: 1fr;
+        }
+      }
+    
+      /* Calculator-style 3-column layout helpers */
+      @media (min-width: 1000px) {
+        .main-card-min { min-width: 420px; }
+        .results-card-min { min-width: 400px; }
+      }
+      .results-card-min .summary-row strong { color: var(--brand); }
+      .results-card-min .summary-row.highlight {
+        background: #e0f2f1;
+        border: 1px solid var(--border);
+      }
+      .note-compact {
+        margin-top: 10px;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+      .seo-section {
+        width: 100%;
+        margin: var(--section-gap) 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--section-gap);
+        padding: 0;
+      }
+      .seo-card {
+        background: var(--card);
+        border: 1.5px solid var(--border);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(13, 148, 136, 0.10);
+        padding: var(--card-padding);
+        line-height: 1.85;
+        font-size: 1.05rem;
+        color: #18313a;
+      }
+      .seo-card h2 {
+        font-size: 1.35rem;
+        margin-bottom: 14px;
+        color: #0f766e;
+        font-weight: 700;
+      }
+      .seo-card ul { padding-left: 22px; }
+
+    </style>
+  
+
+
+</head>
+  <body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">💰 FinancialCalc.Ai</a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#investing">Investing</a></li>
+          <li><a href="index.html#home-decisions">House Decisions</a></li>
+          <li><a href="index.html#loans">Loans</a></li>
+          <li><a href="index.html#retirement">Retirement</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <div class="wrap">
+      
+
+      <div class="hero">
+        <div>
+          <h1>NPS vs MF SIP Returns</h1>
+          <p class="sub">
+            Compare your retirement outcome from NPS contributions versus investing the
+            equivalent post-tax amount in a Mutual Fund SIP.
+          </p>
+        </div>
+      <section style="display: grid; grid-template-columns: 0.7fr 0.5fr 0.75fr; gap: var(--section-gap); margin-top: var(--section-gap);">
+        <!-- Inputs -->
+        <div class="card main-card-min">
+          <div class="field">
+            <label>Monthly NPS Investment <span class="unit">INR</span></label>
+            <div class="input-row">
+              <input id="npsSipRange" type="range" min="1000" max="50000" step="500" aria-label="Monthly NPS Investment Slider" />
+              <input id="npsSipInput" type="text" placeholder="0" aria-label="Monthly NPS Investment Input" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Current Age <span class="unit">Years</span></label>
+            <div class="input-row">
+              <input id="ageRange" type="range" min="18" max="59" step="1" aria-label="Current Age Slider" />
+              <input id="ageInput" type="number" min="18" max="59" step="1" aria-label="Current Age Input" />
+            </div>
+            <div class="note-compact">Retirement age assumed: <strong>60</strong>. Years to retirement = 60 − current age.</div>
+          </div>
+
+          <div class="field">
+            <label>Years to Retirement <span class="unit">Auto</span></label>
+            <div class="input-row">
+              <input id="yearsRange" type="range" min="1" max="42" step="1" disabled aria-label="Years to Retirement Slider (Auto)" />
+              <input id="yearsInput" type="number" min="1" max="42" step="1" readonly aria-label="Years to Retirement Input (Auto)" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>NPS Expected Return (CAGR) <span class="unit">%</span></label>
+            <div class="input-row">
+              <input id="npsCagrRange" type="range" min="4" max="14" step="0.5" aria-label="NPS Expected Return Slider" />
+              <input id="npsCagrInput" type="number" min="4" max="14" step="0.5" aria-label="NPS Expected Return Input" />
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:0;">
+            <label>Mutual Fund Expected Return (CAGR) <span class="unit">%</span></label>
+            <div class="input-row">
+              <input id="mfCagrRange" type="range" min="6" max="18" step="0.5" aria-label="Mutual Fund Expected Return Slider" />
+              <input id="mfCagrInput" type="number" min="6" max="18" step="0.5" aria-label="Mutual Fund Expected Return Input" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="card results-card-min">
+          <h2 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600;">Summary</h2>
+          <div class="summary">
+            <div class="summary-row">
+              <span>Retirement Age</span>
+              <strong>60</strong>
+            </div>
+            <div class="summary-row">
+              <span>Years to Retirement</span>
+              <strong id="yearsShow">0</strong>
+            </div>
+            <div class="summary-row">
+              <span>MF SIP Amount (Auto 70%)</span>
+              <strong id="mfSipShow">₹ 0</strong>
+            </div>
+          </div>
+
+          <div style="border-top: 1px dashed #d1d5db; margin: 14px 0;"></div>
+
+          <div class="summary">
+            <div class="summary-row highlight">
+              <span>Winner (Post-Tax Corpus)</span>
+              <strong id="winnerShow">—</strong>
+            </div>
+            <div class="summary-row">
+              <span>Difference</span>
+              <strong id="diffShow">₹ 0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Estimated Monthly Pension (NPS annuity)</span>
+              <strong id="pensionShow">₹ 0</strong>
+            </div>
+          </div>
+
+          <div class="note-compact">
+            Assumptions: NPS 60% lump sum + 40% annuity at 6% p.a. MF SIP = 70% of NPS SIP. MF tax = 10% on gains (simplified).
+          </div>
+        </div>
+
+        <!-- Detailed Outputs -->
+        <div class="card">
+          <h2 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600;">Detailed Comparison</h2>
+
+          <div class="split">
+            <div class="mini">
+              <h3>NPS</h3>
+              <div class="summary">
+                <div class="summary-row"><span>Total Invested</span><strong id="npsInvested">₹ 0</strong></div>
+                <div class="summary-row"><span>Corpus at 60</span><strong id="npsCorpus">₹ 0</strong></div>
+                <div class="summary-row"><span>Lump Sum (60%)</span><strong id="npsLump">₹ 0</strong></div>
+                <div class="summary-row"><span>Annuity (40%)</span><strong id="npsAnnuity">₹ 0</strong></div>
+                <div class="summary-row"><span>Est. Monthly Pension (6%)</span><strong id="npsPension">₹ 0</strong></div>
+              </div>
+            </div>
+
+            <div class="mini">
+              <h3>Mutual Fund SIP</h3>
+              <div class="summary">
+                <div class="summary-row"><span>Total Invested</span><strong id="mfInvested">₹ 0</strong></div>
+                <div class="summary-row"><span>Corpus at 60</span><strong id="mfCorpus">₹ 0</strong></div>
+                <div class="summary-row"><span>Tax on Gains (10%)</span><strong id="mfTax">₹ 0</strong></div>
+                <div class="summary-row"><span>Post-Tax Final Corpus</span><strong id="mfNet">₹ 0</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-compact">
+            This is an educational comparison. Real-world NPS exit rules, annuity rates, and mutual fund taxation depend on regulations, fund type, holding period, and your tax slab.
+          </div>
+        </div>
+      </section>
+
+      <div class="seo-section">
+        <div class="seo-card">
+          <h2>What This NPS vs MF SIP Calculator Does</h2>
+          <p>Compare two retirement paths: investing via <strong>NPS</strong> versus investing via a <strong>Mutual Fund SIP</strong>. This tool estimates corpus at age 60, NPS lump sum and annuity split, MF post-tax corpus, and a monthly pension estimate from NPS annuity.</p>
+        </div>
+        <div class="seo-card">
+          <h2>Final Note and Disclaimer</h2>
+          <p>This calculator is for planning and education only. Returns are assumptions and not guaranteed. MF taxation and NPS rules are simplified and may vary by regulation, product, and your personal tax situation. Consider consulting a qualified financial advisor for retirement planning.</p>
+        </div>
+      </div>
+</div>
+
+    <script>
+      const fmt = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0,
+      });
+
+      function formatNumberWithCommas(num) {
+        const numStr = num.toString();
+        
+        // Reverse the string to work from right to left
+        const reversed = numStr.split('').reverse();
+        
+        // Add commas: first 3 digits, then every 2 digits
+        let result = '';
+        for (let i = 0; i < reversed.length; i++) {
+          if (i === 3 || (i > 3 && (i - 3) % 2 === 0)) {
+            result += ',';
+          }
+          result += reversed[i];
+        }
+        
+        // Reverse back
+        return result.split('').reverse().join('');
+      }
+
+      const state = {
+        npsSip: 15000,
+        age: 30,
+        years: 30,
+        npsCagr: 10,
+        mfCagr: 12.3,
+      };
+
+      const els = {
+        npsSipRange: document.getElementById("npsSipRange"),
+        npsSipInput: document.getElementById("npsSipInput"),
+        ageRange: document.getElementById("ageRange"),
+        ageInput: document.getElementById("ageInput"),
+        yearsRange: document.getElementById("yearsRange"),
+        yearsInput: document.getElementById("yearsInput"),
+        npsCagrRange: document.getElementById("npsCagrRange"),
+        npsCagrInput: document.getElementById("npsCagrInput"),
+        mfCagrRange: document.getElementById("mfCagrRange"),
+        mfCagrInput: document.getElementById("mfCagrInput"),
+        npsInvested: document.getElementById("npsInvested"),
+        mfInvested: document.getElementById("mfInvested"),
+        npsCorpus: document.getElementById("npsCorpus"),
+        mfCorpus: document.getElementById("mfCorpus"),
+        mfTax: document.getElementById("mfTax"),
+        mfNet: document.getElementById("mfNet"),
+        npsLump: document.getElementById("npsLump"),
+        npsAnnuity: document.getElementById("npsAnnuity"),
+        npsPension: document.getElementById("npsPension"),
+        yearsShow: document.getElementById("yearsShow"),
+        mfSipShow: document.getElementById("mfSipShow"),
+        winnerShow: document.getElementById("winnerShow"),
+        diffShow: document.getElementById("diffShow"),
+        pensionShow: document.getElementById("pensionShow"),
+      };
+
+      function syncInput(rangeEl, inputEl, key) {
+        const update = (value) => {
+          const num = Number(value.replace(/,/g, ""));
+          if (!Number.isFinite(num)) return;
+          state[key] = num;
+          rangeEl.value = num;
+          if (key === "npsSip") {
+            inputEl.value = formatNumberWithCommas(Math.round(num));
+          } else {
+            inputEl.value = num;
+          }
+          calculate();
+        };
+
+        rangeEl.addEventListener("input", (e) => update(e.target.value));
+        inputEl.addEventListener("input", (e) => update(e.target.value));
+      }
+
+      function futureValueFromSip(sip, annualRate, months) {
+        const m = Math.max(1, Math.round(months));
+        const r = ((1 + annualRate / 100) ** (1 / 12)) - 1;
+        if (r === 0) return sip * m;
+        const factor = (Math.pow(1 + r, m) - 1) / r;
+        return sip * factor;
+      }
+
+      function fmtCompact(value) {
+        if (!Number.isFinite(value) || value <= 0) return "₹ 0";
+        const abs = Math.abs(value);
+        if (abs >= 1e7) return "₹ " + (value / 1e7).toFixed(2) + " Cr";
+        if (abs >= 1e5) return "₹ " + (value / 1e5).toFixed(2) + " L";
+        return fmt.format(value);
+      }
+
+      function calculate() {
+        const age = Math.max(18, Math.min(59, Math.round(state.age)));
+        const yearsToRetirement = Math.max(1, 60 - age);
+        state.years = yearsToRetirement;
+
+        // Update years to retirement UI
+        if (els.yearsRange) els.yearsRange.value = yearsToRetirement;
+        if (els.yearsInput) els.yearsInput.value = yearsToRetirement;
+        if (els.yearsShow) els.yearsShow.textContent = yearsToRetirement.toString();
+
+        const months = Math.max(1, Math.round(yearsToRetirement * 12));
+        const mfSip = state.npsSip * 0.7;
+
+        const npsCorpus = futureValueFromSip(state.npsSip, state.npsCagr, months);
+        const mfCorpus = futureValueFromSip(mfSip, state.mfCagr, months);
+
+        const npsInvested = state.npsSip * months;
+        const mfInvested = mfSip * months;
+
+        const mfGains = Math.max(0, mfCorpus - mfInvested);
+        const mfTax = mfGains * 0.10;
+        const mfPostTax = Math.max(0, mfCorpus - mfTax);
+
+        const npsLump = npsCorpus * 0.6;
+        const npsAnnuity = npsCorpus * 0.4;
+
+        const annuityRate = 0.06;
+        const npsPensionMonthly = (npsAnnuity * annuityRate) / 12;
+
+        const diff = npsCorpus - mfPostTax;
+        const winner = diff >= 0 ? "NPS" : "Mutual Fund SIP";
+
+        els.npsInvested.textContent = fmtCompact(npsInvested);
+        els.mfInvested.textContent = fmtCompact(mfInvested);
+        els.npsCorpus.textContent = fmtCompact(npsCorpus);
+        els.mfCorpus.textContent = fmtCompact(mfCorpus);
+        els.mfTax.textContent = fmtCompact(mfTax);
+        els.mfNet.textContent = fmtCompact(mfPostTax);
+        els.npsLump.textContent = fmtCompact(npsLump);
+        els.npsAnnuity.textContent = fmtCompact(npsAnnuity);
+        els.npsPension.textContent = fmtCompact(npsPensionMonthly);
+
+        if (els.mfSipShow) els.mfSipShow.textContent = fmtCompact(mfSip);
+        if (els.winnerShow) els.winnerShow.textContent = winner;
+        if (els.diffShow) els.diffShow.textContent = fmtCompact(Math.abs(diff));
+        if (els.pensionShow) els.pensionShow.textContent = fmtCompact(npsPensionMonthly);
+      }
+
+      syncInput(els.npsSipRange, els.npsSipInput, "npsSip");
+      syncInput(els.ageRange, els.ageInput, "age");
+      syncInput(els.npsCagrRange, els.npsCagrInput, "npsCagr");
+      syncInput(els.mfCagrRange, els.mfCagrInput, "mfCagr");
+      // Set preset values in UI
+      els.npsSipRange.value = state.npsSip;
+      els.npsSipInput.value = formatNumberWithCommas(Math.round(state.npsSip));
+      els.ageRange.value = state.age;
+      els.ageInput.value = state.age;
+      els.npsCagrRange.value = state.npsCagr;
+      els.npsCagrInput.value = state.npsCagr;
+      els.mfCagrRange.value = state.mfCagr;
+      els.mfCagrInput.value = state.mfCagr;
+      calculate();
+    </script>
+  </body>
+</html>

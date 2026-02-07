@@ -1,0 +1,1173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FD Calculator | Fixed Deposit Maturity Amount & Interest Calculator</title>
+    <meta name="description" content="Free FD Calculator for India. Calculate fixed deposit maturity amount, interest earned and compound growth. See charts and detailed calculations." />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://financialcalc.ai/fd-calculator" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="FD Calculator | Fixed Deposit Maturity Amount & Interest" />
+    <meta property="og:description" content="Calculate fixed deposit maturity amount and interest earned with compound growth. Supports flexible tenure and interest rates." />
+    <meta property="og:url" content="https://financialcalc.ai/fd-calculator" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a Fixed Deposit (FD)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A Fixed Deposit is a financial product where you invest a lump sum amount for a fixed period at a predetermined interest rate. Banks return your principal plus interest when the FD matures."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is FD interest calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "FD interest is calculated using compound interest formula: Maturity Amount = Principal × (1 + Interest Rate/100)^Number of Years. The frequency of compounding depends on the bank."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this FD calculator accurate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This calculator uses standard compound interest formulas and provides realistic projections based on your inputs. Actual interest may vary based on bank policies and compounding frequency."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this calculator include tax deductions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. This calculator shows gross interest without tax deductions. TDS (Tax Deducted at Source) is calculated separately by banks based on your tax slab."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I break my FD before maturity?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, most banks allow premature FD withdrawal but may charge a penalty or reduce the interest rate. Penalties vary between banks and tenure."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is FD ladder strategy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "FD laddering means investing in multiple FDs with staggered maturity dates to ensure regular access to funds while maintaining fixed returns."
+          }
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://financialcalc.ai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "FD Calculator",
+          "item": "https://financialcalc.ai/fd-calculator"
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "FD Calculator",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "url": "https://financialcalc.ai/fd-calculator",
+      "description": "Free FD Calculator for India to calculate fixed deposit maturity amount, interest earned and compound growth visualization.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+    </script>
+    <style>
+      /* Header Styling */
+      header {
+        background: var(--card, white);
+        border-bottom: 1px solid var(--border, #d1e7e4);
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 3vw, 40px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      nav {
+        display: flex;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .nav-links a {
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-links a:hover {
+        color: var(--brand, #0d9488);
+      }
+      
+      @media (max-width: 700px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+        
+        nav {
+          display: none;
+        }
+        
+        nav.active {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: var(--card, white);
+          border-bottom: 1px solid var(--border, #d1e7e4);
+          padding: 16px;
+        }
+        
+        .nav-links {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+
+      /* Ensure min-width for main cards and limit grid gap to 10px for wide screens */
+      @media (min-width: 1000px) {
+        section[style*="grid-template-columns"] {
+          gap: 10px !important;
+        }
+        .main-card-min {
+          min-width: 420px;
+        }
+        .results-card-min {
+          min-width: 400px;
+        }
+      }
+      :root {
+        --section-gap: clamp(16px, 3vw, 40px);
+        --card-padding: clamp(10px, 3vw, 32px);
+        --section-padding: clamp(8px, 2vw, 24px);
+      }
+      /* Responsive layout improvements */
+      @media (max-width: 1200px) {
+        .wrap {
+          padding: 24px 2vw 60px 2vw;
+        }
+        .grid,
+        section[style*="grid-template-columns"] {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .wrap {
+          padding: 12px 1vw 30px 1vw;
+        }
+        .grid,
+        section[style*="grid-template-columns"] {
+          grid-template-columns: 1fr !important;
+        }
+        .card, .seo-card {
+          padding: 12px 6px !important;
+        }
+        .results, .chart, .legend, .foot {
+          font-size: 13px;
+        }
+        h1, h2 {
+          font-size: 1.1rem !important;
+        }
+        table {
+          font-size: 12px;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .wrap {
+          padding: 4px 0 10px 0;
+        }
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+        .card, .seo-card {
+          padding: 8px 2px !important;
+          border-radius: 10px;
+        }
+        .results, .chart, .legend, .foot {
+          font-size: 11px;
+        }
+        h1, h2 {
+          font-size: 1rem !important;
+        }
+        table {
+          font-size: 10px;
+        }
+        section[style*="grid-template-columns"], .grid {
+          grid-template-columns: 1fr !important;
+        }
+        section[style*="grid-template-columns"] > div,
+        .grid > div {
+          min-width: 0;
+          width: 100% !important;
+          max-width: 100vw;
+        }
+      }
+
+      :root {
+        --bg: #f0fdf9;
+        --ink: #0f2f2e;
+        --muted: #64748b;
+        --brand: #0d9488;
+        --brand-2: #0f766e;
+        --accent: #5eead4;
+        --card: #ffffff;
+        --border: #d1e7e4;
+        --shadow: 0 12px 32px rgba(13, 148, 136, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      .wrap {
+        width: 100%;
+        padding: var(--section-gap);
+      }
+
+      header {
+        margin-bottom: 18px;
+      }
+
+      .logo {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--brand);
+      }
+
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(26px, 3.4vw, 34px);
+        line-height: 1.2;
+        font-weight: 600;
+      }
+
+      .sub {
+        color: var(--muted);
+        max-width: 560px;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .pill {
+        background: #eafaf5;
+        color: #129a79;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: var(--card-padding);
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .field {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        font-weight: 600;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .unit {
+        font-size: 14px;
+        color: #9aa3b2;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: 1fr 120px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--brand);
+        height: 4px;
+        background: #e5e7eb;
+        border-radius: 999px;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 1000%;
+        background: var(--brand);
+        border: none;
+        margin-top: -6px;
+        box-shadow: 0 4px 10px rgba(0, 208, 156, 0.35);
+      }
+
+      input[type="range"]::-moz-range-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .results {
+        display: grid;
+        gap: 8px;
+      }
+
+      .result-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        padding: 10px 12px;
+        background: #f8f9fb;
+        border-radius: 10px;
+      }
+
+      .result-row span {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .chart {
+        margin-top: 16px;
+        display: grid;
+        place-items: center;
+        position: relative;
+        height: 200px;
+      }
+
+      .ring {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: conic-gradient(
+          var(--brand) 0deg,
+          var(--brand) 120deg,
+          var(--accent) 120deg,
+          var(--accent) 360deg
+        );
+        display: grid;
+        place-items: center;
+      }
+
+      .ring::after {
+        content: "";
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: inset 0 0 0 1px var(--border);
+      }
+
+      .ring-label {
+        position: absolute;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: #1f2937;
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin-top: 4px;
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 8px;
+        background: currentColor;
+      }
+
+      .legend .invested {
+        color: var(--brand);
+      }
+
+      .legend .returns {
+        color: var(--accent);
+      }
+
+      .foot {
+        margin-top: 18px;
+        color: #9aa3b2;
+        font-size: 12px;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 13px;
+        color: #6b7280;
+      }
+
+      .nav-links a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* Enhanced SEO Content Card Styles */
+      .seo-section {
+        width: 100%;
+        margin: var(--section-gap) 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--section-gap);
+        padding: 0;
+      }
+      .seo-card {
+        background: var(--card);
+        border: 1.5px solid #d1e7e4;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(13, 148, 136, 0.10);
+        padding: var(--card-padding);
+        line-height: 1.85;
+        font-size: 1.08rem;
+        color: #18313a;
+        transition: box-shadow 0.2s;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .seo-card h2 {
+        font-size: 1.45rem;
+        margin-bottom: 18px;
+        color: var(--brand-2);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+      .seo-card p, .seo-card ul, .seo-card ol {
+        margin-bottom: 16px;
+      }
+      .seo-card ul, .seo-card ol {
+        padding-left: 24px;
+        margin-top: 0;
+      }
+      .seo-card li {
+        margin-bottom: 10px;
+        line-height: 1.7;
+      }
+      .seo-card strong {
+        color: var(--brand);
+      }
+      .seo-card em {
+        color: #64748b;
+        font-style: italic;
+      }
+      .seo-card table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-size: 14px;
+      }
+      .seo-card table th,
+      .seo-card table td {
+        border: 1px solid var(--border);
+        padding: 10px 12px;
+        text-align: left;
+      }
+      .seo-card table th {
+        background: #f8f9fb;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .seo-card:last-child {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 900px) {
+        .seo-card {
+          padding: 20px;
+        }
+        .seo-card h2 {
+          font-size: 1.2rem;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .seo-card {
+          padding: 14px 10px;
+          border-radius: 12px;
+        }
+        .seo-card h2 {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">💰 FinancialCalc.Ai</a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#investing">Investing</a></li>
+          <li><a href="index.html#home-decisions">House Decisions</a></li>
+          <li><a href="index.html#loans">Loans</a></li>
+          <li><a href="index.html#retirement">Retirement</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <div class="wrap">
+      
+
+      <div class="hero">
+        <div>
+          <h1>Fixed Deposit Calculator</h1>
+          <p class="sub">Estimate FD maturity amount, interest earned, and growth over time.</p>
+        </div>
+        <div class="pill">Fixed Deposit</div>
+      </div>
+
+      <section style="display: grid; grid-template-columns: 0.7fr 0.5fr 0.75fr; gap: var(--section-gap); margin-top: var(--section-gap);">
+        <!-- Left: Input Section -->
+        <div class="card main-card-min">
+          <div class="field">
+            <label>Principal Amount <span class="unit">INR</span></label>
+            <div class="input-row">
+              <input id="principalRange" type="range" min="1000" max="10000000" step="1000" aria-label="Principal Amount in Rupees" />
+              <input id="principalInput" type="text" placeholder="0" aria-label="Principal Amount in Rupees" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Time Period <span class="unit">Years</span></label>
+            <div class="input-row">
+              <input id="periodRange" type="range" min="1" max="40" step="1" aria-label="Time Period in Years" />
+              <input id="periodInput" type="number" min="1" max="40" step="1" aria-label="Time Period in Years" />
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <label>Interest Rate <span class="unit">% p.a.</span></label>
+            <div class="input-row">
+              <input id="rateRange" type="range" min="1" max="15" step="0.1" aria-label="Interest Rate Percentage Per Annum" />
+              <input id="rateInput" type="text" inputmode="decimal" placeholder="0.0" aria-label="Interest Rate Percentage Per Annum" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle: Results Section -->
+        <div class="card results-card-min">
+          <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Results</h2>
+          <div class="results">
+            <div class="result-row">
+              <span>Principal</span>
+              <strong id="principalValue">₹ 0</strong>
+            </div>
+            <div class="result-row">
+              <span>Interest Earned</span>
+              <strong id="interestValue">₹ 0</strong>
+            </div>
+            <div class="result-row total">
+              <span>Maturity Amount</span>
+              <strong id="maturityValue">₹ 0</strong>
+            </div>
+          </div>
+          <div class="chart">
+            <div class="ring" id="ring"></div>
+            <div class="ring-label" id="ringLabel">Total</div>
+          </div>
+          <div class="legend">
+            <span class="invested">Principal</span>
+            <span class="returns">Interest</span>
+          </div>
+          <div class="foot">For illustration only. Actual returns vary by bank.</div>
+        </div>
+
+        <!-- Right: Charts Section -->
+        <div style="display: flex; flex-direction: column; gap: 20px; height: 100%;">
+          <!-- FD Growth Chart -->
+          <div class="card" style="height: 100%; display: flex; flex-direction: column;">
+            <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Growth Over Time</h2>
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0;">
+              <canvas id="growthChart" style="max-height: 350px; max-width: 100%;"></canvas>
+            </div>
+            <div class="legend" style="margin-top: 16px;">
+              <span style="color: #0d9488;">Maturity Amount</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEO Content Section -->
+      <section class="seo-section">
+        <div class="seo-card">
+          <h2>What is a Fixed Deposit (FD)?</h2>
+          <p>A Fixed Deposit is a financial product where you invest a lump sum for a fixed period at a predetermined interest rate. The bank returns your principal plus accrued interest at maturity. It is one of the safest investment options in India and is often preferred by conservative investors.</p>
+          <p>Fixed Deposits are backed by <strong>DICGC (Deposit Insurance and Credit Guarantee Corporation)</strong> insurance up to ₹5 lakh, providing additional security for your money.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>What This FD Calculator Does</h2>
+          <p>This FD Calculator estimates the maturity amount and interest earned on your fixed deposit using three inputs:</p>
+          <ul>
+            <li>Principal Amount (initial investment)</li>
+            <li>Time Period (investment duration in years)</li>
+            <li>Interest Rate (annual percentage rate per annum)</li>
+          </ul>
+          <p>Using these inputs, the calculator shows:</p>
+          <ul>
+            <li>Principal amount invested</li>
+            <li>Total interest earned over the tenure</li>
+            <li>Final maturity amount you will receive</li>
+            <li>Year-wise growth visualization through charts</li>
+          </ul>
+          <p>All calculations run instantly and locally in your browser for complete privacy.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>How the FD Calculator Works</h2>
+          <p>The calculator uses the <strong>compound interest formula</strong>, the standard method used by Indian banks to calculate FD returns.</p>
+          <p><strong>Compound Interest Formula:</strong></p>
+          <p style="background: #f8f9fb; padding: 12px; border-radius: 8px; font-family: monospace; font-weight: 600; overflow-x: auto;">Maturity Amount = Principal × (1 + Interest Rate/100)^Number of Years</p>
+          <p>The longer you keep your FD, the stronger the compounding effect becomes. For example, a ₹1 lakh FD at 7% per annum for 10 years grows to approximately ₹1.97 lakh due to compounding.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Why Use an FD Calculator?</h2>
+          <p>An FD Calculator is useful if you want to:</p>
+          <ul>
+            <li>Estimate maturity amount before investing</li>
+            <li>Compare different tenure and interest rate options</li>
+            <li>Understand the power of compounding over time</li>
+            <li>Plan financial goals like down payment, wedding, education</li>
+            <li>Analyze different FD schemes from various banks</li>
+            <li>Make informed investment decisions without manual calculations</li>
+          </ul>
+          <p>It gives you a clear picture of how your money grows and helps you choose the best FD tenure for your needs.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Key Assumptions Used in This Calculator</h2>
+          <p>To keep calculations transparent and simple, this FD calculator assumes:</p>
+          <ul>
+            <li>Interest is compounded annually (as per formula; actual compounding frequency may vary by bank)</li>
+            <li>Interest rate remains constant throughout the tenure</li>
+            <li>No premature withdrawal or additional deposits are made</li>
+            <li>No taxes or TDS (Tax Deducted at Source) are deducted from the calculation</li>
+            <li>Results are illustrative and not guaranteed</li>
+            <li>Actual returns may differ based on bank policies and compounding frequency</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Understanding the FD Calculator Charts</h2>
+          <p><strong>Growth Over Time Chart:</strong> This line chart shows how your FD maturity amount increases year by year. It visualizes the compounding effect, showing accelerating growth in later years as interest earns interest.</p>
+          <p><strong>Principal vs Interest Breakdown:</strong> The ring chart separates your original principal amount from the interest earned, helping you see exactly how much returns the FD generates.</p>
+          <p>These visuals make it easier to understand why long-term fixed deposits are powerful wealth-building instruments and help you choose the right tenure.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>FD Interest Rates in India</h2>
+          <table>
+            <tr>
+              <th>Tenure</th>
+              <th>Typical Bank Rate (% p.a.)</th>
+              <th>Senior Citizen Rate</th>
+            </tr>
+            <tr>
+              <td>1-2 Years</td>
+              <td>6.0% - 7.0%</td>
+              <td>6.5% - 7.5%</td>
+            </tr>
+            <tr>
+              <td>2-3 Years</td>
+              <td>6.5% - 7.5%</td>
+              <td>7.0% - 8.0%</td>
+            </tr>
+            <tr>
+              <td>3-5 Years</td>
+              <td>7.0% - 8.0%</td>
+              <td>7.5% - 8.5%</td>
+            </tr>
+            <tr>
+              <td>5-10 Years</td>
+              <td>6.5% - 7.5%</td>
+              <td>7.0% - 8.0%</td>
+            </tr>
+          </table>
+          <p><em>Note: Interest rates vary by bank and change frequently. Check with your bank for the latest rates.</em></p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Who Should Use an FD Calculator?</h2>
+          <p>This calculator is ideal for:</p>
+          <ul>
+            <li>First-time FD investors learning how compound interest works</li>
+            <li>Individuals comparing FD rates across different tenures</li>
+            <li>Senior citizens planning post-retirement income</li>
+            <li>Savers looking for safe, guaranteed returns</li>
+            <li>Anyone planning specific financial goals</li>
+            <li>Investors evaluating FD vs other investment options</li>
+          </ul>
+          <p>It is especially useful for investors seeking low-risk, secure investment vehicles with predictable returns.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>FD Ladder Strategy</h2>
+          <p><strong>FD Laddering</strong> is an investment strategy where you invest in multiple FDs with staggered maturity dates instead of a single FD. For example:</p>
+          <ul>
+            <li>Invest ₹1 lakh for 1 year</li>
+            <li>Invest ₹1 lakh for 2 years</li>
+            <li>Invest ₹1 lakh for 3 years</li>
+            <li>Invest ₹1 lakh for 4 years</li>
+          </ul>
+          <p>This strategy provides <strong>regular liquidity</strong> (one FD matures each year) while maintaining fixed returns. As each FD matures, you can reinvest it for the longest duration to maintain the ladder.</p>
+          <p><em>Benefits:</em> Regular access to funds, ability to benefit from rising interest rates, and continuous income stream.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Calculators</h2>
+          <ul>
+            <li><a href="simple-sip-calculator.html">Simple SIP Calculator</a></li>
+            <li><a href="step-up-sip-calculator.html">Step-Up SIP Calculator</a></li>
+            <li><a href="lumpsum-calculator.html">Lumpsum Calculator</a></li>
+            <li><a href="investment-calculator.html">Investment Calculator (SIP + Lumpsum)</a></li>
+            <li><a href="emi-calculator.html">EMI Calculator</a></li>
+            <li><a href="goal-based-calculator.html">Goal-Based Calculator</a></li>
+            <li><a href="nps-calculator.html">NPS Calculator</a></li>
+            <li><a href="swp-calculator.html">SWP Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Final Note and Disclaimer</h2>
+          <p>This calculator is for educational and planning purposes only and does not constitute financial advice. Results are illustrative and not guaranteed. Taxes, fees, charges, and market risks are not included in the calculations. Consult a qualified financial advisor before making investment decisions.</p>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const fmt = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0,
+      });
+
+      function formatNumberWithCommas(num) {
+        const numStr = num.toString();
+        
+        // Reverse the string to work from right to left
+        const reversed = numStr.split('').reverse();
+        
+        // Add commas: first 3 digits, then every 2 digits
+        let result = '';
+        for (let i = 0; i < reversed.length; i++) {
+          if (i === 3 || (i > 3 && (i - 3) % 2 === 0)) {
+            result += ',';
+          }
+          result += reversed[i];
+        }
+        
+        // Reverse back
+        return result.split('').reverse().join('');
+      }
+
+      const state = {
+        principal: 500000,
+        period: 5,
+        rate: 7.5,
+      };
+
+      const els = {
+        principalRange: document.getElementById("principalRange"),
+        principalInput: document.getElementById("principalInput"),
+        periodRange: document.getElementById("periodRange"),
+        periodInput: document.getElementById("periodInput"),
+        rateRange: document.getElementById("rateRange"),
+        rateInput: document.getElementById("rateInput"),
+        principalValue: document.getElementById("principalValue"),
+        interestValue: document.getElementById("interestValue"),
+        maturityValue: document.getElementById("maturityValue"),
+      };
+
+      function syncInput(rangeEl, inputEl, key) {
+        let autoFormatTimer = null;
+        
+        const updateFromRange = (value) => {
+          let num = parseFloat(value);
+          if (isNaN(num)) return;
+          state[key] = num;
+          rangeEl.value = num;
+          if (key === 'rate') {
+            inputEl.value = num.toFixed(1);
+          } else if (key === 'principal') {
+            inputEl.value = formatNumberWithCommas(Math.round(num));
+          } else {
+            inputEl.value = num;
+          }
+          calculate();
+        };
+
+        const formatValue = (value) => {
+          if (value === '') return;
+          let num = parseFloat(value.replace(/,/g, ''));
+          if (isNaN(num)) return;
+          
+          const min = parseFloat(rangeEl.min);
+          const max = parseFloat(rangeEl.max);
+          
+          if (num < min) num = min;
+          if (num > max) num = max;
+          
+          if (key === 'rate') {
+            num = Math.round(num * 10) / 10;
+          }
+          
+          state[key] = num;
+          if (key === 'rate') {
+            inputEl.value = num.toFixed(1);
+          } else if (key === 'principal') {
+            inputEl.value = formatNumberWithCommas(Math.round(num));
+          } else {
+            inputEl.value = num;
+          }
+          rangeEl.value = num;
+          
+          calculate();
+        };
+
+        const updateFromInput = (value) => {
+          if (value === '') return;
+          let num = parseFloat(value.replace(/,/g, ''));
+          if (isNaN(num)) return;
+          
+          state[key] = num;
+          
+          const min = parseFloat(rangeEl.min);
+          const max = parseFloat(rangeEl.max);
+          if (num < min) {
+            rangeEl.value = min;
+          } else if (num > max) {
+            rangeEl.value = max;
+          } else {
+            rangeEl.value = num;
+          }
+          
+          calculate();
+          
+          if (key === 'rate') {
+            clearTimeout(autoFormatTimer);
+            autoFormatTimer = setTimeout(() => {
+              formatValue(inputEl.value);
+            }, 500);
+          }
+        };
+
+        rangeEl.addEventListener("input", (e) => updateFromRange(e.target.value));
+        inputEl.addEventListener("input", (e) => updateFromInput(e.target.value));
+        inputEl.addEventListener("blur", (e) => {
+          if (key === 'rate') {
+            clearTimeout(autoFormatTimer);
+            formatValue(e.target.value);
+          } else if (key === 'principal') {
+            formatValue(e.target.value);
+          }
+        });
+      }
+
+      function calculateFD(principal, rate, years) {
+        // Compound interest formula: A = P(1 + r/100)^n
+        const maturity = principal * Math.pow(1 + rate / 100, years);
+        const interest = maturity - principal;
+        return { maturity, interest };
+      }
+
+      function fmtCompact(value) {
+        if (!Number.isFinite(value) || value <= 0) return "₹ 0";
+        const abs = Math.abs(value);
+        if (abs >= 1e7) return "₹ " + (value / 1e7).toFixed(2) + " Cr";
+        if (abs >= 1e5) return "₹ " + (value / 1e5).toFixed(2) + " L";
+        return fmt.format(value);
+      }
+
+      function updateRingChart(principal, interest, maturity) {
+        const totalValue = principal + interest;
+        const principalPct = totalValue > 0 ? Math.min(100, (principal / totalValue) * 100) : 0;
+        const principalDeg = Math.round((principalPct / 100) * 360);
+        const ring = document.getElementById("ring");
+        const ringLabel = document.getElementById("ringLabel");
+        if (ring && ringLabel) {
+          ring.style.background = `conic-gradient(
+            var(--brand) 0deg,
+            var(--brand) ${principalDeg}deg,
+            var(--accent) ${principalDeg}deg,
+            var(--accent) 360deg
+          )`;
+          ringLabel.textContent = `Total ${fmtCompact(maturity)}`;
+        }
+      }
+
+      let growthChart = null;
+      function updateGrowthChart() {
+        const period = Math.max(1, Math.round(state.period));
+        const labels = [];
+        const maturityData = [];
+        
+        for (let y = 0; y <= period; y += 1) {
+          labels.push(`Year ${y}`);
+          const result = calculateFD(state.principal, state.rate, y);
+          maturityData.push(Math.round(result.maturity));
+        }
+        
+        const ctx = document.getElementById("growthChart").getContext("2d");
+        if (growthChart) {
+          growthChart.data.labels = labels;
+          growthChart.data.datasets[0].data = maturityData;
+          growthChart.update();
+        } else {
+          growthChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels,
+              datasets: [
+                {
+                  label: "Maturity Amount",
+                  data: maturityData,
+                  borderColor: "#0d9488",
+                  backgroundColor: "rgba(13, 148, 136, 0.15)",
+                  fill: true,
+                  tension: 0,
+                  pointRadius: 3,
+                  pointBackgroundColor: "#0d9488",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointHoverRadius: 5,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: {
+                legend: { display: true, labels: { font: { size: 13 } } },
+                tooltip: {
+                  backgroundColor: "rgba(31, 36, 48, 0.9)",
+                  padding: 12,
+                  titleFont: { size: 14, weight: "600" },
+                  bodyFont: { size: 13 },
+                  callbacks: {
+                    label: function (context) {
+                      return fmtCompact(context.parsed.y);
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: {
+                    color: "rgba(230, 232, 240, 0.5)",
+                  },
+                  ticks: {
+                    callback: function (value) {
+                      return fmtCompact(value);
+                    },
+                  },
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Years",
+                  },
+                  grid: {
+                    display: false,
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+      function calculate() {
+        const period = Math.max(1, Math.round(state.period));
+        const result = calculateFD(state.principal, state.rate, period);
+        
+        const maturity = result.maturity;
+        const principal = state.principal;
+        const interest = Math.max(0, result.interest);
+
+        els.maturityValue.textContent = fmtCompact(maturity);
+        els.principalValue.textContent = fmtCompact(principal);
+        els.interestValue.textContent = fmtCompact(interest);
+
+        updateRingChart(principal, interest, maturity);
+        updateGrowthChart();
+      }
+
+      // Pre-fill and display input values
+      els.principalRange.value = state.principal;
+      els.principalInput.value = formatNumberWithCommas(state.principal);
+      els.periodRange.value = state.period;
+      els.periodInput.value = state.period;
+      els.rateRange.value = state.rate;
+      els.rateInput.value = state.rate.toFixed(1);
+
+      syncInput(els.principalRange, els.principalInput, "principal");
+      syncInput(els.periodRange, els.periodInput, "period");
+      syncInput(els.rateRange, els.rateInput, "rate");
+
+      calculate();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Car Loan EMI Calculator (India) + SIP Wealth Optimizer | EMI, Interest & Best Plan</title>
+
+    <meta name="description" content="Free Car Loan EMI Calculator for India. Calculate EMI, total interest & total payment. Optional wealth optimizer shows SIP plan, down payment vs loan, and end-wealth comparison." />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://financialcalc.ai/car-loan-sip-calculator" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Car Loan EMI Calculator + SIP Wealth Optimizer" />
+    <meta property="og:description" content="Calculate EMI, total interest & total payment. Then optionally optimize wealth with SIP + down payment strategy and compare end assets." />
+    <meta property="og:url" content="https://financialcalc.ai/car-loan-sip-calculator" />
+    <meta property="og:image" content="https://financialcalc.ai/assets/car-loan-emi-og.png" />
+
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"FAQPage",
+      "mainEntity":[
+        {
+          "@type":"Question",
+          "name":"How is this different from a regular car loan EMI calculator?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"This page shows EMI, total interest and total payment like a regular EMI calculator. It also has an optional Wealth Optimization mode that helps you plan down payment and SIP investing alongside the loan, then compares strategies by end wealth."
+          }
+        },
+        {
+          "@type":"Question",
+          "name":"What does Wealth Optimization do?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"It compares strategies (max asset, balance, comfort) under a real-world constraint (EMI + SIP within a chosen % of salary). It shows where to invest before purchase, how much to pay upfront, how much loan to take, and the end asset after the full horizon."
+          }
+        },
+        {
+          "@type":"Question",
+          "name":"Can EMI and SIP exceed my affordability limit?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"No. In Wealth Optimization mode, the calculator enforces the rule EMI + SIP must stay within the chosen % of salary each month."
+          }
+        },
+        {
+          "@type":"Question",
+          "name":"Does this include taxes or tax deductions?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"This tool is designed for planning and comparison. It does not automatically apply personal tax deductions. Use the numbers as guidance and adjust for your real tax situation if needed."
+          }
+        },
+        {
+          "@type":"Question",
+          "name":"Are investment returns guaranteed?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"No. Investment returns are assumptions used for projection. Actual returns depend on market performance and product costs."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Header Styling */
+      header {
+        background: var(--card, white);
+        border-bottom: 1px solid var(--border, #d1e7e4);
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 3vw, 40px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      nav {
+        display: flex;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .nav-links a {
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-links a:hover {
+        color: var(--brand, #0d9488);
+      }
+      
+      @media (max-width: 700px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+        
+        nav {
+          display: none;
+        }
+        
+        nav.active {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: var(--card, white);
+          border-bottom: 1px solid var(--border, #d1e7e4);
+          padding: 16px;
+        }
+        
+        .nav-links {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+
+      :root {
+        --section-gap: clamp(16px, 3vw, 20px);
+        --card-padding: clamp(14px, 3vw, 20px);
+        --bg: #f0fdf9;
+        --ink: #0f2f2e;
+        --muted: #64748b;
+        --brand: #0d9488;
+        --accent: #5eead4;
+        --card: #ffffff;
+        --border: #d1e7e4;
+        --shadow: 0 12px 32px rgba(13, 148, 136, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .wrap {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: var(--section-gap);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .logo {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--brand);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(26px, 3.4vw, 34px);
+        line-height: 1.2;
+        font-weight: 600;
+      }
+
+      .sub {
+        color: var(--muted);
+        max-width: 560px;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .pill {
+        background: #eafaf5;
+        color: #129a79;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--section-gap);
+        margin-top: var(--section-gap);
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: var(--card-padding);
+        min-width: 0;
+        width: 100%;
+      }
+
+      .field {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        font-weight: 600;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .unit {
+        font-size: 14px;
+        color: #9aa3b2;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: 1fr 120px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--brand);
+        height: 4px;
+        background: #e5e7eb;
+        border-radius: 999px;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 1000%;
+        background: var(--brand);
+        border: none;
+        margin-top: -6px;
+        box-shadow: 0 4px 10px rgba(13, 148, 136, 0.35);
+      }
+
+      input[type="range"]::-moz-range-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+        text-align: right;
+      }
+
+      .summary {
+        display: grid;
+        gap: 8px;
+      }
+
+      .summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        padding: 10px 12px;
+        background: #f8f9fb;
+        border-radius: 10px;
+      }
+
+      .summary-row span {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .cta {
+        margin-top: 12px;
+        background: var(--brand);
+        border: none;
+        color: #fff;
+        padding: 12px 16px;
+        width: 100%;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.03em;
+        box-shadow: 0 8px 18px rgba(0, 208, 156, 0.25);
+        cursor: pointer;
+      }
+
+      .note {
+        margin-top: 10px;
+        color: #9aa3b2;
+        font-size: 12px;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      .table th,
+      .table td {
+        padding: 10px 8px;
+        border-bottom: 1px solid var(--border);
+        text-align: right;
+      }
+
+      .table th:first-child,
+      .table td:first-child {
+        text-align: left;
+      }
+
+      .table th:nth-child(2),
+      .table td:nth-child(2) {
+        text-align: left;
+      }
+
+      .badge {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: #ecfeff;
+        color: #0f766e;
+      }
+
+      .toggle {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .toggle button {
+        border: 1px solid var(--border);
+        background: #fff;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .toggle button.active {
+        background: #eafaf5;
+        border-color: #c7f1e3;
+        color: #0f766e;
+      }
+
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .input-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    
+      /* SEO Content (same template style as Investment Calculator page) */
+      .seo-section {
+        width: 80vw;
+        max-width: 1465px;
+        
+        margin-left:  auto;
+        margin-right:  auto;
+        margin-top: var(--section-gap);
+        margin-bottom: var(--section-gap);
+        display: flex;
+        flex-direction: column;
+        gap: var(--section-gap);
+        padding: 0;
+      }
+      .seo-card {
+        background: var(--card);
+        border: 1.5px solid #d1e7e4;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(13, 148, 136, 0.10);
+        padding: var(--card-padding);
+        line-height: 1.85;
+        font-size: 1.05rem;
+        color: #18313a;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .seo-card h2 {
+        font-size: 1.35rem;
+        margin-bottom: 14px;
+        color: #0f766e;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+      .seo-card p, .seo-card ul, .seo-card ol {
+        margin-bottom: 14px;
+      }
+      .seo-card ul, .seo-card ol {
+        padding-left: 22px;
+        margin-top: 0;
+      }
+      .seo-card li {
+        margin-bottom: 10px;
+        line-height: 1.7;
+      }
+      .seo-card strong {
+        color: var(--brand);
+      }
+      .seo-card em {
+        color: #64748b;
+        font-style: italic;
+      }
+
+</style>
+  </head>
+  <body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">💰 FinancialCalc.Ai</a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#investing">Investing</a></li>
+          <li><a href="index.html#home-decisions">House Decisions</a></li>
+          <li><a href="index.html#loans">Loans</a></li>
+          <li><a href="index.html#retirement">Retirement</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <div class="wrap">
+      
+
+      <div class="hero">
+        <div>
+          <h1>Car Loan + SIP Calculator</h1>
+          <p class="sub">
+            Default mode shows your EMI. Enable wealth optimization to plan SIPs and
+            maximize long-term wealth.
+          </p>
+        </div>
+        <div class="pill">EMI First</div>
+      </div>
+
+      <section class="grid">
+        <div class="card">
+          <div class="field">
+            <label>
+              Value of car
+              <span class="unit">INR Lakh</span>
+            </label>
+            <div class="input-row">
+              <input id="carValueRange" type="range" min="1" max="50" step="0.5" />
+              <input id="carValueInput" type="number" min="1" max="50" step="0.5" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              Loan interest rate
+              <span class="unit">%</span>
+            </label>
+            <div class="input-row">
+              <input id="loanRateRange" type="range" min="6" max="18" step="0.1" />
+              <input id="loanRateInput" type="number" min="6" max="18" step="0.1" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              Loan tenure
+              <span class="unit">Years</span>
+            </label>
+            <div class="input-row">
+              <input id="loanTenureRange" type="range" min="1" max="10" step="1" />
+              <input id="loanTenureInput" type="number" min="1" max="10" step="1" />
+            </div>
+          </div>
+
+          <button id="optimizeWealthBtn" class="cta" style="background:#0f766e;">Optimize Wealth (Optional)</button>
+
+          <div id="wealthInputs" style="display:none; margin-top: 16px;">
+            <div class="field">
+              <label>
+                Gross monthly salary
+                <span class="unit">INR</span>
+              </label>
+              <div class="input-row">
+                <input id="salaryRange" type="range" min="10000" max="500000" step="1000" />
+                <input id="salaryInput" type="number" min="10000" max="500000" step="1000" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                Max % of salary for EMI + SIP
+                <span class="unit">%</span>
+              </label>
+              <div class="input-row">
+                <input id="investPctRange" type="range" min="10" max="60" step="1" />
+                <input id="investPctInput" type="number" min="10" max="60" step="1" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                Upfront money you have now
+                <span class="unit">INR</span>
+              </label>
+              <div class="input-row">
+                <input id="upfrontCashRange" type="range" min="0" max="5000000" step="50000" />
+                <input id="upfrontCashInput" type="number" min="0" max="5000000" step="50000" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                When do you want to buy?
+                <span class="unit">Months</span>
+              </label>
+              <div class="input-row">
+                <input id="buyMonthRange" type="range" min="1" max="120" step="1" />
+                <input id="buyMonthInput" type="number" min="1" max="120" step="1" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                Expected return (CAGR)
+                <span class="unit">%</span>
+              </label>
+              <div class="input-row">
+                <input id="userCagrRange" type="range" min="0" max="20" step="0.5" />
+                <input id="userCagrInput" type="number" min="0" max="20" step="0.5" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                Upfront money required (apart from loan)
+                <span class="unit">%</span>
+              </label>
+              <div class="input-row">
+                <input id="upfrontPctRange" type="range" min="0" max="80" step="1" />
+                <input id="upfrontPctInput" type="number" min="0" max="80" step="1" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="summary">
+            <div class="summary-row">
+              <span>EMI per month</span>
+              <strong id="userLoanEmi">₹ 0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Principal (loan amount)</span>
+              <strong id="userLoanPrincipal">₹ 0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Total interest</span>
+              <strong id="userLoanInterest">₹ 0</strong>
+            </div>
+            <div class="summary-row">
+              <span>Total payment</span>
+              <strong id="userLoanTotalPayment">₹ 0</strong>
+            </div>
+          </div>
+
+          
+          <div id="wealthSummary" style="display:none; margin-top: 18px;">
+            <div class="summary-row">
+              <span>Max EMI + SIP allowed</span>
+              <strong id="sipCap">₹ 0</strong>
+            </div>
+
+            <div class="card" style="box-shadow:none; border:1px solid var(--border); margin-top: 12px;">
+              <h3 style="margin:0 0 10px; font-size:16px;">Strategy Summary (End Asset = after Purchase + Loan Tenure)</h3>
+              <div id="strategyButtons" class="toggle" style="margin-bottom: 10px;"></div>
+              <div id="strategySummary" class="summary"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      <section id="wealthPanel" class="card" style="display:none; margin-top: var(--section-gap);">
+        <div id="aiOutput"></div>
+      </section>
+    </div>
+
+      <!-- SEO Content Section -->
+      <div class="seo-section" id="seo-content">
+
+        <div class="seo-card">
+          <h2>What This Car Loan + SIP Calculator Does</h2>
+          <p>
+            This <strong>Car Loan + SIP Calculator</strong> starts with a clear <strong>car loan EMI</strong>. If you enable
+            <strong>Optimize Wealth</strong>, it becomes a planning tool that helps you buy the car while continuing
+            investments to maximize long-term wealth.
+          </p>
+          <p>Using your inputs, it can show:</p>
+          <ul>
+            <li>EMI per month, total interest, and total payment</li>
+            <li>How much to invest before buying the car (goal fund + long-term SIP)</li>
+            <li>How much to pay upfront vs how much loan to take</li>
+            <li>How much SIP you can continue during loan years</li>
+            <li>End asset after the full horizon (purchase period + loan tenure)</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Why This Is Different From Regular Car EMI Pages</h2>
+          <p>
+            Most car loan calculators stop after showing the EMI. This page is designed to answer the next,
+            more important question:
+          </p>
+          <p><strong>“How do I buy this car without destroying my wealth-building plan?”</strong></p>
+          <ul>
+            <li><strong>EMI-first UX:</strong> you get EMI instantly with only 3 inputs.</li>
+            <li><strong>Optional wealth optimization:</strong> unlocks a full plan only if you want it.</li>
+            <li><strong>Strategy comparison:</strong> compares outcomes like <em>max asset</em>, <em>balance</em>, and <em>comfort</em>.</li>
+            <li><strong>Real-world constraint:</strong> ensures <strong>EMI + SIP</strong> stays within your chosen % of salary.</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Two Modes: EMI First, Wealth Optimized When You Want</h2>
+          <p>
+            <strong>Mode 1: EMI Calculator (Default)</strong> — Enter car value, interest rate, and tenure to get EMI, principal,
+            total interest, and total payment.
+          </p>
+          <p>
+            <strong>Mode 2: Optimize Wealth (Optional)</strong> — If you want a complete plan, enable wealth mode.
+            The calculator then guides you through:
+          </p>
+          <ol>
+            <li><strong>Before buying:</strong> monthly investments split into a goal fund (for upfront + insurance) and a long-term SIP.</li>
+            <li><strong>At purchase:</strong> total corpus, insurance cost, down payment, and loan amount.</li>
+            <li><strong>After purchase:</strong> EMI and the SIP amount you can continue during loan years.</li>
+          </ol>
+        </div>
+
+        <div class="seo-card">
+          <h2>How Wealth Optimization Works</h2>
+          <p>
+            When you enable wealth optimization, the calculator evaluates multiple strategies and presents the outcomes clearly.
+            It also checks whether changing loan tenure meaningfully improves end wealth.
+          </p>
+          <p><strong>Constraint applied:</strong> EMI + SIP ≤ chosen % of salary (every month).</p>
+          <p><strong>Key idea:</strong> money invested before purchase keeps compounding during the loan tenure—this is where many
+            “EMI-only” calculators miss the opportunity cost.
+          </p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Common Questions This Calculator Helps Answer</h2>
+          <ul>
+            <li>What will be my car loan EMI and total interest?</li>
+            <li>How much down payment should I make for a car?</li>
+            <li>Should I take a bigger loan and invest more, or pay more upfront?</li>
+            <li>Can I continue SIP while paying EMI? How much?</li>
+            <li>Does increasing or decreasing loan tenure improve my end wealth?</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Key Assumptions Used</h2>
+          <ul>
+            <li>Insurance is treated as a mandatory one-time cost at purchase (assumption shown in wealth mode).</li>
+            <li>Goal fund returns are conservative; long-term returns are user-adjustable in wealth mode.</li>
+            <li>This tool is for planning and education. Actual loan terms and market returns vary.</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Final Note and Disclaimer</h2>
+          <p>
+            This calculator is for educational and planning purposes only and does not constitute financial advice. Results are
+            illustrative and not guaranteed. Taxes, fees, charges, and market risks are not included in the calculations. Consult a
+            qualified financial advisor before making loan or investment decisions.
+          </p>
+        </div>
+
+      </div>
+
+
+    <script>
+      const fmt = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0,
+      });
+
+      const state = {
+        carValueLakh: 18,
+        loanRate: 9.5,
+        tenureYears: 5,
+        wealthEnabled: false,
+        selectedStrategyKey: "S1",
+        salary: 100000,
+        investPct: 40,
+        upfrontCash: 200000,
+        buyMonths: 36,
+        userCagr: 12,
+        upfrontPct: 20,
+      };
+
+      const banks = [
+        { name: "HDFC Bank", rate: 9.25 },
+        { name: "ICICI Bank", rate: 9.5 },
+        { name: "SBI", rate: 9.1 },
+        { name: "Axis Bank", rate: 9.35 },
+      ];
+
+      const els = {
+        carValueRange: document.getElementById("carValueRange"),
+        carValueInput: document.getElementById("carValueInput"),
+        loanRateRange: document.getElementById("loanRateRange"),
+        loanRateInput: document.getElementById("loanRateInput"),
+        loanTenureRange: document.getElementById("loanTenureRange"),
+        loanTenureInput: document.getElementById("loanTenureInput"),
+        salaryRange: document.getElementById("salaryRange"),
+        salaryInput: document.getElementById("salaryInput"),
+        investPctRange: document.getElementById("investPctRange"),
+        investPctInput: document.getElementById("investPctInput"),
+        upfrontCashRange: document.getElementById("upfrontCashRange"),
+        upfrontCashInput: document.getElementById("upfrontCashInput"),
+        buyMonthRange: document.getElementById("buyMonthRange"),
+        buyMonthInput: document.getElementById("buyMonthInput"),
+        userCagrRange: document.getElementById("userCagrRange"),
+        userCagrInput: document.getElementById("userCagrInput"),
+        upfrontPctRange: document.getElementById("upfrontPctRange"),
+        upfrontPctInput: document.getElementById("upfrontPctInput"),
+        userLoanEmi: document.getElementById("userLoanEmi"),
+        userLoanPrincipal: document.getElementById("userLoanPrincipal"),
+        userLoanInterest: document.getElementById("userLoanInterest"),
+        userLoanTotalPayment: document.getElementById("userLoanTotalPayment"),
+        sipCap: document.getElementById("sipCap"),
+        strategyButtons: document.getElementById("strategyButtons"),
+        strategySummary: document.getElementById("strategySummary"),
+        aiOutput: document.getElementById("aiOutput"),
+        wealthInputs: document.getElementById("wealthInputs"),
+        wealthPanel: document.getElementById("wealthPanel"),
+        wealthSummary: document.getElementById("wealthSummary"),
+        optimizeWealthBtn: document.getElementById("optimizeWealthBtn"),
+      };
+
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function setRangeFill(rangeEl) {
+        const min = Number(rangeEl.min);
+        const max = Number(rangeEl.max);
+        const value = Number(rangeEl.value);
+        const percent = max === min ? 0 : ((value - min) / (max - min)) * 100;
+        rangeEl.style.background = `linear-gradient(90deg, var(--brand) ${percent}%, #e5e7eb ${percent}%)`;
+      }
+
+      function syncInput(rangeEl, inputEl, key, parser = Number) {
+        rangeEl.value = state[key];
+        inputEl.value = state[key];
+        setRangeFill(rangeEl);
+
+        const update = (value) => {
+          const num = parser(value);
+          if (!Number.isFinite(num)) return;
+          const min = Number(rangeEl.min);
+          const max = Number(rangeEl.max);
+          const next = clamp(num, min, max);
+          state[key] = next;
+          rangeEl.value = next;
+          inputEl.value = next;
+          setRangeFill(rangeEl);
+          calculate();
+        };
+
+        rangeEl.addEventListener("input", (e) => update(e.target.value));
+        inputEl.addEventListener("input", (e) => update(e.target.value));
+      }
+
+      function emi(principal, annualRate, years) {
+        const months = Math.max(1, Math.round(years * 12));
+        const r = annualRate / 100 / 12;
+        if (r === 0) {
+          return principal / months;
+        }
+        const pow = Math.pow(1 + r, months);
+        return (principal * r * pow) / (pow - 1);
+      }
+
+      function futureValueFromSip(sip, annualRate, months) {
+        const m = Math.max(1, Math.round(months));
+        const r = annualRate / 100 / 12;
+        if (r === 0) {
+          return sip * m;
+        }
+        const factor = (Math.pow(1 + r, m) - 1) / r;
+        return sip * factor;
+      }
+
+      function growLump(value, annualRate, months) {
+        const r = annualRate / 100 / 12;
+        return value * Math.pow(1 + r, Math.max(1, Math.round(months)));
+      }
+
+      function loanFromEmi(targetEmi, annualRate, years) {
+        const months = Math.max(1, Math.round(years * 12));
+        const r = annualRate / 100 / 12;
+        if (r === 0) return targetEmi * months;
+        const pow = Math.pow(1 + r, months);
+        return targetEmi * (pow - 1) / (r * pow);
+      }
+
+      function fmtCompact(value) {
+        if (!Number.isFinite(value) || value <= 0) return "₹ 0";
+        const abs = Math.abs(value);
+        if (abs >= 1e7) return "₹ " + (value / 1e7).toFixed(2) + " Cr";
+        if (abs >= 1e5) return "₹ " + (value / 1e5).toFixed(2) + " L";
+        return fmt.format(value);
+      }
+
+      function calculate() {
+        const carValue = state.carValueLakh * 100000;
+        const upfrontNeeded = state.wealthEnabled ? carValue * (state.upfrontPct / 100) : 0;
+        const principal = Math.max(0, carValue - upfrontNeeded);
+        const monthlyEmi = emi(principal, state.loanRate, state.tenureYears);
+        const months = Math.max(1, Math.round(state.tenureYears * 12));
+        const totalPayment = monthlyEmi * months;
+        const totalInterest = totalPayment - principal;
+
+        els.userLoanEmi.textContent = fmt.format(monthlyEmi);
+        els.userLoanPrincipal.textContent = fmt.format(principal);
+        els.userLoanInterest.textContent = fmt.format(totalInterest);
+        els.userLoanTotalPayment.textContent = fmt.format(totalPayment);
+
+        if (state.wealthEnabled) {
+          renderAiSuggestion();
+        } else {
+          els.aiOutput.innerHTML = "";
+                  }
+      }
+
+      function tenureVariants(baseYears) {
+        const down = Math.max(2, baseYears - 2);
+        const up = Math.min(10, baseYears + 2);
+        const uniq = Array.from(new Set([down, baseYears, up]));
+        return uniq.sort((a, b) => a - b);
+      }
+
+      function renderAiSuggestion() {
+        if (!state.wealthEnabled) return;
+
+        const carValue = state.carValueLakh * 100000;
+        const buyMonths = Math.max(1, Math.round(state.buyMonths));
+        const tenureYears = Math.max(1, Math.round(state.tenureYears));
+        const loanRate = state.loanRate;
+        const cap = state.salary * (state.investPct / 100);
+
+        const insurance = carValue * 0.03;
+        const goalRate = 7;
+        const longRate = state.userCagr;
+        const upfrontCashNow = Math.max(0, state.upfrontCash);
+
+        const strategies = [
+          { key: "S1", label: "Optimized for Max Asset", goalShare: 0.30, longShare: 0.70, loanSipMin: 5000 },
+          { key: "S2", label: "Optimized for Balance", goalShare: 0.55, longShare: 0.45, loanSipMin: null },
+          { key: "S3", label: "Optimized for Comfort", goalShare: 0.75, longShare: 0.25, loanSipMin: null },
+        ];
+
+        function computeStrategyForTenure(s, years) {
+          const loanMonths = Math.max(1, Math.round(years * 12));
+          const goalSip = cap * s.goalShare;
+          const longSip = cap * s.longShare;
+
+          const upfrontAtPurchase = growLump(upfrontCashNow, goalRate, buyMonths);
+          const goalCorpus = futureValueFromSip(goalSip, goalRate, buyMonths) + upfrontAtPurchase;
+          const longCorpusAtPurchase = futureValueFromSip(longSip, longRate, buyMonths);
+
+          const upfrontNeeded = carValue * (state.upfrontPct / 100);
+          const availableForDownPayment = Math.max(0, goalCorpus - insurance);
+          const baseDownPayment = Math.min(carValue, availableForDownPayment);
+          const extraAvailable = Math.max(0, baseDownPayment - upfrontNeeded);
+          let downPaymentUsed = baseDownPayment;
+          if (s.key === "S1") {
+            downPaymentUsed = Math.min(baseDownPayment, upfrontNeeded);
+          }
+          if (s.key === "S2") {
+            downPaymentUsed = Math.min(baseDownPayment, upfrontNeeded + extraAvailable * 0.5);
+          }
+          if (s.key === "S3") {
+            downPaymentUsed = baseDownPayment;
+          }
+          const surplusGoalCash = Math.max(0, availableForDownPayment - downPaymentUsed);
+          
+
+          const baseLoanNeeded = Math.max(0, carValue - downPaymentUsed);
+
+          let loanAmt = baseLoanNeeded;
+          let monthlyEmi = emi(loanAmt, loanRate, years);
+          let sipDuringLoan = Math.max(0, cap - monthlyEmi);
+          let excessLoanInvested = 0;
+
+          if (s.key === "S1") {
+            const sipMin = Math.min(cap, Math.max(0, s.loanSipMin));
+            const maxEmiAllowed = Math.max(0, cap - sipMin);
+            const maxLoan = loanFromEmi(maxEmiAllowed, loanRate, years);
+            loanAmt = Math.max(baseLoanNeeded, maxLoan);
+            monthlyEmi = emi(loanAmt, loanRate, years);
+            sipDuringLoan = Math.max(0, cap - monthlyEmi);
+            excessLoanInvested = Math.max(0, loanAmt - baseLoanNeeded);
+          }
+
+          const feasible = monthlyEmi <= cap + 1e-6;
+
+          const longGrown = growLump(longCorpusAtPurchase, longRate, loanMonths);
+          const sipLoanFV = futureValueFromSip(sipDuringLoan, longRate, loanMonths);
+          const surplusGrown = growLump(surplusGoalCash, longRate, loanMonths);
+          const excessGrown = growLump(excessLoanInvested, longRate, loanMonths);
+
+          const endAsset = feasible ? (longGrown + sipLoanFV + surplusGrown + excessGrown) : 0;
+
+          return {
+            key: s.key,
+            label: s.label,
+            tenureYears: years,
+            goalSip,
+            longSip,
+            upfrontAtPurchase,
+            goalCorpus,
+            insurance,
+            upfrontNeeded,
+            downPaymentUsed,
+            loanAmt,
+            monthlyEmi,
+            sipDuringLoan,
+            moneyRemainingAfterPurchase: feasible ? (longCorpusAtPurchase + surplusGoalCash + excessLoanInvested) : 0,
+            endAsset,
+            feasible,
+          };
+        }
+
+        const results = strategies.map(s => computeStrategyForTenure(s, tenureYears));
+
+        const selected = results.find(r => r.key === state.selectedStrategyKey) || results[0];
+
+        els.strategyButtons.innerHTML = results.map(r => {
+          const active = r.key === selected.key ? "active" : "";
+          return `<button data-key="${r.key}" class="${active}">${r.label}</button>`;
+        }).join("");
+
+        els.strategyButtons.querySelectorAll("button").forEach(btn => {
+          btn.addEventListener("click", () => {
+            state.selectedStrategyKey = btn.dataset.key;
+            renderAiSuggestion();
+          });
+        });
+
+        els.strategySummary.innerHTML = `
+          <div class="summary-row">
+            <span>Loan</span>
+            <strong>${fmtCompact(selected.loanAmt)}</strong>
+          </div>
+          <div class="summary-row">
+            <span>EMI</span>
+            <strong>${fmtCompact(selected.monthlyEmi)}</strong>
+          </div>
+          <div class="summary-row">
+            <span>SIP (loan yrs)</span>
+            <strong>${fmtCompact(selected.sipDuringLoan)}</strong>
+          </div>
+          <div class="summary-row">
+            <span>End Asset</span>
+            <strong style="color: var(--brand);">${fmtCompact(selected.endAsset)}</strong>
+          </div>
+        `;
+
+        els.sipCap.textContent = fmt.format(cap);
+
+        function tenureNoteForStrategy(strategyKey) {
+          const s = strategies.find(x => x.key === strategyKey);
+          const series = tenureVariants(tenureYears)
+            .map(y => computeStrategyForTenure(s, y))
+            .filter(r => r.feasible);
+          if (!series.length) return "Tenure sensitivity: not feasible under current cap.";
+          const base = series.find(r => r.tenureYears === tenureYears) || series[0];
+          const best = series.reduce((acc, r) => (r.endAsset > acc.endAsset ? r : acc), series[0]);
+          const delta = base.endAsset <= 0 ? 0 : ((best.endAsset - base.endAsset) / base.endAsset) * 100;
+          if (best.tenureYears === base.tenureYears || Math.abs(delta) < 5) {
+            return "Tenure sensitivity: changing tenure by +/-2y has no substantial benefit (<5%).";
+          }
+          const dir = best.tenureYears > base.tenureYears ? "increasing" : "decreasing";
+          return `Tenure sensitivity: ${dir} tenure to ${best.tenureYears} years improves end asset by ~${delta.toFixed(1)}%.`;
+        }
+
+        const tenureTxt = tenureNoteForStrategy(selected.key);
+        const feasibilityBadge = selected.feasible
+          ? `<span style="display:inline-block; margin-left:10px; font-size:12px; font-weight:800; color:#065f46; background:#e0f7f4; padding:3px 10px; border-radius:999px;">Feasible</span>`
+          : `<span style="display:inline-block; margin-left:10px; font-size:12px; font-weight:800; color:#7c2d12; background:#ffedd5; padding:3px 10px; border-radius:999px;">Not feasible</span>`;
+
+        const pathBlocks = `
+            <div class="card" style="box-shadow:none; border:1px solid var(--border); margin-top: 14px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+                <h3 style="margin:0; font-size:16px;">${selected.label} - Plan Summary</h3>
+                ${feasibilityBadge}
+              </div>
+
+              <div style="margin-top:10px; padding:10px 12px; border-radius:10px; background:#f8f9fb; font-weight:900; color: var(--brand);">
+                Wealth at end: ${fmtCompact(selected.endAsset)}
+              </div>
+
+              <div style="margin-top:8px; font-size:13px; color: var(--muted); line-height:1.6;">
+                Here is the simple path to follow:
+              </div>
+
+              <div style="margin-top:12px; background:#ecfdf5; border:1px solid #d1fae5; border-radius:12px; padding:12px;">
+                <div style="font-weight:800; margin-bottom:8px;">Before Buying</div>
+                <div class="summary-row"><span>Monthly SIP for upfront + insurance</span><strong>${fmtCompact(selected.goalSip)}</strong></div>
+                <div class="summary-row"><span>Monthly long-term SIP (keeps growing)</span><strong>${fmtCompact(selected.longSip)}</strong></div>
+                <div class="summary-row"><span>Money you already have today (grows)</span><strong>${fmtCompact(selected.upfrontAtPurchase)}</strong></div>
+              </div>
+
+              <div style="margin-top:12px; background:#eff6ff; border:1px solid #dbeafe; border-radius:12px; padding:12px;">
+                <div style="font-weight:800; margin-bottom:8px;">At Purchase</div>
+                <div class="summary-row"><span>Total goal fund available</span><strong>${fmtCompact(selected.goalCorpus)}</strong></div>
+                <div class="summary-row"><span>Insurance payment</span><strong>${fmtCompact(selected.insurance)}</strong></div>
+                <div class="summary-row"><span>Upfront required (target)</span><strong>${fmtCompact(selected.upfrontNeeded)}</strong></div>
+                <div class="summary-row"><span>Upfront paid (available)</span><strong>${fmtCompact(selected.downPaymentUsed)}</strong></div>
+                <div class="summary-row"><span>Loan amount to be taken</span><strong>${fmtCompact(selected.loanAmt)}</strong></div>
+              </div>
+
+              <div style="margin-top:12px; background:#fff7ed; border:1px solid #ffedd5; border-radius:12px; padding:12px;">
+                <div style="font-weight:800; margin-bottom:8px;">Post Purchase</div>
+                <div class="summary-row"><span>Monthly EMI for ${selected.tenureYears} years</span><strong>${fmtCompact(selected.monthlyEmi)}</strong></div>
+                <div class="summary-row"><span>Monthly SIP you can still invest</span><strong>${fmtCompact(selected.sipDuringLoan)}</strong></div>
+              </div>
+
+              <div class="note" style="margin-top:10px;">${tenureTxt}</div>
+
+              <div class="note" style="margin-top:10px;">
+                Where to invest:
+                <ul style="margin:10px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.6;">
+                  <li><strong>Goal fund (till purchase):</strong> Liquid / ultra-short / short-duration debt fund or FD (target ~7% p.a.).</li>
+                  <li><strong>Long-term investing:</strong> diversified equity index fund (target ~${longRate}% p.a.).</li>
+                </ul>
+              </div>
+            </div>
+          `;
+
+        els.aiOutput.innerHTML = pathBlocks;
+      }
+
+      els.optimizeWealthBtn.addEventListener("click", () => {
+        state.wealthEnabled = !state.wealthEnabled;
+        els.wealthInputs.style.display = state.wealthEnabled ? "block" : "none";
+        els.wealthPanel.style.display = state.wealthEnabled ? "block" : "none";
+        els.wealthSummary.style.display = state.wealthEnabled ? "block" : "none";
+        calculate();
+      });
+
+      syncInput(els.carValueRange, els.carValueInput, "carValueLakh");
+      syncInput(els.loanRateRange, els.loanRateInput, "loanRate");
+      syncInput(els.loanTenureRange, els.loanTenureInput, "tenureYears");
+      syncInput(els.salaryRange, els.salaryInput, "salary");
+      syncInput(els.investPctRange, els.investPctInput, "investPct");
+      syncInput(els.upfrontCashRange, els.upfrontCashInput, "upfrontCash");
+      syncInput(els.buyMonthRange, els.buyMonthInput, "buyMonths");
+      syncInput(els.userCagrRange, els.userCagrInput, "userCagr");
+      syncInput(els.upfrontPctRange, els.upfrontPctInput, "upfrontPct");
+
+      calculate();
+    </script>
+  </body>
+</html>

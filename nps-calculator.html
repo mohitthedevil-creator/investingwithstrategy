@@ -1,0 +1,1258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NPS Calculator | Estimate Pension Corpus, Returns & Maturity Value</title>
+    <meta name="description" content="Free NPS Calculator for India. Calculate National Pension Scheme corpus, retirement income, tax benefits and withdrawal options. Plan your pension with charts." />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://financialcalc.ai/nps-calculator" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NPS Calculator | Calculate Pension Corpus & Retirement Benefits" />
+    <meta property="og:description" content="Calculate your NPS corpus growth, pension income, and tax-free withdrawal options. Plan retirement with India's safest pension scheme." />
+    <meta property="og:url" content="https://financialcalc.ai/nps-calculator" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is National Pension Scheme (NPS)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "National Pension Scheme (NPS) is a voluntary, individual account-based retirement savings scheme administered by PFRDA. Subscribers contribute regularly during their earning years and receive a lump sum and pension at retirement (age 60+). It offers tax benefits under Section 80C and 80CCD."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between NPS Tier 1 and Tier 2?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "NPS Tier 1 is a long-term retirement account with withdrawal restrictions and tax benefits (80C + 80CCD). NPS Tier 2 is a savings-oriented account with full withdrawal flexibility but no separate tax deduction. Most investors start with Tier 1 for retirement planning."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much pension will I get from NPS at retirement?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "At age 60, you can withdraw up to 60% of corpus tax-free as lump sum. The remaining 40% must be used to purchase an annuity that provides regular monthly/annual pension. Actual pension depends on your corpus size and annuity rates."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the contribution limit for NPS in India?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can contribute up to ₹2.5 lakh/year to Tier 1 and claim deduction under Section 80C. Additionally, you can claim ₹50,000 extra deduction under Section 80CCD(1B). Tier 2 has no contribution limit. Maximum contribution depends on your income."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is NPS taxable in India?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Contributions to NPS Tier 1 are tax-deductible (80C + 80CCD). Lump sum withdrawal at retirement (up to 60%) is tax-free. The remaining 40% annuity income is taxable as regular income based on your slab. NPS is highly tax-efficient for retirement planning."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I make partial withdrawals from NPS before retirement?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, NPS Tier 1 allows partial withdrawal from age 50 for select purposes (higher education, medical emergencies, etc.). However, tax benefits may reduce. Tier 2 allows full withdrawal anytime. Always check current PFRDA guidelines before partial withdrawal."
+          }
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://financialcalc.ai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "NPS Calculator",
+          "item": "https://financialcalc.ai/nps-calculator"
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "NPS Calculator",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "url": "https://financialcalc.ai/nps-calculator",
+      "description": "Free NPS Calculator for India to calculate National Pension Scheme corpus, retirement pension income, tax benefits and withdrawal analysis.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+    </script>
+    <style>
+      /* Header Styling */
+      header {
+        background: var(--card, white);
+        border-bottom: 1px solid var(--border, #d1e7e4);
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 3vw, 40px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      nav {
+        display: flex;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .nav-links a {
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-links a:hover {
+        color: var(--brand, #0d9488);
+      }
+      
+      @media (max-width: 700px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+        
+        nav {
+          display: none;
+        }
+        
+        nav.active {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: var(--card, white);
+          border-bottom: 1px solid var(--border, #d1e7e4);
+          padding: 16px;
+        }
+        
+        .nav-links {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+
+      /* Ensure min-width for main cards and limit grid gap to 10px for wide screens */
+      @media (min-width: 1000px) {
+        section[style*="grid-template-columns"] {
+          gap: 10px !important;
+        }
+        .main-card-min {
+          min-width: 420px;
+        }
+        .results-card-min {
+          min-width: 400px;
+        }
+      }
+      :root {
+        --section-gap: clamp(16px, 3vw, 40px);
+        --card-padding: clamp(10px, 3vw, 32px);
+        --section-padding: clamp(8px, 2vw, 24px);
+      }
+      /* Responsive layout improvements */
+      @media (max-width: 1200px) {
+        .wrap {
+          padding: 24px 2vw 60px 2vw;
+        }
+        .grid,
+        section[style*="grid-template-columns"] {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .wrap {
+          padding: 12px 1vw 30px 1vw;
+        }
+        .grid,
+        section[style*="grid-template-columns"] {
+          grid-template-columns: 1fr !important;
+        }
+        .card, .seo-card {
+          padding: 12px 6px !important;
+        }
+        .results, .chart, .legend, .foot {
+          font-size: 13px;
+        }
+        h1, h2 {
+          font-size: 1.1rem !important;
+        }
+        table {
+          font-size: 12px;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .wrap {
+          padding: 4px 0 10px 0;
+        }
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+        .card, .seo-card {
+          padding: 8px 2px !important;
+          border-radius: 10px;
+        }
+        .results, .chart, .legend, .foot {
+          font-size: 11px;
+        }
+        h1, h2 {
+          font-size: 1rem !important;
+        }
+        table {
+          font-size: 10px;
+        }
+        section[style*="grid-template-columns"], .grid {
+          grid-template-columns: 1fr !important;
+        }
+        section[style*="grid-template-columns"] > div,
+        .grid > div {
+          min-width: 0;
+          width: 100% !important;
+          max-width: 100vw;
+        }
+      }
+
+      :root {
+        --bg: #f0fdf9;
+        --ink: #0f2f2e;
+        --muted: #64748b;
+        --brand: #0d9488;
+        --brand-2: #0f766e;
+        --accent: #5eead4;
+        --card: #ffffff;
+        --border: #d1e7e4;
+        --shadow: 0 12px 32px rgba(13, 148, 136, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      .wrap {
+        width: 100%;
+        padding: var(--section-gap);
+      }
+
+      header {
+        margin-bottom: 18px;
+      }
+
+      .logo {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--brand);
+      }
+
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(26px, 3.4vw, 34px);
+        line-height: 1.2;
+        font-weight: 600;
+      }
+
+      .sub {
+        color: var(--muted);
+        max-width: 560px;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .pill {
+        background: #eafaf5;
+        color: #129a79;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: var(--card-padding);
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .field {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        font-weight: 600;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .unit {
+        font-size: 14px;
+        color: #9aa3b2;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: 1fr 120px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--brand);
+        height: 4px;
+        background: #e5e7eb;
+        border-radius: 999px;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 1000%;
+        background: var(--brand);
+        border: none;
+        margin-top: -6px;
+        box-shadow: 0 4px 10px rgba(0, 208, 156, 0.35);
+      }
+
+      input[type="range"]::-moz-range-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .results {
+        display: grid;
+        gap: 8px;
+      }
+
+      .result-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        padding: 10px 12px;
+        background: #f8f9fb;
+        border-radius: 10px;
+      }
+
+      .result-row span {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .chart {
+        margin-top: 16px;
+        display: grid;
+        place-items: center;
+        position: relative;
+        height: 200px;
+      }
+
+      .ring {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: conic-gradient(
+          var(--brand) 0deg,
+          var(--brand) 120deg,
+          var(--accent) 120deg,
+          var(--accent) 360deg
+        );
+        display: grid;
+        place-items: center;
+      }
+
+      .ring::after {
+        content: "";
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: inset 0 0 0 1px var(--border);
+      }
+
+      .ring-label {
+        position: absolute;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: #1f2937;
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin-top: 4px;
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 8px;
+        background: currentColor;
+      }
+
+      .legend .invested {
+        color: var(--brand);
+      }
+
+      .legend .returns {
+        color: var(--accent);
+      }
+
+      .foot {
+        margin-top: 18px;
+        color: #9aa3b2;
+        font-size: 12px;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 13px;
+        color: #6b7280;
+      }
+
+      .nav-links a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .assumptions-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        font-size: 12px;
+      }
+
+      .assumptions-table td {
+        padding: 8px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .assumptions-table td:first-child {
+        font-weight: 600;
+        width: 60%;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #0f766e;
+        background: #eafaf5;
+        padding: 4px 8px;
+        border-radius: 999px;
+        margin-bottom: 10px;
+      }
+
+      /* Enhanced SEO Content Card Styles */
+      .seo-section {
+        width: 100%;
+        margin: var(--section-gap) 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--section-gap);
+        padding: 0;
+      }
+      .seo-card {
+        background: var(--card);
+        border: 1.5px solid #d1e7e4;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(13, 148, 136, 0.10);
+        padding: var(--card-padding);
+        line-height: 1.85;
+        font-size: 1.08rem;
+        color: #18313a;
+        transition: box-shadow 0.2s;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .seo-card h2 {
+        font-size: 1.45rem;
+        margin-bottom: 18px;
+        color: var(--brand-2);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+      .seo-card p, .seo-card ul, .seo-card ol {
+        margin-bottom: 16px;
+      }
+      .seo-card ul, .seo-card ol {
+        padding-left: 24px;
+        margin-top: 0;
+      }
+      .seo-card li {
+        margin-bottom: 10px;
+        line-height: 1.7;
+      }
+      .seo-card strong {
+        color: var(--brand);
+      }
+      .seo-card em {
+        color: #64748b;
+        font-style: italic;
+      }
+      .seo-card table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        font-size: 14px;
+      }
+      .seo-card table th,
+      .seo-card table td {
+        border: 1px solid var(--border);
+        padding: 10px 12px;
+        text-align: left;
+      }
+      .seo-card table th {
+        background: #f8f9fb;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .seo-card:last-child {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 900px) {
+        .seo-card {
+          padding: 20px;
+        }
+        .seo-card h2 {
+          font-size: 1.2rem;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .seo-card {
+          padding: 14px 10px;
+          border-radius: 12px;
+        }
+        .seo-card h2 {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">💰 FinancialCalc.Ai</a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#investing">Investing</a></li>
+          <li><a href="index.html#home-decisions">House Decisions</a></li>
+          <li><a href="index.html#loans">Loans</a></li>
+          <li><a href="index.html#retirement">Retirement</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <div class="wrap">
+      
+
+      <div class="hero">
+        <div>
+          <h1>NPS Calculator</h1>
+          <p class="sub">Calculate your National Pension Scheme corpus and retirement income with tax benefits.</p>
+        </div>
+        <div class="pill">Retirement Planning</div>
+      </div>
+
+      <section style="display: grid; grid-template-columns: 0.7fr 0.5fr 0.75fr; gap: var(--section-gap); margin-top: var(--section-gap);">
+        <!-- Left: Input Section -->
+        <div class="card main-card-min">
+          <div class="field">
+            <label>Monthly NPS Contribution <span class="unit">INR</span></label>
+            <div class="input-row">
+              <input id="npsSipRange" type="range" min="1000" max="100000" step="500" aria-label="Monthly NPS Contribution Amount in Rupees" />
+              <input id="npsSipInput" type="text" placeholder="0" aria-label="Monthly NPS Contribution Amount in Rupees" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Years to Retirement <span class="unit">Years</span></label>
+            <div class="input-row">
+              <input id="yearsRange" type="range" min="5" max="40" step="1" aria-label="Years to Retirement" />
+              <input id="yearsInput" type="number" min="5" max="40" step="1" aria-label="Years to Retirement" />
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <label>Expected Return (CAGR) <span class="unit">% p.a.</span></label>
+            <div class="input-row">
+              <input id="cagrRange" type="range" min="4" max="14" step="0.1" aria-label="Expected Return CAGR Percentage Per Annum" />
+              <input id="cagrInput" type="text" inputmode="decimal" placeholder="0.0" aria-label="Expected Return CAGR Percentage Per Annum" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle: Results Section -->
+        <div class="card results-card-min">
+          <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Results</h2>
+          <div class="results">
+            <div class="result-row">
+              <span>Total Investment</span>
+              <strong id="investedValue">₹ 0</strong>
+            </div>
+            <div class="result-row">
+              <span>Expected Gains</span>
+              <strong id="gainsValue">₹ 0</strong>
+            </div>
+            <div class="result-row total">
+              <span>Corpus at Retirement</span>
+              <strong id="corpusValue">₹ 0</strong>
+            </div>
+          </div>
+          <div class="chart">
+            <div class="ring" id="ring"></div>
+            <div class="ring-label" id="ringLabel">Total</div>
+          </div>
+          <div class="legend">
+            <span class="invested">Investment</span>
+            <span class="returns">Gains</span>
+          </div>
+          <div class="foot">For illustration only. Actual returns vary by market conditions.</div>
+        </div>
+
+        <!-- Right: Charts Section -->
+        <div style="display: flex; flex-direction: column; gap: 20px; height: 100%;">
+          <!-- NPS Growth Chart -->
+          <div class="card" style="height: 100%; display: flex; flex-direction: column;">
+            <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Growth Over Time</h2>
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0;">
+              <canvas id="growthChart" style="max-height: 350px; max-width: 100%;"></canvas>
+            </div>
+            <div class="legend" style="margin-top: 16px;">
+              <span style="color: #0d9488;">NPS Corpus</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Assumptions Section -->
+      <section class="card" style="margin-top: var(--section-gap);">
+        <h2 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 600;">NPS Structure & Tax Benefits</h2>
+        <div class="tag">Contribution Limits, Tax Deductions & Withdrawal Rules</div>
+        <table class="assumptions-table">
+          <tr>
+            <td><strong>Employee Contribution</strong></td>
+            <td>Flexible, no fixed limit (for salaried)</td>
+          </tr>
+          <tr>
+            <td><strong>Tax Deduction Limit (Tier 1)</strong></td>
+            <td>Up to ₹1.5 lakh/year under Section 80C</td>
+          </tr>
+          <tr>
+            <td><strong>Additional Tax Benefit</strong></td>
+            <td>₹50,000/year extra under Section 80CCD(1B)</td>
+          </tr>
+          <tr>
+            <td><strong>Total Tax Deductible Contribution</strong></td>
+            <td>Up to ₹2 lakh/year (₹1.5L + ₹50,000)</td>
+          </tr>
+          <tr>
+            <td><strong>Tier 2 Account</strong></td>
+            <td>No contribution limit or tax deduction</td>
+          </tr>
+          <tr>
+            <td><strong>Lump Sum Withdrawal at 60</strong></td>
+            <td>Up to 60% is tax-free</td>
+          </tr>
+          <tr>
+            <td><strong>Remaining Balance (40%)</strong></td>
+            <td>Must be used for annuity (income taxable)</td>
+          </tr>
+          <tr>
+            <td><strong>Partial Withdrawal (After 7 years)</strong></td>
+            <td>Up to 50% of balance or previous year balance (whichever is lower)</td>
+          </tr>
+          <tr>
+            <td><strong>Minimum Retirement Age</strong></td>
+            <td>60 years</td>
+          </tr>
+        </table>
+        <div class="foot" style="margin-top: 12px;">
+          <strong>Note:</strong> This calculator estimates your NPS corpus for planning purposes. Actual contributions, tax benefits, and withdrawals depend on your income, fund choice, market performance, regulatory changes, and current tax laws. Always consult a tax advisor or financial professional for your specific situation.
+        </div>
+      </section>
+
+      <!-- SEO Content Section -->
+      <section class="seo-section">
+        <div class="seo-card">
+          <h2>What is National Pension Scheme (NPS)?</h2>
+          <p>The National Pension Scheme (NPS) is India's voluntary, individual account-based retirement savings scheme administered by the Pension Fund Regulatory and Development Authority (PFRDA). Unlike traditional pension plans, NPS gives you control over your investment choices and charges minimal fees.</p>
+          <p>Launched in 1999, NPS is available to all Indian citizens aged 18-65 years. You contribute regularly during your earning years, and at retirement (minimum age 60), you receive a lump sum and monthly pension. NPS offers significant <strong>tax benefits</strong> under Section 80C and 80CCD of the Income Tax Act.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>What This NPS Calculator Does</h2>
+          <p>This NPS Calculator helps you estimate your retirement corpus and pension income based on three key inputs:</p>
+          <ul>
+            <li>Monthly NPS Contribution (your regular savings amount)</li>
+            <li>Years to Retirement (duration until you retire)</li>
+            <li>Expected Return (CAGR based on your fund choice)</li>
+          </ul>
+          <p>Using these inputs, the calculator instantly shows:</p>
+          <ul>
+            <li>Total amount you will invest over the years</li>
+            <li>Expected gains/returns from compounding</li>
+            <li>Total NPS corpus at retirement age</li>
+            <li>Year-wise growth visualization through charts</li>
+          </ul>
+          <p>This helps you plan your retirement and ensure you have sufficient corpus for post-retirement needs.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>How the NPS Calculator Works</h2>
+          <p>The NPS Calculator uses the standard <strong>compound interest formula for SIP (Systematic Investment Plan)</strong> to compute your corpus:</p>
+          <p style="background: #f8f9fb; padding: 12px; border-radius: 8px; font-family: monospace; font-weight: 600; overflow-x: auto;">Future Value = Monthly Investment × [((1 + Rate/12)^(Months) - 1) / (Rate/12)] × (1 + Rate/12)</p>
+          <p>The calculation assumes:</p>
+          <ul>
+            <li>Your contribution is invested at the beginning of each month</li>
+            <li>Returns compound monthly based on the annual CAGR</li>
+            <li>You contribute consistently throughout the investment period</li>
+            <li>Your investment choices remain consistent</li>
+          </ul>
+          <p>The longer you invest in NPS, the stronger the compounding effect, resulting in significantly higher corpus at retirement.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>NPS Tier 1 vs Tier 2: Key Differences</h2>
+          <table>
+            <tr>
+              <th>Feature</th>
+              <th>NPS Tier 1</th>
+              <th>NPS Tier 2</th>
+            </tr>
+            <tr>
+              <td>Purpose</td>
+              <td>Long-term retirement savings</td>
+              <td>Flexible short/medium-term savings</td>
+            </tr>
+            <tr>
+              <td>Tax Benefits</td>
+              <td>Section 80C (₹1.5L) + 80CCD(1B) (₹50k)</td>
+              <td>No tax deduction</td>
+            </tr>
+            <tr>
+              <td>Withdrawal</td>
+              <td>Restricted; available after retirement/50+</td>
+              <td>Fully flexible; withdraw anytime</td>
+            </tr>
+            <tr>
+              <td>Lump Sum at Retirement</td>
+              <td>Up to 60% tax-free, 40% to annuity</td>
+              <td>No mandatory annuity requirement</td>
+            </tr>
+            <tr>
+              <td>Ideal For</td>
+              <td>Retirement planning with tax savings</td>
+              <td>Emergency fund, short-term goals</td>
+            </tr>
+          </table>
+          <p><em>Most investors should prioritize Tier 1 for retirement, then use Tier 2 for additional flexibility.</em></p>
+        </div>
+
+        <div class="seo-card">
+          <h2>NPS Tax Benefits & Why You Should Invest</h2>
+          <p><strong>Tax Advantages:</strong></p>
+          <ul>
+            <li><strong>Contribution Deduction:</strong> Up to ₹1.5 lakh under Section 80C for Tier 1</li>
+            <li><strong>Additional Deduction:</strong> Extra ₹50,000 under Section 80CCD(1B) for NPS</li>
+            <li><strong>Lump Sum Tax-Free:</strong> Up to 60% of corpus at retirement is tax-free</li>
+            <li><strong>Low Fees:</strong> NPS charges 0.01-0.16% fees, among the lowest in India</li>
+            <li><strong>Guaranteed Pension:</strong> Fixed monthly income after retirement through annuity</li>
+          </ul>
+          <p><strong>Limitations to Consider:</strong></p>
+          <ul>
+            <li>Tier 1 has withdrawal restrictions before retirement</li>
+            <li>Minimum retirement age is 60 years</li>
+            <li>40% of corpus must be used for annuity (pension)</li>
+            <li>Market-linked returns; corpus depends on fund performance</li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>Key Assumptions Used in This Calculator</h2>
+          <p>To keep calculations transparent and simple, this NPS calculator assumes:</p>
+          <ul>
+            <li>Contributions are made at the beginning of each month</li>
+            <li>Returns are compounded monthly at the specified CAGR</li>
+            <li>CAGR remains constant throughout the investment period</li>
+            <li>No additional lump-sum investments are made</li>
+            <li>No withdrawals or partial exits during accumulation phase</li>
+            <li>Contributions continue consistently every month</li>
+            <li>Results are illustrative and not guaranteed</li>
+            <li>Actual returns may vary based on fund choice and market conditions</li>
+          </ul>
+          <p><em>At retirement, you can withdraw up to 60% as lump sum; the remaining 40% must purchase an annuity for regular pension income.</em></p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Understanding the NPS Calculator Charts</h2>
+          <p><strong>Growth Over Time Chart:</strong> This line chart visualizes your NPS corpus growth year-by-year. It shows how your monthly contributions and investment returns compound over time, demonstrating the power of long-term investing.</p>
+          <p><strong>Investment vs Gains Breakdown:</strong> The ring chart separates your total contributions from the investment gains/returns. This helps you understand what portion of your corpus comes from your own money versus market returns.</p>
+          <p>These visuals make it easier to appreciate why consistent, long-term NPS investment is powerful for building retirement wealth.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Who Should Use the NPS Calculator?</h2>
+          <p>This calculator is ideal for:</p>
+          <ul>
+            <li>Salaried professionals planning retirement</li>
+            <li>Self-employed individuals seeking tax-efficient retirement savings</li>
+            <li>Anyone aged 18-65 considering long-term investments</li>
+            <li>People wanting to maximize tax deductions (Section 80C + 80CCD)</li>
+            <li>Retirees analyzing their pension corpus adequacy</li>
+            <li>Anyone comparing NPS contributions with other retirement schemes</li>
+            <li>Individuals seeking low-cost, government-regulated pension products</li>
+          </ul>
+          <p>NPS is particularly beneficial for those who want to maintain control over their investments while enjoying tax benefits and guaranteed pension income at retirement.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Calculators</h2>
+          <ul>
+            <li><a href="simple-sip-calculator.html">Simple SIP Calculator</a></li>
+            <li><a href="step-up-sip-calculator.html">Step-Up SIP Calculator</a></li>
+            <li><a href="lumpsum-calculator.html">Lumpsum Calculator</a></li>
+            <li><a href="investment-calculator.html">Investment Calculator (SIP + Lumpsum)</a></li>
+            <li><a href="fd-calculator.html">FD Calculator</a></li>
+            <li><a href="emi-calculator.html">EMI Calculator</a></li>
+            <li><a href="goal-based-calculator.html">Goal-Based Calculator</a></li>
+            <li><a href="swp-calculator.html">SWP Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="seo-card">
+          <h2>E-E-A-T Disclaimer & Last Updated</h2>
+          <p>This calculator is provided for educational and planning purposes only. It is not financial advice. NPS returns are market-linked and depend on fund choice, market performance, and economic conditions. Tax benefits, contribution limits, withdrawal rules, and annuity options are subject to change based on regulatory updates and your personal tax situation. Always consult a qualified financial advisor before making investment decisions or finalizing your retirement plan.</p>
+          <p><strong>Last updated:</strong> 31 Jan 2026</p>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const fmt = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0,
+      });
+
+      function formatNumberWithCommas(num) {
+        const numStr = num.toString();
+        
+        // Reverse the string to work from right to left
+        const reversed = numStr.split('').reverse();
+        
+        // Add commas: first 3 digits, then every 2 digits
+        let result = '';
+        for (let i = 0; i < reversed.length; i++) {
+          if (i === 3 || (i > 3 && (i - 3) % 2 === 0)) {
+            result += ',';
+          }
+          result += reversed[i];
+        }
+        
+        // Reverse back
+        return result.split('').reverse().join('');
+      }
+
+      const state = {
+        npsSip: 15000,
+        years: 30,
+        cagr: 10,
+      };
+
+      const els = {
+        npsSipRange: document.getElementById("npsSipRange"),
+        npsSipInput: document.getElementById("npsSipInput"),
+        yearsRange: document.getElementById("yearsRange"),
+        yearsInput: document.getElementById("yearsInput"),
+        cagrRange: document.getElementById("cagrRange"),
+        cagrInput: document.getElementById("cagrInput"),
+        investedValue: document.getElementById("investedValue"),
+        gainsValue: document.getElementById("gainsValue"),
+        corpusValue: document.getElementById("corpusValue"),
+      };
+
+      function syncInput(rangeEl, inputEl, key) {
+        let autoFormatTimer = null;
+        
+        const updateFromRange = (value) => {
+          let num = parseFloat(value);
+          if (isNaN(num)) return;
+          state[key] = num;
+          rangeEl.value = num;
+          if (key === 'cagr') {
+            inputEl.value = num.toFixed(1);
+          } else if (key === 'npsSip') {
+            inputEl.value = formatNumberWithCommas(Math.round(num));
+          } else {
+            inputEl.value = num;
+          }
+          calculate();
+        };
+
+        const formatValue = (value) => {
+          if (value === '') return;
+          let num = parseFloat(value.replace(/,/g, ''));
+          if (isNaN(num)) return;
+          
+          const min = parseFloat(rangeEl.min);
+          const max = parseFloat(rangeEl.max);
+          
+          if (num < min) num = min;
+          if (num > max) num = max;
+          
+          if (key === 'cagr') {
+            num = Math.round(num * 10) / 10;
+          }
+          
+          state[key] = num;
+          if (key === 'cagr') {
+            inputEl.value = num.toFixed(1);
+          } else if (key === 'npsSip') {
+            inputEl.value = formatNumberWithCommas(Math.round(num));
+          } else {
+            inputEl.value = num;
+          }
+          rangeEl.value = num;
+          
+          calculate();
+        };
+
+        const updateFromInput = (value) => {
+          if (value === '') return;
+          let num = parseFloat(value.replace(/,/g, ''));
+          if (isNaN(num)) return;
+          
+          state[key] = num;
+          
+          const min = parseFloat(rangeEl.min);
+          const max = parseFloat(rangeEl.max);
+          if (num < min) {
+            rangeEl.value = min;
+          } else if (num > max) {
+            rangeEl.value = max;
+          } else {
+            rangeEl.value = num;
+          }
+          
+          calculate();
+          
+          if (key === 'cagr') {
+            clearTimeout(autoFormatTimer);
+            autoFormatTimer = setTimeout(() => {
+              formatValue(inputEl.value);
+            }, 500);
+          }
+        };
+
+        rangeEl.addEventListener("input", (e) => updateFromRange(e.target.value));
+        inputEl.addEventListener("input", (e) => updateFromInput(e.target.value));
+        inputEl.addEventListener("blur", (e) => {
+          if (key === 'cagr') {
+            clearTimeout(autoFormatTimer);
+            formatValue(e.target.value);
+          } else if (key === 'npsSip') {
+            formatValue(e.target.value);
+          }
+        });
+      }
+
+      function futureValueFromSip(sip, annualRate, months) {
+        const m = Math.max(1, Math.round(months));
+        const r = ((1 + annualRate / 100) ** (1 / 12)) - 1;
+        if (r === 0) return sip * m;
+        const factor = (Math.pow(1 + r, m) - 1) / r;
+        return sip * factor;
+      }
+
+      function fmtCompact(value) {
+        if (!Number.isFinite(value) || value <= 0) return "₹ 0";
+        const abs = Math.abs(value);
+        if (abs >= 1e7) return "₹ " + (value / 1e7).toFixed(2) + " Cr";
+        if (abs >= 1e5) return "₹ " + (value / 1e5).toFixed(2) + " L";
+        return fmt.format(value);
+      }
+
+      function updateRingChart(invested, gains, corpus) {
+        const totalValue = invested + gains;
+        const investedPct = totalValue > 0 ? Math.min(100, (invested / totalValue) * 100) : 0;
+        const investedDeg = Math.round((investedPct / 100) * 360);
+        const ring = document.getElementById("ring");
+        const ringLabel = document.getElementById("ringLabel");
+        if (ring && ringLabel) {
+          ring.style.background = `conic-gradient(
+            var(--brand) 0deg,
+            var(--brand) ${investedDeg}deg,
+            var(--accent) ${investedDeg}deg,
+            var(--accent) 360deg
+          )`;
+          ringLabel.textContent = `Total ${fmtCompact(corpus)}`;
+        }
+      }
+
+      let growthChart = null;
+      function updateGrowthChart() {
+        const period = Math.max(1, Math.round(state.years));
+        const labels = [];
+        const corpusData = [];
+        
+        for (let y = 0; y <= period; y += 1) {
+          labels.push(`Year ${y}`);
+          const months = y * 12;
+          const corpus = futureValueFromSip(state.npsSip, state.cagr, months);
+          corpusData.push(Math.round(corpus));
+        }
+        
+        const ctx = document.getElementById("growthChart").getContext("2d");
+        if (growthChart) {
+          growthChart.data.labels = labels;
+          growthChart.data.datasets[0].data = corpusData;
+          growthChart.update();
+        } else {
+          growthChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels,
+              datasets: [
+                {
+                  label: "NPS Corpus",
+                  data: corpusData,
+                  borderColor: "#0d9488",
+                  backgroundColor: "rgba(13, 148, 136, 0.15)",
+                  fill: true,
+                  tension: 0,
+                  pointRadius: 3,
+                  pointBackgroundColor: "#0d9488",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointHoverRadius: 5,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: {
+                legend: { display: true, labels: { font: { size: 13 } } },
+                tooltip: {
+                  backgroundColor: "rgba(31, 36, 48, 0.9)",
+                  padding: 12,
+                  titleFont: { size: 14, weight: "600" },
+                  bodyFont: { size: 13 },
+                  callbacks: {
+                    label: function (context) {
+                      return fmtCompact(context.parsed.y);
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: {
+                    color: "rgba(230, 232, 240, 0.5)",
+                  },
+                  ticks: {
+                    callback: function (value) {
+                      return fmtCompact(value);
+                    },
+                  },
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Years",
+                  },
+                  grid: {
+                    display: false,
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+      function calculate() {
+        const months = Math.max(1, Math.round(state.years * 12));
+        const corpus = futureValueFromSip(state.npsSip, state.cagr, months);
+        const invested = state.npsSip * months;
+        const gains = Math.max(0, corpus - invested);
+
+        els.investedValue.textContent = fmtCompact(invested);
+        els.gainsValue.textContent = fmtCompact(gains);
+        els.corpusValue.textContent = fmtCompact(corpus);
+
+        updateRingChart(invested, gains, corpus);
+        updateGrowthChart();
+      }
+
+      // Pre-fill and display input values
+      els.npsSipRange.value = state.npsSip;
+      els.npsSipInput.value = formatNumberWithCommas(Math.round(state.npsSip));
+      els.yearsRange.value = state.years;
+      els.yearsInput.value = state.years;
+      els.cagrRange.value = state.cagr;
+      els.cagrInput.value = state.cagr.toFixed(1);
+
+      syncInput(els.npsSipRange, els.npsSipInput, "npsSip");
+      syncInput(els.yearsRange, els.yearsInput, "years");
+      syncInput(els.cagrRange, els.cagrInput, "cagr");
+
+      calculate();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1561 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Investment Calculator (SIP + Lumpsum + Step-Up) | Calculate ₹5 Crore Goal</title>
+    <meta name="description" content="Free Investment Calculator for India: calculate SIP, lumpsum and annual step-up returns. See charts, year-wise growth, total corpus and find when you can reach ₹5 crore." />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://financialcalc.ai/investment-calculator" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Investment Calculator (SIP + Lumpsum + Step-Up) | ₹5 Crore Goal" />
+    <meta property="og:description" content="Estimate SIP + lumpsum future value with annual step-up. Visualize growth and find when you can reach ₹5 crore." />
+    <meta property="og:url" content="https://financialcalc.ai/investment-calculator" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"FAQPage",
+      "mainEntity":[
+        {
+          "@type":"Question",
+          "name":"How much SIP is required for ₹5 crore?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"Use this calculator as a goal-seek tool: set expected CAGR and step-up, then adjust SIP amount and time period until Total Corpus crosses ₹5 crore."
+          }
+        },
+        {
+          "@type":"Question",
+          "name":"Does this calculator support SIP step-up?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"Yes. The SIP amount increases every year by the step-up percentage and each contribution compounds month by month."
+          }
+        },
+        {
+          "@type":"Question",
+          "name":"Does this calculator include taxes?",
+          "acceptedAnswer":{
+            "@type":"Answer",
+            "text":"No. Taxes, expense ratio and exit loads are not included. Results are illustrative."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      /* Header Styling */
+      header {
+        background: var(--card, white);
+        border-bottom: 1px solid var(--border, #d1e7e4);
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 3vw, 40px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      nav {
+        display: flex;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .nav-links a {
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-links a:hover {
+        color: var(--brand, #0d9488);
+      }
+      
+      @media (max-width: 700px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+        
+        nav {
+          display: none;
+        }
+        
+        nav.active {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: var(--card, white);
+          border-bottom: 1px solid var(--border, #d1e7e4);
+          padding: 16px;
+        }
+        
+        .nav-links {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+
+                  /* Ensure min-width for main cards and limit grid gap to 10px for wide screens */
+                  @media (min-width: 1000px) {
+                    section[style*="grid-template-columns"] {
+                      gap: 10px !important;
+                    }
+                    .main-card-min {
+                      min-width: 420px;
+                      
+                    }
+                    .results-card-min {
+                      min-width: 400px;
+                      
+                    }
+                  }
+            :root {
+              --section-gap: clamp(16px, 3vw, 40px);
+              --card-padding: clamp(10px, 3vw, 32px);
+              --section-padding: clamp(8px, 2vw, 24px);
+            }
+            /* Responsive layout improvements */
+            @media (max-width: 1200px) {
+              .wrap {
+                padding: 24px 2vw 60px 2vw;
+              }
+              .grid,
+              section[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+              }
+            }
+
+            @media (max-width: 900px) {
+              .wrap {
+                padding: 12px 1vw 30px 1vw;
+              }
+              .grid,
+              section[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+              }
+              .card, .seo-card {
+                padding: 12px 6px !important;
+              }
+              .results, .chart, .legend, .foot {
+                font-size: 13px;
+              }
+              h1, h2 {
+                font-size: 1.1rem !important;
+              }
+              table {
+                font-size: 12px;
+              }
+            }
+
+            @media (max-width: 700px) {
+              .wrap {
+                padding: 4px 0 10px 0;
+              }
+              .hero {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+              }
+              .card, .seo-card {
+                padding: 8px 2px !important;
+                border-radius: 10px;
+              }
+              .results, .chart, .legend, .foot {
+                font-size: 11px;
+              }
+              h1, h2 {
+                font-size: 1rem !important;
+              }
+              table {
+                font-size: 10px;
+              }
+              section[style*="grid-template-columns"], .grid {
+                grid-template-columns: 1fr !important;
+              }
+              section[style*="grid-template-columns"] > div,
+              .grid > div {
+                min-width: 0;
+                width: 100% !important;
+                max-width: 100vw;
+              }
+            }
+      :root {
+        --bg: #f0fdf9;
+        --ink: #0f2f2e;
+        --muted: #64748b;
+        --brand: #0d9488;
+        --brand-2: #0f766e;
+        --accent: #5eead4;
+        --card: #ffffff;
+        --border: #d1e7e4;
+        --shadow: 0 12px 32px rgba(13, 148, 136, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 10;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      .wrap {
+        width: 100%;
+        padding: var(--section-gap);
+      }
+
+      header {
+        margin-bottom: 18px;
+      }
+
+      .logo {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--brand);
+      }
+
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(26px, 3.4vw, 34px);
+        line-height: 1.2;
+        font-weight: 600;
+      }
+
+      .sub {
+        color: var(--muted);
+        max-width: 560px;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .pill {
+        background: #eafaf5;
+        color: #129a79;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--section-gap);
+        margin-top: var(--section-gap);
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: var(--card-padding);
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .field {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        font-weight: 600;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .unit {
+        font-size: 14px;
+        color: #9aa3b2;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: 1fr 120px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--brand);
+        height: 4px;
+        background: #e5e7eb;
+        border-radius: 999px;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 1000%;
+        background: var(--brand);
+        border: none;
+        margin-top: -6px;
+        box-shadow: 0 4px 10px rgba(0, 208, 156, 0.35);
+      }
+
+      input[type="range"]::-moz-range-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .results {
+        display: grid;
+        gap: 8px;
+      }
+
+      .result-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        padding: 10px 12px;
+        background: #f8f9fb;
+        border-radius: 10px;
+      }
+
+      .result-row span {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .total {
+      }
+
+      .chart {
+        margin-top: 16px;
+        display: grid;
+        place-items: center;
+        position: relative;
+        height: 200px;
+      }
+
+      .ring {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: conic-gradient(
+          var(--brand) 0deg,
+          var(--brand) 120deg,
+          var(--accent) 120deg,
+          var(--accent) 360deg
+        );
+        display: grid;
+        place-items: center;
+      }
+
+      .ring::after {
+        content: "";
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: inset 0 0 0 1px var(--border);
+      }
+
+      .ring-label {
+        position: absolute;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: #1f2937;
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin-top: 4px;
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 8px;
+        background: currentColor;
+      }
+
+      .legend .invested {
+        color: var(--brand);
+      }
+
+      .legend .returns {
+        color: var(--accent);
+      }
+
+      .cta {
+        margin-top: 18px;
+        background: var(--brand);
+        border: none;
+        color: #fff;
+        padding: 12px 16px;
+        width: 100%;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: 0.03em;
+        box-shadow: 0 8px 18px rgba(0, 208, 156, 0.25);
+      }
+
+      .foot {
+        margin-top: 18px;
+        color: #9aa3b2;
+        font-size: 12px;
+      }
+
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .input-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Enhanced SEO Content Card Styles */
+      .seo-section {
+        width: 100%;
+        margin: var(--section-gap) 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--section-gap);
+        padding: 0;
+      }
+      .seo-card {
+        background: var(--card);
+        border: 1.5px solid #d1e7e4;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(13, 148, 136, 0.10);
+        padding: var(--card-padding);
+        line-height: 1.85;
+        font-size: 1.08rem;
+        color: #18313a;
+        transition: box-shadow 0.2s;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .seo-card h2 {
+        font-size: 1.45rem;
+        margin-bottom: 18px;
+        color: var(--brand-2);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+      .seo-card p, .seo-card ul, .seo-card ol {
+        margin-bottom: 16px;
+      }
+      .seo-card ul, .seo-card ol {
+        padding-left: 24px;
+        margin-top: 0;
+      }
+      .seo-card li {
+        margin-bottom: 10px;
+        line-height: 1.7;
+      }
+      .seo-card strong {
+        color: var(--brand);
+      }
+      .seo-card em {
+        color: #64748b;
+        font-style: italic;
+      }
+      .seo-card:last-child {
+        margin-bottom: 0;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 13px;
+        color: #6b7280;
+      }
+
+      .nav-links a {
+        color: inherit;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">💰 FinancialCalc.Ai</a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#investing">Investing</a></li>
+          <li><a href="index.html#home-decisions">House Decisions</a></li>
+          <li><a href="index.html#loans">Loans</a></li>
+          <li><a href="index.html#retirement">Retirement</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <div class="wrap">
+      
+
+      <div class="hero">
+        <div>
+          <h1>Investment Calculator for SIP & Lumpsum (Step-Up + ₹5 Crore Goal)</h1>
+          <p class="sub">
+            Estimate the future value of your investments. Choose between SIP with annual step ups or a one-time lumpsum investment.
+          </p>
+        </div>
+      </div>
+
+      <section style="display: grid; grid-template-columns: 0.7fr 0.5fr 0.75fr; gap: var(--section-gap); margin-top: var(--section-gap);">
+        <!-- Left: Input Section -->
+        <div class="card main-card-min">
+          <div class="field">
+            <label>
+              Lumpsum Investment
+              <span class="unit">INR</span>
+            </label>
+            <div class="input-row">
+              <input id="principalRange" type="range" aria-label="Lumpsum Investment Amount" min="0" max="100000000" step="1000000" />
+              <input id="principalInput" type="text" min="0" max="100000000" step="1000000" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              Monthly SIP
+              <span class="unit">INR</span>
+            </label>
+            <div class="input-row">
+              <input id="monthlyRange" type="range" aria-label="Monthly SIP Amount" min="0" max="500000" step="5000" />
+              <input id="monthlyInput" type="text" min="0" max="500000" step="5000" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              Annual Step Up
+              <span class="unit">%</span>
+            </label>
+            <div class="input-row">
+              <input id="stepRange" type="range" aria-label="Annual Step Up Percentage" min="0" max="50" step="1" />
+              <input id="stepInput" type="number" min="0" max="50" step="1" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              Years to Continue SIP
+              <span class="unit">Yr</span>
+            </label>
+            <div class="input-row">
+              <input id="sipYearsRange" type="range" aria-label="Years to Continue SIP" min="0" max="40" step="1" />
+              <input id="sipYearsInput" type="number" min="0" max="40" step="1" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              Expected Returns (CAGR)
+              <span class="unit">%</span>
+            </label>
+            <div class="input-row">
+              <input id="rateRange" type="range" aria-label="Expected Returns (CAGR)" min="1" max="30" step="0.1" />
+              <input id="rateInput" type="number" min="1" max="30" step="0.1" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              Investing Time Period
+              <span class="unit">Yr</span>
+            </label>
+            <div class="input-row">
+              <input id="timeRange" type="range" aria-label="Investing Time Period" min="1" max="40" step="1" />
+              <input id="timeInput" type="number" min="1" max="40" step="1" />
+            </div>
+          </div>
+          <div style="margin: 18px 0 0 0;">
+            <button id="aiSuggestionBtn" style="display: block; width: 100%; background: #f3f4f6; color: #0d9488; border: 2px solid #0d9488; border-radius: 8px; padding: 14px 0; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 8px; transition: background 0.2s;">AI Suggestion</button>
+            <div id="aiSuggestionBox" style="display: none; background: #e0f7f4; color: #065f46; border-radius: 8px; padding: 18px; font-size: 20px; font-weight: bold; margin-top: 6px;"></div>
+          </div>
+        </div>
+
+        <!-- Middle: Results Section -->
+        <div class="card results-card-min">
+          <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Results</h2>
+          <div class="results">
+
+            <div class="result-row">
+              <span>Lumpsum Investment</span>
+              <strong id="lumpsumInvestedValue">₹ 0</strong>
+            </div>
+            <div class="result-row">
+              <span>SIP Investment</span>
+              <strong id="sipInvestedValue">₹ 0</strong>
+            </div>
+            <div class="result-row">
+              <span>Lumpsum Returns</span>
+              <strong id="lumpsumReturnsValue">₹ 0</strong>
+            </div>
+            <div class="result-row">
+              <span>SIP Returns</span>
+              <strong id="sipReturnsValue">₹ 0</strong>
+            </div>
+            <div style="border-top: 1px dashed #d1d5db; margin: 12px 0;"></div>
+            <div class="result-row">
+              <span>Total Investment</span>
+              <strong id="totalInvestedValue">₹ 0</strong>
+            </div>
+            <div class="result-row">
+              <span>Total Returns</span>
+              <strong id="totalReturnsValue">₹ 0</strong>
+            </div>
+            <div class="result-row total">
+              <span>Total Corpus</span>
+              <strong id="totalValueResult">₹ 0</strong>
+            </div>
+          </div>
+
+          <div class="chart">
+            <div class="ring" id="ring"></div>
+            <div class="ring-label" id="ringLabel">Total</div>
+          </div>
+
+          <div class="legend">
+            <span class="invested">Invested</span>
+            <span class="returns">Returns</span>
+          </div>
+          <button class="cta">INVEST NOW</button>
+          <div class="foot">For illustration only. Actual returns vary by market.</div>
+        </div>
+
+        <!-- Right: Charts Section (stacked) -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <!-- Capital Growth Chart -->
+          <div class="card">
+            <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Capital Growth Over Time</h2>
+            <canvas id="growthChart" style="max-height: 400px;"></canvas>
+            <div class="legend" style="margin-top: 16px;">
+              <span style="color: #FF6B6B;">Lumpsum Investment</span>
+              <span style="color: #8B5CF6;">Monthly SIP</span>
+            </div>
+          </div>
+
+          <!-- Total Corpus Chart -->
+          <div class="card">
+            <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Total Corpus Over Time</h2>
+            <canvas id="corpusChart" style="max-height: 400px;"></canvas>
+            <div class="legend" style="margin-top: 16px;">
+              <span style="color: #00D09C;">Total Corpus</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Data Table Section -->
+      <section style="margin-top: 40px;">
+        <div class="card">
+          <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Investment Growth Details</h2>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+              <thead>
+                <tr style="background: #f8f9fb; border-bottom: 2px solid var(--border);">
+                  <th style="padding: 12px; text-align: left; font-weight: 600; color: #6b7280;">Years</th>
+                  <th style="padding: 12px; text-align: left; font-weight: 600; color: #6b7280;">Date</th>
+                  <th style="padding: 12px; text-align: right; font-weight: 600; color: #6b7280;">Money Invested</th>
+                  <th style="padding: 12px; text-align: right; font-weight: 600; color: #6b7280;">Lumpsum Growth</th>
+                  <th style="padding: 12px; text-align: right; font-weight: 600; color: #6b7280;">SIP Growth</th>
+                  <th style="padding: 12px; text-align: right; font-weight: 600; color: #6b7280;">Total Corpus</th>
+                </tr>
+              </thead>
+              <tbody id="dataTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <!-- SEO Content: Enhanced visual style -->
+      <div class="seo-section">
+        <div class="seo-card">
+          <h2>How to Reach ₹5 Crore With SIP (and Lumpsum) in India</h2>
+          <p>
+             Use this page as a goal-seek tool: set your SIP amount, expected CAGR and optional annual step-up,
+             then increase the <strong>Investing Time Period</strong> until your <strong>Total Corpus</strong> crosses ₹5 crore.
+         </p>
+        <ul>
+          <li><strong>₹20,000/month SIP @ 12% CAGR</strong>: ~₹5 crore in ~32 years (illustrative)</li>
+          <li><strong>₹40,000/month SIP @ 12% CAGR</strong>: ~₹5 crore in ~27 years (illustrative)</li>
+          <li><strong>₹50,000/month SIP + 5% step-up @ 12% CAGR</strong>: ~₹5 crore in ~22 years (illustrative)</li>
+        </ul>
+        <p><em>Illustrations only. Actual market returns vary.</em></p>
+      </div>
+
+        <div class="seo-card">
+          <h2>What This Investment Calculator Does</h2>
+          <p>This calculator answers one simple but critical question:</p>
+          <p><strong>“If I invest this much today and every month, how much will my money grow over time?”</strong></p>
+          <p>Using your inputs, it calculates:</p>
+          <ul>
+            <li>Total amount invested (lumpsum + SIP)</li>
+            <li>Growth of lumpsum investment over time</li>
+            <li>Growth of SIP investments with annual step-up</li>
+            <li>Total returns earned through compounding</li>
+            <li>Final investment corpus at the end of the period</li>
+          </ul>
+          <p>All results are shown instantly, along with year-wise breakdown tables and visual charts to make decision-making easier.</p>
+        </div>
+        <div class="seo-card">
+          <h2>How the Investment Calculator Works</h2>
+          <p>This calculator uses standard compound interest and SIP future value formulas, applied month-by-month for accuracy.</p>
+          <ol>
+            <li><strong>Lumpsum Investment Growth:</strong> Your one-time investment grows annually at the expected rate of return (CAGR) over the selected time period.<br><em>Formula used:</em> Future Value = Principal × (1 + Rate) ^ Time</li>
+            <li><strong>SIP Investment with Annual Step-Up:</strong> Monthly SIP investments are compounded monthly. If you choose an annual step-up, the SIP amount increases every year by the selected percentage, simulating salary growth or income increase. Each SIP installment compounds for the remaining investment duration, giving a realistic estimate of long-term returns.</li>
+            <li><strong>Combined Investment Corpus:</strong> The calculator then combines lumpsum and SIP investment values to give you the total corpus, along with total invested amount and total wealth created through returns.</li>
+          </ol>
+        </div>
+        <div class="seo-card">
+          <h2>Why Use This Investment Calculator</h2>
+          <p>This calculator is useful if you want to:</p>
+          <ul>
+            <li>Compare SIP vs lumpsum investing</li>
+            <li>Understand the impact of annual SIP step-ups</li>
+            <li>See how long-term compounding works visually</li>
+            <li>Estimate future wealth for goals like retirement, house purchase, or financial independence</li>
+            <li>Make informed investment decisions without relying on guesswork</li>
+          </ul>
+          <p>Unlike basic calculators, this tool allows both SIP and lumpsum together, which reflects how most real investors invest.</p>
+        </div>
+        <div class="seo-card">
+          <h2>Key Assumptions Used</h2>
+          <p>To keep calculations transparent, this investment calculator assumes:</p>
+          <ul>
+            <li>Returns are compounded at a constant annual rate (CAGR)</li>
+            <li>SIP investments are made monthly</li>
+            <li>SIP step-up is applied once every year</li>
+            <li>No taxes, exit loads, or fund expenses are deducted</li>
+            <li>Returns shown are illustrative, not guaranteed</li>
+          </ul>
+          <p>Actual market returns may vary due to volatility and fund performance.</p>
+        </div>
+        <div class="seo-card">
+          <h2>Understanding the Charts and Tables</h2>
+          <p><strong>Capital Growth Charts:</strong> Shows how your lumpsum and SIP investments grow separately. Helps visualize the compounding effect over time.</p>
+          <p><strong>Total Corpus Chart:</strong> Displays combined wealth creation year by year.</p>
+          <p><strong>Investment Growth Table:</strong> Year-wise view of money invested, lumpsum growth, SIP growth, and total corpus. This level of detail helps you understand when compounding accelerates and how staying invested longer impacts returns.</p>
+        </div>
+        <div class="seo-card">
+          <h2>Who Should Use This Calculator</h2>
+          <ul>
+            <li>Beginners starting SIP investments</li>
+            <li>Investors planning long-term wealth creation</li>
+            <li>Salaried professionals using SIP step-ups</li>
+            <li>Anyone comparing investment scenarios</li>
+            <li>Financial planners and advisors for quick simulations</li>
+          </ul>
+        </div>
+        <div class="seo-card">
+          <h2>Frequently Asked Questions</h2>
+          <p><strong>Is this investment calculator accurate?</strong><br>The calculator uses standard financial formulas and provides reasonably accurate projections based on your inputs. However, real market returns may differ.</p>
+          <p><strong>Can I use this for mutual fund SIP planning?</strong><br>Yes. This calculator is ideal for mutual fund SIP and lumpsum planning.</p>
+          <p><strong>Does this include tax calculations?</strong><br>No. Taxes are not included. You should consider capital gains tax separately while planning investments.</p>
+          <p><strong>Can I rely on this calculator for financial advice?</strong><br>This tool is for educational and planning purposes only. It does not replace professional financial advice.</p>
+        </div>
+        <div class="seo-card">
+          <h2>Final Note</h2>
+          <p>Consistent investing, disciplined SIPs, and long-term compounding are the foundation of wealth creation. This investment calculator helps you visualize that journey clearly so you can make better financial decisions with confidence.</p>
+        </div>
+
+        <div class="seo-card">
+          <h2>Related Calculators</h2>
+          <ul>
+            <li><a href="goal-based-calculator.html">Goal-Based Calculator</a></li>
+            <li><a href="lumpsum-calculator.html">Lumpsum Calculator</a></li>
+            <li><a href="simple-sip-calculator.html">SIP Calculator</a></li>
+            <li><a href="step-up-sip-calculator.html">Step-Up SIP Calculator</a></li>
+            <li><a href="step-down-sip-goal-seeker.html">Step-Down SIP Calculator</a></li>
+            <li><a href="swp-calculator.html">Systematic Withdrawal Planner</a></li>
+            <li><a href="fd-calculator.html">FD Calculator</a></li>
+            <li><a href="nps-calculator.html">NPS Calculator</a></li>
+            <li><a href="nps-vs-mf-calculator.html">NPS vs Mutual Funds</a></li>
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <script>
+          // AI Suggestion logic// AI Suggestion logic
+          document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('aiSuggestionBtn');
+            const box = document.getElementById('aiSuggestionBox');
+            if (!btn) return;
+            // Reset suggestion box on any input/select change in the calculator form
+            const allInputs = document.querySelectorAll('input, select');
+            allInputs.forEach(el => {
+              el.addEventListener('input', function() {
+                box.style.display = 'none';
+                box.innerHTML = '';
+              });
+              el.addEventListener('change', function() {
+                box.style.display = 'none';
+                box.innerHTML = '';
+              });
+            });
+            btn.addEventListener('click', function() {
+              // Get current state using correct input IDs
+              const step = Number(document.getElementById('stepRange')?.value || 0);
+              const sipYears = Number(document.getElementById('sipYearsRange')?.value || 0);
+              const time = Number(document.getElementById('timeRange')?.value || 0);
+              // Use monthly SIP value from monthlyRange or monthlyInput
+              let monthly = 0;
+              const monthlyRange = document.getElementById('monthlyRange');
+              const monthlyInput = document.getElementById('monthlyInput');
+              if (monthlyRange && monthlyRange.value) {
+                monthly = Number(monthlyRange.value);
+              } else if (monthlyInput && monthlyInput.value) {
+                monthly = Number(String(monthlyInput.value).replace(/,/g, ''));
+              }
+              // Use lumpsum value from principalRange or principalInput
+              let principal = 0;
+              const principalRange = document.getElementById('principalRange');
+              const principalInput = document.getElementById('principalInput');
+              if (principalRange && principalRange.value) {
+                principal = Number(principalRange.value);
+              } else if (principalInput && principalInput.value) {
+                principal = Number(String(principalInput.value).replace(/,/g, ''));
+              }
+              const rate = Number(document.getElementById('rateRange')?.value || 0);
+
+              // Calculate current corpus using the same logic as calculate() and calculateLumpsum()
+              function calcSIPFV(monthly, step, rate, time, sipYears) {
+                const sipMonths = Math.round(sipYears * 12);
+                const totalMonths = Math.round(time * 12);
+                const monthlyRate = ((1 + rate / 100) ** (1 / 12)) - 1;
+                let total = 0;
+                for (let m = 0; m < sipMonths; m += 1) {
+                  const yearIndex = Math.floor(m / 12);
+                  const contribution = monthly * Math.pow(1 + step / 100, yearIndex);
+                  const monthsToGrow = totalMonths - m;
+                  total += contribution * Math.pow(1 + monthlyRate, monthsToGrow);
+                }
+                return total;
+              }
+              function calcLumpsumFV(principal, rate, time) {
+                if (principal === 0) return 0;
+                const annualRate = rate / 100;
+                return principal * Math.pow(1 + annualRate, time);
+              }
+              const corpus = calcSIPFV(monthly, step, rate, time, sipYears) + calcLumpsumFV(principal, rate, time);
+
+              // If corpus crosses 5 crore in next year, show positive message
+              if (corpus >= 5 * 1e7) {
+                box.innerHTML = "You are on the right path!<br><br>If possible, step up annual SIP a little.<br><br>Else, keep following the path.<br><br>Enjoy!";
+                box.style.display = 'block';
+                return;
+              }
+
+              // Try increasing step or sipYears slightly to see if corpus increases by at least 1 crore
+              let suggestion = '';
+              let found = false;
+              // Try increasing step by 1% up to 5%
+              for (let extraStep = 1; extraStep <= 5; extraStep++) {
+                const newStep = step + extraStep;
+                const newCorpus = calcSIPFV(monthly, newStep, rate, time, sipYears) + calcLumpsumFV(principal, rate, time);
+                if (newCorpus - corpus >= 1e7) {
+                  suggestion = `Increase your Annual Step Up to <b>${newStep}%</b> to add another crore to your total corpus!`;
+                  found = true;
+                  break;
+                }
+              }
+              // If not found, try increasing SIP years by 1-5 years
+              if (!found) {
+                for (let extraYears = 1; extraYears <= 5; extraYears++) {
+                  const newSipYears = sipYears + extraYears;
+                  if (newSipYears > time) continue;
+                  const newCorpus = calcSIPFV(monthly, step, rate, time, newSipYears) + calcLumpsumFV(principal, rate, time);
+                  if (newCorpus - corpus >= 1e7) {
+                    suggestion = `Increase your Years to Continue SIP to <b>${newSipYears}</b> to add another crore to your total corpus!`;
+                    found = true;
+                    break;
+                  }
+                }
+              }
+              if (!found) {
+                // Pick recommended values for each parameter
+                let recommendedSIP = 5000;
+                if (monthly < 10000) recommendedSIP = 10000;
+                else if (monthly < 15000) recommendedSIP = 15000;
+                else recommendedSIP = monthly + 5000;
+
+                let recommendedStep = step + 5;
+                if (step < 5) recommendedStep = 5;
+                else if (step < 10) recommendedStep = 10;
+                else if (step < 15) recommendedStep = 15;
+                else recommendedStep = step + 5;
+
+                let recommendedTime = time + 1;
+                if (time < 5) recommendedTime = 5;
+                else if (time < 10) recommendedTime = 10;
+                else if (time < 15) recommendedTime = 15;
+                else if (time < 20) recommendedTime = 20;
+                else recommendedTime = time + 1;
+
+                suggestion = `To Increase Your Final Corpus, try these tweaks:<br><br>
+                • Increase your Monthly SIP amount to <b>₹${recommendedSIP.toLocaleString('en-IN')}</b><br>
+                • Increase your Annual Step Up to <b>${recommendedStep}%</b><br>
+                • Increase your Investing Time Period to <b>${recommendedTime} years</b><br><br>
+                Even these small changes can make a big difference over time!`;
+              }
+              box.innerHTML = suggestion;
+              box.style.display = 'block';
+            });
+          });
+      const fmt = new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 0,
+      });
+
+      function formatInCrLakh(value) {
+        if (value === 0) return "₹ 0";
+        const crore = 10000000;
+        const lakh = 100000;
+        
+        if (Math.abs(value) >= crore) {
+          return "₹ " + (value / crore).toFixed(2) + " Cr";
+        } else if (Math.abs(value) >= lakh) {
+          return "₹ " + (value / lakh).toFixed(2) + " L";
+        } else {
+          return fmt.format(value);
+        }
+      }
+
+      function formatInputDisplay(value) {
+        if (value === 0) return "0";
+        const crore = 10000000;
+        const lakh = 100000;
+        
+        if (Math.abs(value) >= crore) {
+          return (value / crore).toFixed(2) + " Cr";
+        } else if (Math.abs(value) >= lakh) {
+          return (value / lakh).toFixed(2) + " L";
+        } else {
+          return value.toString();
+        }
+      }
+
+      function formatNumberWithCommas(num) {
+        const numStr = num.toString();
+        
+        // Reverse the string to work from right to left
+        const reversed = numStr.split('').reverse();
+        
+        // Add commas: first 3 digits, then every 2 digits
+        let result = '';
+        for (let i = 0; i < reversed.length; i++) {
+          if (i === 3 || (i > 3 && (i - 3) % 2 === 0)) {
+            result += ',';
+          }
+          result += reversed[i];
+        }
+        
+        // Reverse back
+        return result.split('').reverse().join('');
+      }
+
+      const state = {
+        principal: 1000000,
+        monthly: 25000,
+        step: 5,
+        sipYears: 15,
+        rate: 12.7,
+        time: 20,
+      };
+
+      const els = {
+        principalRange: document.getElementById("principalRange"),
+        principalInput: document.getElementById("principalInput"),
+        monthlyRange: document.getElementById("monthlyRange"),
+        monthlyInput: document.getElementById("monthlyInput"),
+        stepRange: document.getElementById("stepRange"),
+        stepInput: document.getElementById("stepInput"),
+        sipYearsRange: document.getElementById("sipYearsRange"),
+        sipYearsInput: document.getElementById("sipYearsInput"),
+        rateRange: document.getElementById("rateRange"),
+        rateInput: document.getElementById("rateInput"),
+        timeRange: document.getElementById("timeRange"),
+        timeInput: document.getElementById("timeInput"),
+        lumpsumInvestedValue: document.getElementById("lumpsumInvestedValue"),
+        lumpsumReturnsValue: document.getElementById("lumpsumReturnsValue"),
+        sipInvestedValue: document.getElementById("sipInvestedValue"),
+        sipReturnsValue: document.getElementById("sipReturnsValue"),
+        totalInvestedValue: document.getElementById("totalInvestedValue"),
+        totalReturnsValue: document.getElementById("totalReturnsValue"),
+        totalValueResult: document.getElementById("totalValueResult"),
+        ring: document.getElementById("ring"),
+        ringLabel: document.getElementById("ringLabel"),
+      };
+
+      function setRangeFill(rangeEl) {
+        const min = Number(rangeEl.min);
+        const max = Number(rangeEl.max);
+        const value = Number(rangeEl.value);
+        const percent = ((value - min) / (max - min)) * 100;
+        rangeEl.style.background = `linear-gradient(90deg, var(--brand) ${percent}%, #e5e7eb ${percent}%)`;
+      }
+
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function syncInput(rangeEl, inputEl, key, useCommas = false) {
+        rangeEl.value = state[key];
+        inputEl.value = useCommas ? formatNumberWithCommas(state[key]) : state[key];
+
+        const update = (value) => {
+          const num = Number(value.replace(/,/g, ""));
+          if (!Number.isFinite(num)) return;
+          const min = Number(rangeEl.min);
+          const max = Number(rangeEl.max);
+          let next = clamp(num, min, max);
+
+          // Enforce Investing Time Period >= Years to Continue SIP
+          if (key === "sipYears") {
+            if (next > state.time) {
+              state.time = next;
+              els.timeRange.value = next;
+              els.timeInput.value = next;
+              setRangeFill(els.timeRange);
+            }
+          } else if (key === "time") {
+            if (next < state.sipYears) {
+              next = state.sipYears;
+            }
+          }
+
+          state[key] = next;
+          rangeEl.value = next;
+          inputEl.value = useCommas ? formatNumberWithCommas(next) : next;
+          setRangeFill(rangeEl);
+          render();
+        };
+
+        setRangeFill(rangeEl);
+        rangeEl.addEventListener("input", (e) => update(e.target.value));
+        inputEl.addEventListener("input", (e) => update(e.target.value));
+      }
+
+      function calculate({ monthly, step, rate, time, sipYears }) {
+        if (monthly === 0) {
+          return { invested: 0, total: 0, returns: 0 };
+        }
+
+        const sipMonths = Math.round(sipYears * 12);
+        const totalMonths = Math.round(time * 12);
+        const monthlyRate = ((1 + rate / 100) ** (1 / 12)) - 1;
+        let invested = 0;
+        let total = 0;
+
+        // Calculate contributions and their growth during SIP period
+        for (let m = 0; m < sipMonths; m += 1) {
+          const yearIndex = Math.floor(m / 12);
+          const contribution = monthly * Math.pow(1 + step / 100, yearIndex);
+          invested += contribution;
+          
+          // Each contribution compounds until the end of total time period
+          const monthsToGrow = totalMonths - m;
+          total += contribution * Math.pow(1 + monthlyRate, monthsToGrow);
+        }
+
+        return { invested, total, returns: total - invested };
+      }
+
+      function calculateLumpsum({ principal, rate, time }) {
+        if (principal === 0) {
+          return { invested: 0, total: 0, returns: 0 };
+        }
+        const annualRate = rate / 100;
+        const total = principal * Math.pow(1 + annualRate, time);
+        const returns = total - principal;
+        return { invested: principal, total, returns };
+      }
+
+      function render() {
+        // Calculate both investments
+        const sipResult = calculate(state);
+        const lumpsumResult = calculateLumpsum(state);
+
+        // Update individual values with Cr/Lakh format
+        els.lumpsumInvestedValue.textContent = formatInCrLakh(lumpsumResult.invested);
+        els.lumpsumReturnsValue.textContent = formatInCrLakh(lumpsumResult.returns);
+        els.sipInvestedValue.textContent = formatInCrLakh(sipResult.invested);
+        els.sipReturnsValue.textContent = formatInCrLakh(sipResult.returns);
+
+        // Calculate combined totals
+        const totalInvested = lumpsumResult.invested + sipResult.invested;
+        const totalReturns = lumpsumResult.returns + sipResult.returns;
+        const totalValue = totalInvested + totalReturns;
+
+        els.totalInvestedValue.textContent = formatInCrLakh(totalInvested);
+        els.totalReturnsValue.textContent = formatInCrLakh(totalReturns);
+        els.totalValueResult.textContent = formatInCrLakh(totalValue);
+
+        // Update chart
+        const investedPct = totalValue > 0 ? Math.min(100, (totalInvested / totalValue) * 100) : 0;
+        const investedDeg = Math.round((investedPct / 100) * 360);
+        els.ring.style.background = `conic-gradient(
+          var(--brand) 0deg,
+          var(--brand) ${investedDeg}deg,
+          var(--accent) ${investedDeg}deg,
+          var(--accent) 360deg
+        )`;
+        els.ringLabel.textContent = `Total ${formatInCrLakh(totalValue)}`;
+
+        // Update growth chart
+        updateGrowthChart();
+
+        // Update corpus chart
+        updateCorpusChart();
+
+        // Update data table
+        updateDataTable();
+      }
+
+      function updateDataTable() {
+        const years = state.time;
+        const tbody = document.getElementById("dataTableBody");
+        tbody.innerHTML = "";
+
+        const startDate = new Date();
+        for (let year = 0; year <= years; year += 1) {
+          // Lumpsum value at this year
+          let lumpsumValue = 0;
+          if (state.principal > 0) {
+            const annualRate = state.rate / 100;
+            lumpsumValue = state.principal * Math.pow(1 + annualRate, year);
+          }
+
+          // SIP value at this year
+          let sipValue = 0;
+          if (state.monthly > 0) {
+            const sipMonths = Math.min(year * 12, Math.round(state.sipYears * 12));
+            const totalMonths = year * 12;
+            const monthlyRate = ((1 + state.rate / 100) ** (1 / 12)) - 1;
+
+            for (let m = 0; m < sipMonths; m += 1) {
+              const yearIndex = Math.floor(m / 12);
+              const contribution = state.monthly * Math.pow(1 + state.step / 100, yearIndex);
+              const monthsToGrow = totalMonths - m;
+              sipValue += contribution * Math.pow(1 + monthlyRate, monthsToGrow);
+            }
+          }
+
+          // Total corpus
+          const totalCorpus = lumpsumValue + sipValue;
+
+          // Money Invested calculation
+          let lumpsumInvested = year > 0 && state.principal > 0 ? state.principal : 0;
+          let sipInvested = 0;
+          if (state.monthly > 0) {
+            const sipMonths = Math.min(year * 12, Math.round(state.sipYears * 12));
+            for (let m = 0; m < sipMonths; m += 1) {
+              const yearIndex = Math.floor(m / 12);
+              const contribution = state.monthly * Math.pow(1 + state.step / 100, yearIndex);
+              sipInvested += contribution;
+            }
+          }
+          const totalInvested = lumpsumInvested + sipInvested;
+
+          // Format year as MMM 'YY
+          const rowDate = new Date(startDate);
+          rowDate.setFullYear(rowDate.getFullYear() + year);
+          const dateStr = rowDate.toLocaleDateString('en-IN', { year: '2-digit', month: 'short' }).replace(/(\d{2})$/, "'$1");
+          const row = document.createElement("tr");
+          row.style.borderBottom = "1px solid #e6e8f0";
+          row.innerHTML = `
+            <td style="padding: 12px; text-align: left; color: #1f2430; font-weight: 500;">${year}</td>
+            <td style="padding: 12px; text-align: left; color: #1f2430; font-weight: 500;">${dateStr}</td>
+            <td style="padding: 12px; text-align: right; color: #1f2430;">${formatInCrLakh(totalInvested)}</td>
+            <td style="padding: 12px; text-align: right; color: #1f2430;">${formatInCrLakh(lumpsumValue)}</td>
+            <td style="padding: 12px; text-align: right; color: #1f2430;">${formatInCrLakh(sipValue)}</td>
+            <td style="padding: 12px; text-align: right; color: #1f2430; font-weight: 600;">${formatInCrLakh(totalCorpus)}</td>
+          `;
+          tbody.appendChild(row);
+        }
+      }
+
+      let growthChart = null;
+
+      function updateGrowthChart() {
+        const years = state.time;
+        const labels = [];
+        const lumpsumData = [];
+        const sipData = [];
+
+        const startDate = new Date();
+        for (let year = 0; year <= years; year += 1) {
+          // Format year as MMM 'YY
+          const rowDate = new Date(startDate);
+          rowDate.setFullYear(rowDate.getFullYear() + year);
+          const dateStr = rowDate.toLocaleDateString('en-IN', { year: '2-digit', month: 'short' }).replace(/(\d{2})$/, "'$1");
+          labels.push(dateStr);
+
+          // Lumpsum growth
+          if (state.principal === 0) {
+            lumpsumData.push(0);
+          } else {
+            const annualRate = state.rate / 100;
+            const lumpsumValue = state.principal * Math.pow(1 + annualRate, year);
+            lumpsumData.push(lumpsumValue);
+          }
+
+          // SIP growth
+          if (state.monthly === 0) {
+            sipData.push(0);
+          } else {
+            const sipMonths = Math.min(year * 12, Math.round(state.sipYears * 12));
+            const totalMonths = year * 12;
+            const monthlyRate = ((1 + state.rate / 100) ** (1 / 12)) - 1;
+            let sipValue = 0;
+
+            for (let m = 0; m < sipMonths; m += 1) {
+              const yearIndex = Math.floor(m / 12);
+              const contribution = state.monthly * Math.pow(1 + state.step / 100, yearIndex);
+              // Each contribution compounds until the current year
+              const monthsToGrow = totalMonths - m;
+              sipValue += contribution * Math.pow(1 + monthlyRate, monthsToGrow);
+            }
+
+            sipData.push(sipValue);
+          }
+        }
+
+        const ctx = document.getElementById("growthChart").getContext("2d");
+
+        if (growthChart) {
+          growthChart.data.labels = labels;
+          growthChart.data.datasets[0].data = lumpsumData;
+          growthChart.data.datasets[1].data = sipData;
+          growthChart.update();
+        } else {
+          growthChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: "Lumpsum Investment",
+                  data: lumpsumData,
+                  borderColor: "#FF6B6B",
+                  backgroundColor: "rgba(255, 107, 107, 0.1)",
+                  borderWidth: 2,
+                  tension: 0,
+                  fill: true,
+                  pointBackgroundColor: "#FF6B6B",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointRadius: 4,
+                  pointHoverRadius: 6,
+                },
+                {
+                  label: "Monthly SIP",
+                  data: sipData,
+                  borderColor: "#8B5CF6",
+                  backgroundColor: "rgba(139, 92, 246, 0.1)",
+                  borderWidth: 2,
+                  tension: 0,
+                  fill: true,
+                  pointBackgroundColor: "#8B5CF6",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointRadius: 4,
+                  pointHoverRadius: 6,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                tooltip: {
+                  backgroundColor: "rgba(31, 36, 48, 0.9)",
+                  padding: 12,
+                  titleFont: { size: 14, weight: "600" },
+                  bodyFont: { size: 13 },
+                  callbacks: {
+                    label: function (context) {
+                      return formatInCrLakh(context.parsed.y);
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: {
+                    color: "rgba(230, 232, 240, 0.5)",
+                  },
+                  ticks: {
+                    callback: function (value) {
+                      return formatInCrLakh(value);
+                    },
+                  },
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Years",
+                  },
+                  grid: {
+                    display: false,
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+      let corpusChart = null;
+
+      function updateCorpusChart() {
+        const years = state.time;
+        const labels = [];
+        const corpusData = [];
+
+        for (let year = 0; year <= years; year += 1) {
+          labels.push(year);
+
+          // Lumpsum value at this year
+          let lumpsumValue = 0;
+          if (state.principal > 0) {
+            const annualRate = state.rate / 100;
+            lumpsumValue = state.principal * Math.pow(1 + annualRate, year);
+          }
+
+          // SIP value at this year
+          let sipValue = 0;
+          if (state.monthly > 0) {
+            const sipMonths = Math.min(year * 12, Math.round(state.sipYears * 12));
+            const totalMonths = year * 12;
+            const monthlyRate = ((1 + state.rate / 100) ** (1 / 12)) - 1;
+
+            for (let m = 0; m < sipMonths; m += 1) {
+              const yearIndex = Math.floor(m / 12);
+              const contribution = state.monthly * Math.pow(1 + state.step / 100, yearIndex);
+              // Each contribution compounds until the current year
+              const monthsToGrow = totalMonths - m ;
+              sipValue += contribution * Math.pow(1 + monthlyRate, monthsToGrow);
+            }
+          }
+
+          // Total corpus
+          corpusData.push(lumpsumValue + sipValue);
+        }
+
+        const ctx = document.getElementById("corpusChart").getContext("2d");
+
+        if (corpusChart) {
+          corpusChart.data.labels = labels;
+          corpusChart.data.datasets[0].data = corpusData;
+          corpusChart.update();
+        } else {
+          corpusChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: "Total Corpus",
+                  data: corpusData,
+                  borderColor: "#00D09C",
+                  backgroundColor: "rgba(0, 208, 156, 0.15)",
+                  borderWidth: 3,
+                  tension: 0,
+                  fill: true,
+                  pointBackgroundColor: "#00D09C",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointRadius: 5,
+                  pointHoverRadius: 7,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                tooltip: {
+                  backgroundColor: "rgba(31, 36, 48, 0.9)",
+                  padding: 12,
+                  titleFont: { size: 14, weight: "600" },
+                  bodyFont: { size: 13 },
+                  callbacks: {
+                    label: function (context) {
+                      return formatInCrLakh(context.parsed.y);
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: {
+                    color: "rgba(230, 232, 240, 0.5)",
+                  },
+                  ticks: {
+                    callback: function (value) {
+                      return formatInCrLakh(value);
+                    },
+                  },
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Years",
+                  },
+                  grid: {
+                    display: false,
+                  },
+                },
+              },
+            },
+          });
+        }
+      }
+
+      syncInput(els.principalRange, els.principalInput, "principal", true);
+      syncInput(els.monthlyRange, els.monthlyInput, "monthly", true);
+      syncInput(els.stepRange, els.stepInput, "step");
+      syncInput(els.sipYearsRange, els.sipYearsInput, "sipYears");
+      syncInput(els.rateRange, els.rateInput, "rate");
+      syncInput(els.timeRange, els.timeInput, "time");
+      render();
+    </script>
+  </body>
+</html>

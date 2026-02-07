@@ -1,0 +1,971 @@
+<!doctype html>
+<html lang="en">
+
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>Loan vs Lumpsum Calculator | Wealth Planning Hub</title>
+          <meta name="description" content="Find the wealth-optimal mix of loan and cash using your expected investment returns. Compare end wealth across loan percentages with charts and a detailed table." />
+          <meta name="robots" content="index,follow,max-image-preview:large" />
+          <link rel="canonical" href="https://financialcalc.ai/loan-vs-lumpsum-calculator.html" />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="Loan vs Lumpsum Calculator | Wealth Planning Hub" />
+          <meta property="og:description" content="Compare end wealth for different loan percentages and decide the best loan vs cash mix." />
+          <meta property="og:url" content="https://financialcalc.ai/loan-vs-lumpsum-calculator.html" />
+
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+          <style>
+            :root {
+              --bg: #f0fdf9;
+              --ink: #0f2f2e;
+              --muted: #64748b;
+              --brand: #0d9488;
+              --brand-2: #0f766e;
+              --accent: #5eead4;
+              --card: #ffffff;
+              --border: #d1e7e4;
+              --shadow: 0 12px 32px rgba(13, 148, 136, 0.12);
+              --section-gap: clamp(16px, 3vw, 40px);
+              --card-padding: clamp(12px, 3vw, 28px);
+            }
+
+            * {
+              box-sizing: border-box;
+            }
+
+            body {
+              margin: 0;
+              font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+              color: var(--ink);
+              background: var(--bg);
+              min-height: 100vh;
+            }
+
+            header {
+              background: var(--card);
+              border-bottom: 1px solid var(--border);
+              padding: 16px 0;
+              position: sticky;
+              top: 0;
+              z-index: 100;
+            }
+
+            .header-content {
+              max-width: 1400px;
+              margin: 0 auto;
+              padding: 0 clamp(16px, 3vw, 40px);
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+
+            .logo {
+              font-weight: 700;
+              font-size: 20px;
+              text-decoration: none;
+              color: var(--ink);
+            }
+
+            .mobile-menu-toggle {
+              display: none;
+              background: none;
+              border: none;
+              font-size: 24px;
+              cursor: pointer;
+              color: var(--ink);
+            }
+
+            nav {
+              display: flex;
+            }
+
+            .nav-links {
+              display: flex;
+              gap: 32px;
+              list-style: none;
+              padding: 0;
+              margin: 0;
+            }
+
+            .nav-links a {
+              text-decoration: none;
+              color: var(--ink);
+              font-size: 14px;
+              font-weight: 500;
+              transition: color 0.3s ease;
+            }
+
+            .nav-links a:hover {
+              color: var(--brand);
+            }
+
+            @media (max-width: 700px) {
+              .mobile-menu-toggle {
+                display: block;
+              }
+
+              nav {
+                display: none;
+              }
+
+              nav.active {
+                display: flex;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: var(--card);
+                border-bottom: 1px solid var(--border);
+                padding: 16px;
+              }
+
+              .nav-links {
+                flex-direction: column;
+                gap: 12px;
+              }
+            }
+
+            .wrap {
+              width: 100%;
+              padding: var(--section-gap);
+            }
+
+            .hero {
+              display: flex;
+              align-items: flex-end;
+              justify-content: space-between;
+              gap: 20px;
+              flex-wrap: wrap;
+            }
+
+            h1 {
+              margin: 0;
+              font-size: clamp(26px, 3.4vw, 34px);
+              line-height: 1.2;
+              font-weight: 600;
+            }
+
+            .sub {
+              color: var(--muted);
+              max-width: 560px;
+              margin: 8px 0 0;
+              font-size: 14px;
+              line-height: 1.5;
+            }
+
+            .grid-3 {
+              display: grid;
+              grid-template-columns: 1fr 1fr 1.1fr;
+              gap: var(--section-gap);
+              margin-top: var(--section-gap);
+            }
+
+            .grid-2 {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: var(--section-gap);
+              margin-top: var(--section-gap);
+            }
+
+            .card {
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: 16px;
+              box-shadow: var(--shadow);
+              padding: var(--card-padding);
+              min-width: 0;
+              width: 100%;
+            }
+
+            .field {
+              display: grid;
+              gap: 10px;
+              margin-bottom: 14px;
+            }
+
+            .field label {
+              font-weight: 600;
+              font-size: 15px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 12px;
+            }
+
+            .unit {
+              font-size: 12px;
+              color: #9aa3b2;
+              font-weight: 600;
+              letter-spacing: 0.04em;
+            }
+
+            .input-row {
+              display: grid;
+              grid-template-columns: 1fr 140px;
+              gap: 12px;
+              align-items: center;
+            }
+
+            input[type="range"] {
+              width: 100%;
+              accent-color: var(--brand);
+              height: 4px;
+              background: #e5e7eb;
+              border-radius: 999px;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 16px;
+              height: 16px;
+              border-radius: 1000%;
+              background: var(--brand);
+              border: none;
+              margin-top: -6px;
+              box-shadow: 0 4px 10px rgba(0, 208, 156, 0.35);
+            }
+
+            input[type="number"],
+            input[type="text"],
+            select {
+              width: 100%;
+              padding: 8px 10px;
+              border: 1px solid var(--border);
+              border-radius: 8px;
+              font-weight: 600;
+              font-size: 13px;
+              background: #fff;
+              color: var(--ink);
+              font-family: "Inter", system-ui, sans-serif;
+            }
+
+            .results {
+              display: grid;
+              gap: 10px;
+            }
+
+            .result-row {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              font-weight: 600;
+              padding: 10px 12px;
+              background: #f8f9fb;
+              border-radius: 10px;
+            }
+
+            .result-row span {
+              color: #6b7280;
+              font-weight: 500;
+            }
+
+            .badge {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              padding: 4px 10px;
+              border-radius: 999px;
+              background: #eafaf5;
+              color: var(--brand-2);
+              font-weight: 600;
+              font-size: 12px;
+            }
+
+            .decision {
+              background: linear-gradient(135deg, #eafaf5 0%, #d1f0eb 100%);
+              border: 2px solid var(--brand);
+              border-radius: 16px;
+              padding: var(--card-padding);
+              margin-top: 16px;
+            }
+
+            .decision h3 {
+              margin: 0 0 8px 0;
+              font-size: 14px;
+              text-transform: uppercase;
+              letter-spacing: 0.05em;
+              color: var(--brand-2);
+            }
+
+            .decision .winner {
+              font-size: 22px;
+              font-weight: 700;
+              color: var(--brand);
+            }
+
+            .decision p {
+              margin: 8px 0 0;
+              font-size: 13px;
+              color: #0d5a52;
+              line-height: 1.6;
+            }
+
+            .toggle {
+              display: flex;
+              gap: 8px;
+              margin-bottom: 12px;
+            }
+
+            .toggle button {
+              flex: 1;
+              padding: 8px 10px;
+              border: 1px solid var(--border);
+              border-radius: 8px;
+              background: #fff;
+              color: var(--muted);
+              font-weight: 600;
+              font-size: 12px;
+              cursor: pointer;
+              transition: all 0.2s;
+            }
+
+            .toggle button.active {
+              background: var(--brand);
+              color: #fff;
+              border-color: var(--brand);
+            }
+
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 12px;
+            }
+
+            table thead tr {
+              background: #f8f9fb;
+              border-bottom: 2px solid var(--border);
+            }
+
+            table th,
+            table td {
+              padding: 10px 12px;
+              text-align: right;
+              border-bottom: 1px solid #f0fdf9;
+              white-space: nowrap;
+            }
+
+            table th:first-child,
+            table td:first-child {
+              text-align: left;
+            }
+
+            .seo-section {
+              width: 100%;
+              margin: var(--section-gap) 0;
+              display: flex;
+              flex-direction: column;
+              gap: var(--section-gap);
+            }
+
+            .seo-card {
+              background: var(--card);
+              border: 1.5px solid #d1e7e4;
+              border-radius: 18px;
+              box-shadow: 0 8px 32px rgba(13, 148, 136, 0.10);
+              padding: var(--card-padding);
+              line-height: 1.75;
+              font-size: 1.02rem;
+              color: #18313a;
+            }
+
+            .seo-card h2 {
+              font-size: 1.35rem;
+              margin-bottom: 14px;
+              color: var(--brand-2);
+              font-weight: 700;
+            }
+
+            .related {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+              gap: 16px;
+            }
+
+            .related a {
+              text-decoration: none;
+              color: inherit;
+            }
+
+            .related-card {
+              border: 1px solid var(--border);
+              border-radius: 14px;
+              padding: 14px;
+              background: #fff;
+              transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+            .related-card:hover {
+              transform: translateY(-2px);
+              box-shadow: var(--shadow);
+            }
+
+            .warning {
+              background: #fff7ed;
+              border: 1px solid #fdba74;
+              color: #9a3412;
+              border-radius: 12px;
+              padding: 10px 12px;
+              font-size: 12px;
+            }
+
+            @media (max-width: 1200px) {
+              .grid-3 {
+                grid-template-columns: 1fr;
+              }
+            }
+
+            @media (max-width: 900px) {
+              .grid-2 {
+                grid-template-columns: 1fr;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <header>
+            <div class="header-content">
+              <a href="index.html" class="logo">💰 FinancialCalc.Ai</a>
+              <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+              <nav>
+                <ul class="nav-links">
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="index.html#investing">Investing</a></li>
+                  <li><a href="index.html#home-decisions">House Decisions</a></li>
+                  <li><a href="index.html#loans">Loans</a></li>
+                  <li><a href="index.html#retirement">Retirement</a></li>
+                  <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+              </nav>
+            </div>
+          </header>
+
+          <div class="wrap">
+            <div class="hero">
+              <div>
+                <div class="badge">Wealth-Optimal Mix</div>
+                <h1>Loan vs Lumpsum Calculator</h1>
+                <p class="sub">Find the wealth-optimal mix of loan and cash using your expected investment returns.</p>
+              </div>
+            </div>
+
+            <section class="grid-3">
+              <div class="card">
+                <h2 style="margin: 0 0 14px 0; font-size: 16px;">Inputs</h2>
+                <div class="field">
+                  <label>Loan Requirement <span class="unit">INR</span></label>
+                  <div class="input-row">
+                    <input id="amountRange" type="range" min="50000" max="10000000" step="50000" value="3000000" aria-label="Loan Requirement Range" />
+                    <input id="amountInput" type="text" value="30,00,000" aria-label="Loan Requirement" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Loan Interest Rate <span class="unit">% p.a.</span></label>
+                  <div class="input-row">
+                    <input id="rateRange" type="range" min="1" max="30" step="0.1" value="9" aria-label="Loan Interest Rate" />
+                    <input id="rateInput" type="number" min="1" max="30" step="0.1" value="9" aria-label="Loan Interest Rate" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Loan Tenure <span class="unit">Years</span></label>
+                  <div class="input-row">
+                    <input id="tenureRange" type="range" min="1" max="30" step="1" value="10" aria-label="Loan Tenure" />
+                    <input id="tenureInput" type="number" min="1" max="30" step="1" value="10" aria-label="Loan Tenure" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Processing Fee <span class="unit">% of loan</span></label>
+                  <div class="input-row">
+                    <input id="feeRange" type="range" min="0" max="5" step="0.1" value="1" aria-label="Processing Fee" />
+                    <input id="feeInput" type="number" min="0" max="5" step="0.1" value="1" aria-label="Processing Fee" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>Expected Investment Returns <span class="unit">% CAGR</span></label>
+                  <div class="input-row">
+                    <input id="returnRange" type="range" min="0" max="30" step="0.1" value="12" aria-label="Investment Returns" />
+                    <input id="returnInput" type="number" min="0" max="30" step="0.1" value="12" aria-label="Investment Returns" />
+                  </div>
+                </div>
+                <div class="field">
+                  <label>EMI Treatment <span class="unit">Assumption</span></label>
+                  <div class="toggle">
+                    <button id="emiIncomeBtn" class="active" type="button">Income-funded EMI</button>
+                    <button id="emiOutflowBtn" type="button">EMI as cash outflow</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h2 style="margin: 0 0 14px 0; font-size: 16px;">Summary</h2>
+                <div class="results">
+                  <div class="result-row"><span>Best Strategy</span><strong id="bestStrategy">—</strong></div>
+                  <div class="result-row"><span>Winning Loan %</span><strong id="bestLoanPct">—</strong></div>
+                  <div class="result-row"><span>Best End Wealth</span><strong id="bestWealth">₹0</strong></div>
+                  <div class="result-row"><span>Difference vs Next Best</span><strong id="bestDiff">₹0</strong></div>
+                </div>
+                <div class="decision">
+                  <h3>Decision Insight</h3>
+                  <div class="winner" id="decisionTitle">Run the calculation</div>
+                  <p id="decisionText">Adjust inputs to see the wealth-optimal mix and a quick insight.</p>
+                </div>
+                <div id="rateWarning" class="warning" style="display: none; margin-top: 12px;"></div>
+              </div>
+
+              <div class="card">
+                <h2 style="margin: 0 0 14px 0; font-size: 16px;">Charts</h2>
+                <canvas id="wealthChart" style="max-height: 260px;"></canvas>
+                <div style="height: 16px;"></div>
+                <canvas id="interestChart" style="max-height: 220px;"></canvas>
+                <div style="height: 16px;"></div>
+                <canvas id="profitLossChart" style="max-height: 220px;"></canvas>
+              </div>
+            </section>
+
+            <section class="grid-2">
+              <div class="card">
+                <h2 style="margin: 0 0 14px 0; font-size: 16px;">Scenario Comparison</h2>
+                <div style="overflow-x: auto;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Loan Amount Taken</th>
+                        <th>Upfront Payment</th>
+                        <th>Monthly EMI</th>
+                        <th>Lumpsum Invested</th>
+                        <th>SIP Invested</th>
+                        <th>Total Amount Paid</th>
+                        <th>Final Lumpsum Asset</th>
+                        <th>Final SIP Asset</th>
+                        <th>Total Growth</th>
+                        <th>Total Asset</th>
+                        <th>Profit/Loss</th>
+                      </tr>
+                    </thead>
+                    <tbody id="scenarioTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="card">
+                <h2 style="margin: 0 0 14px 0; font-size: 16px;">Related Calculators</h2>
+                <div class="related">
+                  <a href="emi-calculator.html"><div class="related-card"><strong>EMI Breakdown</strong><p style="margin: 6px 0 0; color: var(--muted); font-size: 13px;">Monthly EMI + amortization.</p></div></a>
+                  <a href="car-loan-sip-calculator-updated-v5-seo.html"><div class="related-card"><strong>Car Loan Payoff</strong><p style="margin: 6px 0 0; color: var(--muted); font-size: 13px;">Close loan vs invest surplus.</p></div></a>
+                  <a href="investment-calculator.html"><div class="related-card"><strong>Investment Growth</strong><p style="margin: 6px 0 0; color: var(--muted); font-size: 13px;">SIP + lumpsum growth.</p></div></a>
+                </div>
+              </div>
+            </section>
+
+            <div class="seo-section">
+              <div class="seo-card">
+                <h2>What this calculator does</h2>
+                <p>This tool compares end-of-tenure wealth for different loan percentages (0% to 100%). It assumes you have full cash available, and evaluates how much wealth you create by investing the unused cash while paying EMI from income.</p>
+              </div>
+              <div class="seo-card">
+                <h2>How it works</h2>
+                <p>EMI follows standard amortization, and investment growth uses monthly compounding of CAGR. Each loan % creates a different invested cash amount and processing fee. The scenario with the highest end wealth is recommended.</p>
+                <ul>
+                  <li>Monthly investment return: $(1 + CAGR)^{1/12} - 1$</li>
+                  <li>EMI formula: $EMI = P \times r \times (1+r)^n / ((1+r)^n - 1)$</li>
+                  <li>SIP FV assumes contributions at the start of each month.</li>
+                </ul>
+              </div>
+              <div class="seo-card">
+                <h2>Assumptions</h2>
+                <ul>
+                  <li>Processing fee is paid upfront from pocket and applied on borrowed amount.</li>
+                  <li>EMI can be treated as income-funded or cash outflow (toggle).</li>
+                  <li>Loan % tested in steps of 10%.</li>
+                </ul>
+              </div>
+              <div class="seo-card">
+                <h2>FAQs</h2>
+                <p><strong>Should I always take a higher loan if returns are higher?</strong> Not always. Processing fees and EMI cashflow matter. This calculator visualizes the full curve.</p>
+                <p><strong>Why invest SIP when paying full cash?</strong> This uses the EMI-equivalent SIP to show the opportunity cost of tying up cash upfront.</p>
+              </div>
+              <div class="seo-card">
+                <h2>Disclaimer</h2>
+                <p>Results are illustrative and do not include taxes or market risk. Last updated: 31 Jan 2026.</p>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            const amountRange = document.getElementById('amountRange');
+            const amountInput = document.getElementById('amountInput');
+            const rateRange = document.getElementById('rateRange');
+            const rateInput = document.getElementById('rateInput');
+            const tenureRange = document.getElementById('tenureRange');
+            const tenureInput = document.getElementById('tenureInput');
+            const feeRange = document.getElementById('feeRange');
+            const feeInput = document.getElementById('feeInput');
+            const returnRange = document.getElementById('returnRange');
+            const returnInput = document.getElementById('returnInput');
+
+            const emiIncomeBtn = document.getElementById('emiIncomeBtn');
+            const emiOutflowBtn = document.getElementById('emiOutflowBtn');
+
+            let emiAsOutflow = false;
+            let wealthChartInstance = null;
+            let interestChartInstance = null;
+
+            const fmtCompact = (value) => {
+              if (!isFinite(value)) return '₹0';
+              const abs = Math.abs(value);
+              if (abs >= 10000000) return `₹${(value / 10000000).toFixed(2)} Cr`;
+              if (abs >= 100000) return `₹${(value / 100000).toFixed(2)} L`;
+              return `₹${Math.round(value).toLocaleString('en-IN')}`;
+            };
+
+            const parseNumber = (val) => {
+              if (typeof val === 'number') return val;
+              return parseFloat(String(val).replace(/,/g, '')) || 0;
+            };
+
+            const formatInputINR = (input, value) => {
+              input.value = value.toLocaleString('en-IN');
+            };
+
+            const monthlyRateFromCagr = (cagr) => Math.pow(1 + cagr / 100, 1 / 12) - 1;
+
+            const emi = (principal, annualRate, months) => {
+              if (principal === 0) return 0;
+              const r = annualRate / 100 / 12;
+              if (r === 0) return principal / months;
+              return principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+            };
+
+            const fvLumpsum = (principal, monthlyRate, months) => principal * Math.pow(1 + monthlyRate, months);
+
+            const fvSip = (monthly, monthlyRate, months) => {
+              if (monthly === 0) return 0;
+              if (monthlyRate === 0) return monthly * months;
+              return monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
+            };
+
+            const syncRangeText = (range, input, formatter = null) => {
+              range.addEventListener('input', () => {
+                const val = parseFloat(range.value) || 0;
+                if (formatter) {
+                  formatter(input, val);
+                } else {
+                  input.value = val;
+                }
+                calculate();
+              });
+              input.addEventListener('input', () => {
+                const val = parseNumber(input.value);
+                range.value = val;
+                if (formatter) formatter(input, val);
+                calculate();
+              });
+            };
+
+            syncRangeText(amountRange, amountInput, formatInputINR);
+            syncRangeText(rateRange, rateInput);
+            syncRangeText(tenureRange, tenureInput);
+            syncRangeText(feeRange, feeInput);
+            syncRangeText(returnRange, returnInput);
+
+            emiIncomeBtn.addEventListener('click', () => {
+              emiAsOutflow = false;
+              emiIncomeBtn.classList.add('active');
+              emiOutflowBtn.classList.remove('active');
+              calculate();
+            });
+
+            emiOutflowBtn.addEventListener('click', () => {
+              emiAsOutflow = true;
+              emiOutflowBtn.classList.add('active');
+              emiIncomeBtn.classList.remove('active');
+              calculate();
+            });
+
+            const updateTable = (rows) => {
+              const tbody = document.getElementById('scenarioTableBody');
+              tbody.innerHTML = '';
+              rows.forEach((r) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                  <td>${fmtCompact(r.loanAmount)}</td>
+                  <td>${fmtCompact(r.upfrontPayment)}</td>
+                  <td>${fmtCompact(r.emi)}</td>
+                  <td>${fmtCompact(r.lumpsumInvested)}</td>
+                  <td>${fmtCompact(r.sipInvested)}</td>
+                  <td>${fmtCompact(r.totalAmountPaid)}</td>
+                  <td>${fmtCompact(r.finalLumpsumAsset)}</td>
+                  <td>${fmtCompact(r.finalSipAsset)}</td>
+                  <td>${fmtCompact(r.totalGrowth)}</td>
+                  <td><strong>${fmtCompact(r.totalAsset)}</strong></td>
+                  <td>${fmtCompact(r.profitLoss)}</td>
+                `;
+                tbody.appendChild(tr);
+              });
+            };
+
+            const renderCharts = (labels, wealthData, interestData, profitLossLabels, profitLossData) => {
+              const ctx1 = document.getElementById('wealthChart').getContext('2d');
+              if (wealthChartInstance) wealthChartInstance.destroy();
+              wealthChartInstance = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                  labels,
+                  datasets: [
+                    {
+                      label: 'Total Asset',
+                      data: wealthData,
+                      borderColor: '#0d9488',
+                      backgroundColor: 'rgba(13, 148, 136, 0.12)',
+                      borderWidth: 2,
+                      tension: 0.2,
+                      fill: true
+                    }
+                  ]
+                },
+                options: {
+                  responsive: true,
+                  plugins: {
+                    legend: { display: true, position: 'top' },
+                    tooltip: {
+                      callbacks: { label: (ctx) => `Total Asset: ${fmtCompact(ctx.parsed.y)}` }
+                    }
+                  },
+                  scales: {
+                    y: { ticks: { callback: (v) => fmtCompact(v) } },
+                    x: { title: { display: true, text: 'Loan %' } }
+                  }
+                }
+              });
+
+              const ctx2 = document.getElementById('interestChart').getContext('2d');
+              if (interestChartInstance) interestChartInstance.destroy();
+              interestChartInstance = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                  labels,
+                  datasets: [
+                    {
+                      label: 'Total Interest Paid',
+                      data: interestData,
+                      borderColor: '#f97316',
+                      backgroundColor: 'rgba(249, 115, 22, 0.12)',
+                      borderWidth: 2,
+                      tension: 0.2,
+                      fill: true
+                    }
+                  ]
+                },
+                options: {
+                  responsive: true,
+                  plugins: {
+                    legend: { display: true, position: 'top' },
+                    tooltip: {
+                      callbacks: { label: (ctx) => `Interest: ${fmtCompact(ctx.parsed.y)}` }
+                    }
+                  },
+                  scales: {
+                    y: { ticks: { callback: (v) => fmtCompact(v) } },
+                    x: { title: { display: true, text: 'Loan %' } }
+                  }
+                }
+              });
+
+              const ctx3 = document.getElementById('profitLossChart').getContext('2d');
+              if (window.profitLossChartInstance) window.profitLossChartInstance.destroy();
+              window.profitLossChartInstance = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                  labels: profitLossLabels,
+                  datasets: [
+                    {
+                      label: 'Profit/Loss',
+                      data: profitLossData,
+                      backgroundColor: [
+                        profitLossData[0] >= 0 ? 'rgba(13, 148, 136, 0.8)' : 'rgba(239, 68, 68, 0.8)',
+                        profitLossData[1] >= 0 ? 'rgba(13, 148, 136, 0.8)' : 'rgba(239, 68, 68, 0.8)',
+                        profitLossData[2] >= 0 ? 'rgba(13, 148, 136, 0.8)' : 'rgba(239, 68, 68, 0.8)',
+                        profitLossData[3] >= 0 ? 'rgba(13, 148, 136, 0.8)' : 'rgba(239, 68, 68, 0.8)',
+                        profitLossData[4] >= 0 ? 'rgba(13, 148, 136, 0.8)' : 'rgba(239, 68, 68, 0.8)'
+                      ],
+                      borderRadius: 4,
+                      borderWidth: 0
+                    }
+                  ]
+                },
+                options: {
+                  indexAxis: 'x',
+                  responsive: true,
+                  plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                      callbacks: { label: (ctx) => `Profit/Loss: ${fmtCompact(ctx.parsed.y)}` }
+                    }
+                  },
+                  scales: {
+                    y: { ticks: { callback: (v) => fmtCompact(v) } }
+                  }
+                }
+              });
+            };
+
+            const calculate = () => {
+              const P = parseNumber(amountInput.value);
+              const loanRate = parseNumber(rateInput.value);
+              const years = parseNumber(tenureInput.value) || 1;
+              const months = Math.round(years * 12);
+              const feePct = parseNumber(feeInput.value);
+              const investCagr = parseNumber(returnInput.value);
+              const im = monthlyRateFromCagr(investCagr);
+
+              const emi100 = emi(P, loanRate, months);
+              const sipBaselineFV = fvSip(emi100, im, months);
+
+              const rows = [];
+              const labels = [];
+              const wealthData = [];
+              const interestData = [];
+              const profitLossData = [];
+              const profitLossLabels = [];
+
+              for (let loanPct = 0; loanPct <= 100; loanPct += 10) {
+                const L = P * (loanPct / 100);
+                const C = P - L;
+
+                if (loanPct === 0) {
+                  // 0% loan: Pay P upfront, invest as lumpsum, invest monthly surplus as SIP
+                  const upfrontPayment = 0; // No loan, no processing fee
+                  const lumpsumInvested = P - upfrontPayment; // P - 0 = P
+                  const lumpsumFV = fvLumpsum(lumpsumInvested, im, months);
+                  
+                  // Monthly SIP from surplus (amount equal to what EMI would be)
+                  const monthlySIP = emi100;
+                  const sipInvested = monthlySIP * months;
+                  const sipFV = fvSip(monthlySIP, im, months);
+                  
+                  const lumpsumMoneyPaid = P; // Lumpsum money paid upfront
+                  const totalAsset = lumpsumFV + sipFV;
+                  const totalGrowth = (lumpsumFV - lumpsumInvested) + (sipFV - sipInvested);
+                  const totalAmountPaid = 0 + sipInvested + upfrontPayment + lumpsumMoneyPaid; // Total EMI + Total SIP + Upfront Payment + Lumpsum Money Paid
+                  const profitLoss = totalAsset - totalAmountPaid;
+
+                  rows.push({
+                    loanPct,
+                    loanAmount: 0,
+                    upfrontPayment: upfrontPayment,
+                    emi: 0,
+                    lumpsumInvested,
+                    sipInvested,
+                    totalAmountPaid,
+                    finalLumpsumAsset: lumpsumFV,
+                    finalSipAsset: sipFV,
+                    totalGrowth,
+                    totalAsset,
+                    profitLoss
+                  });
+
+                  labels.push('0%');
+                  wealthData.push(totalAsset);
+                  interestData.push(0);
+                  
+                  // For 5-point profit/loss chart (0%, 25%, 50%, 75%, 100%)
+                  if (loanPct === 0) {
+                    profitLossLabels.push('0% Loan');
+                    profitLossData.push(profitLoss);
+                  }
+                  continue;
+                }
+
+                const processingFee = L * (feePct / 100);
+                const emiVal = emi(L, loanRate, months);
+                const totalEmi = emiVal * months;
+                const interestPaid = totalEmi - L;
+                
+                // Upfront Payment = Loan Amount Taken + Processing Fee
+                const upfrontPayment = L + processingFee;
+                // Lumpsum Invested = Loan Requirement - Upfront Payment
+                const lumpsumInvested = P - upfrontPayment;
+                const lumpsumFV = fvLumpsum(lumpsumInvested, im, months);
+                
+                // SIP portion: from upfront cash spread over tenure
+                const monthlySIP = C / months;
+                const sipInvested = C;
+                const sipFV = fvSip(monthlySIP, im, months);
+                
+                // Total calculations
+                // Lumpsum Money Paid = upfront cash (P - L)
+                const lumpsumMoneyPaid = C;
+                // Total Amount Paid = Total EMI paid + Total SIP Paid + Upfront Payment + Lumpsum Money Paid
+                const totalAmountPaid = totalEmi + sipInvested + upfrontPayment + lumpsumMoneyPaid;
+                const totalGrowth = (lumpsumFV - lumpsumInvested) + (sipFV - sipInvested);
+                const totalAsset = lumpsumFV + sipFV;
+                const profitLoss = totalAsset - totalAmountPaid;
+
+                rows.push({
+                  loanPct,
+                  loanAmount: L,
+                  upfrontPayment: upfrontPayment,
+                  emi: emiVal,
+                  lumpsumInvested,
+                  sipInvested,
+                  totalAmountPaid,
+                  finalLumpsumAsset: lumpsumFV,
+                  finalSipAsset: sipFV,
+                  totalGrowth,
+                  totalAsset,
+                  profitLoss
+                });
+
+                labels.push(`${loanPct}%`);
+                wealthData.push(totalAsset);
+                interestData.push(interestPaid);
+                
+                // For 5-point profit/loss chart (0%, 25%, 50%, 75%, 100%)
+                if (loanPct === 25 || loanPct === 50 || loanPct === 75 || loanPct === 100) {
+                  profitLossLabels.push(`${loanPct}% Loan`);
+                  profitLossData.push(profitLoss);
+                }
+              }
+
+              const sorted = [...rows].sort((a, b) => b.totalAsset - a.totalAsset);
+              const best = sorted[0];
+              const nextBest = sorted[1] || best;
+              const diff = best.totalAsset - nextBest.totalAsset;
+
+              document.getElementById('bestStrategy').textContent = best.loanPct === 0 ? 'Full Cash + SIP' : `${best.loanPct}% Loan Mix`;
+              document.getElementById('bestLoanPct').textContent = `${best.loanPct}%`;
+              document.getElementById('bestWealth').textContent = fmtCompact(best.totalAsset);
+              document.getElementById('bestDiff').textContent = fmtCompact(diff);
+
+              const decisionTitle = document.getElementById('decisionTitle');
+              const decisionText = document.getElementById('decisionText');
+              decisionTitle.textContent = best.loanPct === 0 ? 'Full cash + SIP wins' : `${best.loanPct}% loan mix wins`;
+              decisionText.textContent = `Best total asset: ${fmtCompact(best.totalAsset)}. Next best is ${fmtCompact(nextBest.totalAsset)}.`;
+
+              const warning = document.getElementById('rateWarning');
+              if (investCagr <= loanRate) {
+                warning.style.display = 'block';
+                warning.textContent = 'Investment CAGR is at or below loan rate. Higher loan shares may not be optimal after fees.';
+              } else {
+                warning.style.display = 'none';
+              }
+
+              updateTable(rows);
+              renderCharts(labels, wealthData, interestData, profitLossLabels, profitLossData);
+            };
+
+            calculate();
+
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            const nav = document.querySelector('nav');
+            mobileToggle.addEventListener('click', () => {
+              nav.classList.toggle('active');
+            });
+          </script>
+        </body>
+      </html>

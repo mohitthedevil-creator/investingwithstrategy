@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Us | financialcalc.ai</title>
+  <meta name="description" content="Contact financialcalc.ai for help, questions, or feedback on our calculators." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://financialcalc.ai/contact.html" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="assets/styles/theme.css" />
+  <link rel="stylesheet" href="assets/styles/utilities.css" />
+  <link rel="stylesheet" href="assets/styles/components.css" />
+
+  <style>
+    .wrap {
+      width: 100%;
+      padding: var(--section-gap, clamp(16px, 3vw, 40px));
+    }
+
+    .contact-container {
+      max-width: 720px;
+      margin: 40px auto 80px;
+    }
+
+    .contact-card {
+      background: var(--card, #ffffff);
+      border: 1px solid var(--border, #d1e7e4);
+      border-radius: 16px;
+      box-shadow: var(--shadow, 0 12px 32px rgba(13, 148, 136, 0.12));
+      padding: var(--card-padding, clamp(16px, 3vw, 32px));
+      text-align: center;
+    }
+
+    .contact-card h1 {
+      margin: 0 0 10px;
+      font-size: clamp(24px, 3.2vw, 32px);
+      color: var(--ink, #0f2f2e);
+    }
+
+    .contact-card p {
+      margin: 0 0 20px;
+      color: var(--muted, #64748b);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--brand, #0d9488);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 10px 20px rgba(13, 148, 136, 0.18);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cta-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(13, 148, 136, 0.22);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted, #64748b);
+      font-size: 12px;
+      padding: 24px 0 40px;
+    }
+
+    @media (max-width: 700px) {
+      .contact-container {
+        margin: 20px auto 60px;
+      }
+
+      .contact-card {
+        text-align: left;
+      }
+
+      .cta-link {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">💰 FinancialCalc.Ai</a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#investing">Investing</a></li>
+          <li><a href="index.html#home-decisions">House Decisions</a></li>
+          <li><a href="index.html#loans">Loans</a></li>
+          <li><a href="index.html#retirement">Retirement</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="contact-container">
+      <div class="contact-card">
+        <h1>Contact Us</h1>
+        <p>If you are looking for help or have a specific question related to our calculators or financial planning tools, feel free to reach out.</p>
+        <a class="cta-link" href="https://mail.google.com/mail/?view=cm&fs=1&to=investingwithstrategy@gmail.com&su=Help%20Needed" target="_blank" rel="noopener">Click here to contact us</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 FinancialCalc.Ai</p>
+  </footer>
+
+  <script>
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const nav = document.querySelector('nav');
+    if (menuToggle && nav) {
+      menuToggle.addEventListener('click', () => {
+        nav.classList.toggle('active');
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EMI Calculator | Calculate Loan EMI, Interest & Amortization Schedule</title>
+    <meta name="description" content="Free EMI Calculator for India: calculate loan EMI, total interest, total payment and view amortization schedule for home, car or personal loans." />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://financialcalc.ai/emi-calculator.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="EMI Calculator | Calculate Loan EMI, Interest & Amortization Schedule" />
+    <meta property="og:description" content="Calculate loan EMI, total interest payable and view amortization schedule. Works for home, car and personal loans." />
+    <meta property="og:url" content="https://financialcalc.ai/emi-calculator.html" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is EMI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EMI (Equated Monthly Installment) is the fixed monthly payment you make toward a loan. Each EMI contains an interest component and a principal repayment component."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is EMI calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "EMI is calculated using the standard amortization formula based on principal, interest rate and tenure. The EMI stays constant while the principal/interest split changes over time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does increasing tenure reduce EMI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. A longer tenure usually reduces the monthly EMI, but it generally increases the total interest you pay over the full loan period."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is an amortization schedule?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An amortization schedule shows how each EMI is split into principal and interest and how your outstanding loan balance reduces over time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this EMI calculator include processing fees or insurance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. This calculator focuses on EMI and interest based on loan amount, rate and tenure. Processing fees, insurance, GST and other charges are not included."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does prepayment affect EMI and total interest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Prepayments reduce the outstanding principal, which can lower the total interest cost. Depending on the lender, you may reduce EMI, tenure, or both."
+      }
+    }
+  ]
+}
+    </script>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://financialcalc.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "EMI Calculator",
+      "item": "https://financialcalc.ai/emi-calculator.html"
+    }
+  ]
+}
+    </script>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "EMI Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "url": "https://financialcalc.ai/emi-calculator.html",
+  "description": "Free EMI calculator for India to estimate monthly EMI, total interest and total payment, and to view amortization schedule.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  }
+}
+    </script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      /* Header Styling */
+      header {
+        background: var(--card, white);
+        border-bottom: 1px solid var(--border, #d1e7e4);
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 clamp(16px, 3vw, 40px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--ink, #0f2f2e);
+      }
+      
+      nav {
+        display: flex;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .nav-links a {
+        text-decoration: none;
+        color: var(--ink, #0f2f2e);
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .nav-links a:hover {
+        color: var(--brand, #0d9488);
+      }
+      
+      @media (max-width: 700px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+        
+        nav {
+          display: none;
+        }
+        
+        nav.active {
+          display: flex;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: var(--card, white);
+          border-bottom: 1px solid var(--border, #d1e7e4);
+          padding: 16px;
+        }
+        
+        .nav-links {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+
+      @media (min-width: 1000px) {
+        section[style*="grid-template-columns"] {
+          gap: 10px !important;
+        }
+        .main-card-min {
+          min-width: 420px;
+        }
+        .results-card-min {
+          min-width: 400px;
+        }
+      }
+
+      :root {
+        --section-gap: clamp(16px, 3vw, 40px);
+        --card-padding: clamp(10px, 3vw, 32px);
+        --section-padding: clamp(8px, 2vw, 24px);
+      }
+
+      @media (max-width: 1200px) {
+        .wrap {
+          padding: 24px 2vw 60px 2vw;
+        }
+        .grid,
+        section[style*="grid-template-columns"] {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .wrap {
+          padding: 12px 1vw 30px 1vw;
+        }
+        .grid,
+        section[style*="grid-template-columns"] {
+          grid-template-columns: 1fr !important;
+        }
+        .card {
+          padding: 12px 6px !important;
+        }
+        .results, .chart, .legend, .foot {
+          font-size: 13px;
+        }
+        h1, h2 {
+          font-size: 1.1rem !important;
+        }
+        table {
+          font-size: 12px;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .wrap {
+          padding: 4px 0 10px 0;
+        }
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+        .card {
+          padding: 8px 2px !important;
+          border-radius: 10px;
+        }
+        .results, .chart, .legend, .foot {
+          font-size: 11px;
+        }
+        h1, h2 {
+          font-size: 1rem !important;
+        }
+        table {
+          font-size: 10px;
+        }
+        section[style*="grid-template-columns"], .grid {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      :root {
+        --bg: #f0fdf9;
+        --ink: #0f2f2e;
+        --muted: #64748b;
+        --brand: #0d9488;
+        --brand-2: #0f766e;
+        --accent: #5eead4;
+        --card: #ffffff;
+        --border: #d1e7e4;
+        --shadow: 0 12px 32px rgba(13, 148, 136, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      .wrap {
+        width: 100%;
+        padding: var(--section-gap);
+      }
+
+      header {
+        margin-bottom: 18px;
+      }
+
+      .logo {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--brand);
+      }
+
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(26px, 3.4vw, 34px);
+        line-height: 1.2;
+        font-weight: 600;
+      }
+
+      h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 20px 0;
+      }
+
+      .sub {
+        color: var(--muted);
+        max-width: 100%;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+        white-space: nowrap;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--section-gap);
+        margin-top: var(--section-gap);
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: var(--card-padding);
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .field {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        font-weight: 600;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .unit {
+        font-size: 14px;
+        color: #9aa3b2;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .input-row {
+        display: grid;
+        grid-template-columns: 1fr 120px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--brand);
+        height: 4px;
+        background: #e5e7eb;
+        border-radius: 999px;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 1000%;
+        background: var(--brand);
+        border: none;
+        margin-top: -6px;
+        box-shadow: 0 4px 10px rgba(0, 208, 156, 0.35);
+      }
+
+      input[type="range"]::-moz-range-track {
+        height: 4px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      input[type="number"],
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        background: #fff;
+        color: var(--ink);
+        font-family: "Inter", system-ui, sans-serif;
+      }
+
+      .results {
+        display: grid;
+        gap: 8px;
+      }
+
+      .result-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        padding: 10px 12px;
+        background: #f8f9fb;
+        border-radius: 10px;
+      }
+
+      .result-row span {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .chart {
+        margin-top: 16px;
+        display: grid;
+        place-items: center;
+        position: relative;
+        height: 200px;
+      }
+
+      .ring {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: conic-gradient(var(--brand) 0deg, var(--brand) 120deg, var(--accent) 120deg, var(--accent) 360deg);
+        display: grid;
+        place-items: center;
+      }
+
+      .ring::after {
+        content: "";
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: inset 0 0 0 1px var(--border);
+      }
+
+      .ring-label {
+        position: absolute;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: #1f2937;
+      }
+
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin-top: 4px;
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 8px;
+        background: currentColor;
+      }
+
+      .legend .principal {
+        color: var(--brand);
+      }
+
+      .legend .interest {
+        color: var(--accent);
+      }
+
+      .toggle-group {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .toggle-group button {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .toggle-group button.active {
+        background: var(--brand);
+        color: #fff;
+        border-color: var(--brand);
+      }
+
+      .foot {
+        margin-top: 18px;
+        color: #9aa3b2;
+        font-size: 12px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      table thead tr {
+        background: #f8f9fb;
+        border-bottom: 2px solid var(--border);
+      }
+
+      table th {
+        padding: 12px;
+        text-align: right;
+        font-weight: 600;
+        color: #6b7280;
+      }
+
+      table th:first-child {
+        text-align: center;
+      }
+
+      table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #f0fdf9;
+        text-align: right;
+      }
+
+      table td:first-child {
+        text-align: center;
+        font-weight: 500;
+      }
+
+      table tbody tr:hover {
+        background: #f9fafb;
+      }
+    
+      /* SEO Content Card Styles (matches Step-Up SIP pages) */
+      .seo-section {
+        width: 100%;
+        margin: var(--section-gap) 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--section-gap);
+        padding: 0;
+      }
+
+      .seo-card {
+        border: 1.5px solid #d1e7e4;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(13, 148, 136, 0.10);
+        line-height: 1.85;
+        font-size: 1.02rem;
+        color: #18313a;
+      }
+
+      .seo-card h2 {
+        font-size: 1.45rem;
+        margin-bottom: 18px;
+        color: var(--brand-2);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+
+      .seo-card p, .seo-card ul, .seo-card ol {
+        margin-bottom: 16px;
+      }
+
+      .seo-card ul, .seo-card ol {
+        padding-left: 24px;
+        margin-top: 0;
+      }
+
+      .seo-card li {
+        margin-bottom: 10px;
+        line-height: 1.7;
+      }
+
+      .seo-card strong {
+        color: var(--brand);
+      }
+
+      .seo-card em {
+        color: #64748b;
+        font-style: italic;
+      }
+
+    </style>
+  </head>
+  <body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <a href="index.html" class="logo">💰 FinancialCalc.Ai</a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#investing">Investing</a></li>
+          <li><a href="index.html#home-decisions">House Decisions</a></li>
+          <li><a href="index.html#loans">Loans</a></li>
+          <li><a href="index.html#retirement">Retirement</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+    <div class="wrap">
+      <div class="hero">
+        <div>
+          <h1>EMI Calculator</h1>
+          <p class="sub">Calculate your monthly loan EMI, total interest payable, and view a complete amortization schedule. Enter loan amount, interest rate, and tenure.</p>
+        </div>
+      </div>
+
+      <section class="grid" style="margin-top: var(--section-gap);">
+        <!-- Inputs Card -->
+        <div class="card main-card-min">
+          <div class="field">
+            <label>Loan Amount <span class="unit">₹</span></label>
+            <div class="input-row">
+              <input id="loanRange" type="range" min="100000" max="20000000" step="100000" value="3000000" />
+              <input id="loanInput" type="text" value="30,00,000" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Interest Rate <span class="unit">% p.a.</span></label>
+            <div class="input-row">
+              <input id="rateRange" type="range" min="2" max="20" step="0.1" value="8.5" />
+              <input id="rateInput" type="number" min="2" max="20" step="0.1" value="8.5" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Tenure <span class="unit" id="tenureUnitLabel">Years</span></label>
+            <div class="input-row">
+              <input id="tenureRange" type="range" min="1" max="30" step="1" value="20" />
+              <input id="tenureInput" type="number" min="1" max="30" step="1" value="20" />
+            </div>
+            <div style="margin-top: 8px;">
+              <select id="tenureUnit" style="width: 100%;">
+                <option value="years">Years</option>
+                <option value="months">Months</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Card -->
+        <div class="card results-card-min">
+          <h2>Results</h2>
+          <div class="results">
+            <div class="result-row">
+              <span>Total Loan Amount</span>
+              <strong id="loanAmountResult">₹30,00,000</strong>
+            </div>
+            <div class="result-row">
+              <span>Monthly EMI</span>
+              <strong id="emiResult">₹27,668</strong>
+            </div>
+            <div class="result-row">
+              <span>Total Interest</span>
+              <strong id="interestResult">₹3,640,320</strong>
+            </div>
+            <div class="result-row">
+              <span>Total Payment</span>
+              <strong id="totalResult">₹6,640,320</strong>
+            </div>
+            <div class="result-row">
+              <span>Total Tenure</span>
+              <strong id="tenureResult">240 months</strong>
+            </div>
+          </div>
+
+          <div class="chart">
+            <div class="ring" id="breakdownRing"></div>
+            <div class="ring-label" id="ringLabel">Total Amount</div>
+          </div>
+
+          <div class="legend">
+            <span class="principal">Principal</span>
+            <span class="interest">Interest</span>
+          </div>
+
+          <div class="foot">EMI is calculated using standard formula. Actual EMI may vary based on lender policies.</div>
+        </div>
+      </section>
+
+      <!-- Schedule Section -->
+      <section style="margin-top: var(--section-gap);">
+        <div class="card">
+          <h2>Amortization Schedule</h2>
+
+          <div class="toggle-group">
+            <button id="yearlyBtn" class="active">Yearly</button>
+            <button id="monthlyBtn">Monthly</button>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table id="scheduleTable">
+              <thead>
+                <tr>
+                  <th style="text-align: center;">Year</th>
+                  <th>Opening Balance</th>
+                  <th>Total EMI</th>
+                  <th>Principal</th>
+                  <th>Interest</th>
+                  <th>Closing Balance</th>
+                </tr>
+              </thead>
+              <tbody id="scheduleBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- SEO Content -->
+      <div class="seo-section">
+        <div class="card seo-card">
+          <h2>What Is an EMI?</h2>
+          <p>
+            <strong>EMI (Equated Monthly Installment)</strong> is the fixed monthly payment you make to repay a loan.
+            Each EMI includes two parts: <strong>principal</strong> (the amount you borrowed) and <strong>interest</strong>
+            (the lender’s charge for providing the loan). In the early months, the interest component is higher; over time,
+            the principal component increases as your outstanding balance reduces.
+          </p>
+        </div>
+
+        <div class="card seo-card">
+          <h2>What This EMI Calculator Does</h2>
+          <p>This EMI Calculator helps you instantly estimate your loan repayment numbers using three inputs: loan amount, interest rate, and tenure.</p>
+          <ul>
+            <li><strong>Monthly EMI</strong> you need to pay</li>
+            <li><strong>Total interest payable</strong> over the full loan tenure</li>
+            <li><strong>Total payment</strong> (principal + interest)</li>
+            <li><strong>Amortization schedule</strong> showing the breakup of principal and interest over time</li>
+          </ul>
+          <p>This works for common loan types in India such as <strong>home loan EMI</strong>, <strong>personal loan EMI</strong>, <strong>car loan EMI</strong>, and education loans.</p>
+        </div>
+
+        <div class="card seo-card">
+          <h2>How EMI Is Calculated</h2>
+          <p>
+            EMI is calculated using the standard loan amortization formula where your monthly payment remains constant,
+            but the split between principal and interest changes each month.
+          </p>
+          <p>
+            <strong>EMI formula:</strong>
+            EMI = [P × r × (1+r)<sup>n</sup>] / [(1+r)<sup>n</sup> − 1]
+          </p>
+          <ul>
+            <li><strong>P</strong> = Loan principal (amount borrowed)</li>
+            <li><strong>r</strong> = Monthly interest rate (annual rate ÷ 12)</li>
+            <li><strong>n</strong> = Total number of months</li>
+          </ul>
+          <p>
+            Higher interest rates and longer tenures usually reduce EMI but increase total interest paid.
+            Shorter tenures increase EMI but reduce interest cost.
+          </p>
+        </div>
+
+        <div class="card seo-card">
+          <h2>Understanding the Amortization Schedule</h2>
+          <p>The amortization schedule shows how your loan gets repaid over time. Each row displays:</p>
+          <ul>
+            <li><strong>Opening balance</strong>: remaining loan at the start of the period</li>
+            <li><strong>Total EMI</strong>: total payment made in that month/year</li>
+            <li><strong>Principal</strong>: portion of EMI that reduces your loan</li>
+            <li><strong>Interest</strong>: cost paid to the lender</li>
+            <li><strong>Closing balance</strong>: remaining loan after payment</li>
+          </ul>
+          <p>Use this to plan prepayments, compare tenure options, and understand when interest outflow is highest.</p>
+        </div>
+
+        <div class="card seo-card">
+          <h2>How to Reduce EMI or Total Interest</h2>
+          <ul>
+            <li><strong>Shorten tenure</strong> if your cashflow allows (reduces total interest)</li>
+            <li><strong>Prepay early</strong> (most effective in the first few years when interest dominates)</li>
+            <li><strong>Negotiate rate</strong> or refinance if your credit profile improves</li>
+            <li><strong>Increase down payment</strong> to reduce the loan amount</li>
+          </ul>
+          <p>Even small changes in interest rate or tenure can meaningfully change your total interest outgo.</p>
+        </div>
+
+        <div class="card seo-card">
+          <h2>Key Assumptions Used</h2>
+          <ul>
+            <li>Interest rate remains constant throughout the tenure</li>
+            <li>EMI is calculated using standard monthly amortization</li>
+            <li>No processing fees, insurance, GST, or foreclosure charges are included</li>
+            <li>Results are illustrative; lenders may use different rounding rules</li>
+          </ul>
+        </div>
+
+        <div class="card seo-card">
+          <h2>Who Should Use This EMI Calculator?</h2>
+          <ul>
+            <li>Anyone comparing home loan EMI options across tenures</li>
+            <li>Borrowers evaluating if a loan fits monthly budget</li>
+            <li>People planning prepayment strategy using amortization</li>
+            <li>Investors comparing loan cost vs investing options</li>
+          </ul>
+        </div>
+
+        <div class="card seo-card">
+          <h2>Frequently Asked Questions</h2>
+          <p><strong>Does increasing tenure reduce EMI?</strong><br>Yes, EMI typically decreases, but total interest paid usually increases.</p>
+          <p><strong>Why is interest higher in the early years?</strong><br>Interest is calculated on the outstanding balance, which is highest at the beginning.</p>
+          <p><strong>Is EMI same for home loan, car loan and personal loan?</strong><br>The formula is the same, but rate and tenure differ, changing the EMI.</p>
+          <p><strong>Does this calculator include processing fees?</strong><br>No. Add lender fees separately when comparing final loan costs.</p>
+        </div>
+
+        <div class="card seo-card">
+          <h2>Related Calculators</h2>
+          <ul>
+            <li><a href="fd-calculator.html">FD Calculator</a></li>
+            <li><a href="investment-calculator.html">Investment Calculator (SIP + Lumpsum)</a></li>
+            <li><a href="lumpsum-calculator.html">Lumpsum Calculator</a></li>
+            <li><a href="simple-sip-calculator.html">SIP Calculator</a></li>
+            <li><a href="step-up-sip-calculator.html">Step-Up SIP Calculator</a></li>
+            <li><a href="goal-based-calculator.html">Goal-Based Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="card seo-card">
+          <h2>E-E-A-T Disclaimer & Last Updated</h2>
+          <p>
+            This calculator is for educational purposes only and does not constitute financial advice.
+            Always confirm final loan terms (rate type, fees, insurance, foreclosure rules) with the lender before taking a loan.
+          </p>
+          <p><strong>Last updated:</strong> 31 Jan 2026</p>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      // Format as Indian currency
+      function formatINR(num) {
+        if (!Number.isFinite(num)) return "₹0";
+        const str = Math.round(num).toString();
+        if (str.length <= 3) return "₹" + str;
+        const lastThree = str.slice(-3);
+        const remaining = str.slice(0, -3);
+        return "₹" + remaining.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + lastThree;
+      }
+
+      // Parse number from Indian formatted string
+      const parseNumber = (val) => {
+        if (typeof val === 'number') return val;
+        return parseFloat(String(val).replace(/,/g, '')) || 0;
+      };
+
+      // Format input as Indian numbering
+      const formatInputINR = (input, value) => {
+        input.value = value.toLocaleString('en-IN');
+      };
+
+      // State
+      const state = {
+        loanAmount: 3000000,
+        annualRate: 8.5,
+        tenure: 20,
+        tenureUnit: "years",
+      };
+
+      // Get months
+      function getMonths() {
+        return state.tenureUnit === "years" ? state.tenure * 12 : state.tenure;
+      }
+
+      // Compute EMI using standard formula: P * r * (1+r)^n / ((1+r)^n - 1)
+      function computeEMI(principal, annualRate, months) {
+        const monthlyRate = annualRate / 100 / 12;
+        if (monthlyRate === 0) return principal / months;
+        const factor = Math.pow(1 + monthlyRate, months);
+        return (principal * monthlyRate * factor) / (factor - 1);
+      }
+
+      // Build amortization schedule (monthly)
+      function buildSchedule(principal, annualRate, months) {
+        const monthlyRate = annualRate / 100 / 12;
+        const emi = computeEMI(principal, annualRate, months);
+        const schedule = [];
+        let balance = principal;
+
+        for (let i = 0; i < months; i++) {
+          const interest = balance * monthlyRate;
+          const principal_paid = emi - interest;
+          balance = Math.max(balance - principal_paid, 0);
+          schedule.push({ interest, principal: principal_paid, balance });
+        }
+
+        return schedule;
+      }
+
+      // Aggregate schedule by year
+      function getYearlySchedule(monthlySchedule) {
+        const yearly = [];
+        for (let y = 0; y < Math.ceil(monthlySchedule.length / 12); y++) {
+          const start = y * 12;
+          const end = Math.min(start + 12, monthlySchedule.length);
+          const months = end - start;
+          let totalEMI = 0, totalPrincipal = 0, totalInterest = 0;
+          for (let m = start; m < end; m++) {
+            const emi = computeEMI(state.loanAmount, state.annualRate, getMonths());
+            totalEMI += emi;
+            totalPrincipal += monthlySchedule[m].principal;
+            totalInterest += monthlySchedule[m].interest;
+          }
+          const closingBalance = end === monthlySchedule.length ? 0 : monthlySchedule[end - 1].balance;
+          yearly.push({
+            year: y + 1,
+            openingBalance: y === 0 ? state.loanAmount : monthlySchedule[(y - 1) * 12 + 11].balance,
+            totalEMI,
+            principal: totalPrincipal,
+            interest: totalInterest,
+            closingBalance,
+          });
+        }
+        return yearly;
+      }
+
+      // Render results
+      function render() {
+        const months = getMonths();
+        const emi = computeEMI(state.loanAmount, state.annualRate, months);
+        const totalPaid = emi * months;
+        const totalInterest = totalPaid - state.loanAmount;
+
+        document.getElementById("loanAmountResult").textContent = formatINR(state.loanAmount);
+        document.getElementById("emiResult").textContent = formatINR(emi);
+        document.getElementById("interestResult").textContent = formatINR(totalInterest);
+        document.getElementById("totalResult").textContent = formatINR(totalPaid);
+        document.getElementById("tenureResult").textContent = `${months} months`;
+
+        // Update ring
+        const principalPct = state.loanAmount / totalPaid;
+        const deg = Math.round(principalPct * 360);
+        document.getElementById("breakdownRing").style.background = `conic-gradient(var(--brand) 0deg, var(--brand) ${deg}deg, var(--accent) ${deg}deg, var(--accent) 360deg)`;
+        document.getElementById("ringLabel").textContent = `Total ${formatINR(totalPaid)}`;
+
+        // Render schedule
+        renderSchedule();
+      }
+
+      // Render schedule table
+      function renderSchedule() {
+        const months = getMonths();
+        const monthlySchedule = buildSchedule(state.loanAmount, state.annualRate, months);
+        const isYearly = document.getElementById("yearlyBtn").classList.contains("active");
+        const tbody = document.getElementById("scheduleBody");
+        tbody.innerHTML = "";
+
+        if (isYearly) {
+          const yearly = getYearlySchedule(monthlySchedule);
+          yearly.forEach((row) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td style="text-align: center;">${row.year}</td>
+              <td>${formatINR(row.openingBalance)}</td>
+              <td>${formatINR(row.totalEMI)}</td>
+              <td>${formatINR(row.principal)}</td>
+              <td>${formatINR(row.interest)}</td>
+              <td>${formatINR(row.closingBalance)}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } else {
+          // Monthly view (show first 12 months + last month)
+          const rowsToShow = Math.min(12, monthlySchedule.length);
+          const emi = computeEMI(state.loanAmount, state.annualRate, months);
+          for (let i = 0; i < rowsToShow; i++) {
+            const m = monthlySchedule[i];
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td style="text-align: center;">${i + 1}</td>
+              <td>${formatINR(i === 0 ? state.loanAmount : monthlySchedule[i - 1].balance)}</td>
+              <td>${formatINR(emi)}</td>
+              <td>${formatINR(m.principal)}</td>
+              <td>${formatINR(m.interest)}</td>
+              <td>${formatINR(m.balance)}</td>
+            `;
+            tbody.appendChild(tr);
+          }
+          if (monthlySchedule.length > 12) {
+            const lastIdx = monthlySchedule.length - 1;
+            const m = monthlySchedule[lastIdx];
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td style="text-align: center;">${lastIdx + 1}</td>
+              <td>${formatINR(monthlySchedule[lastIdx - 1].balance)}</td>
+              <td>${formatINR(computeEMI(state.loanAmount, state.annualRate, months))}</td>
+              <td>${formatINR(m.principal)}</td>
+              <td>${formatINR(m.interest)}</td>
+              <td>${formatINR(0)}</td>
+            `;
+            tbody.appendChild(tr);
+          }
+        }
+      }
+
+      // Sync inputs
+      function syncInput(rangeEl, inputEl, key, isNumber = false, formatter = null) {
+        function update(val) {
+          const num = isNumber ? parseFloat(val) : parseNumber(val);
+          if (!Number.isFinite(num)) return;
+          const min = parseFloat(rangeEl.min);
+          const max = parseFloat(rangeEl.max);
+          const clamped = Math.max(min, Math.min(max, num));
+          state[key] = clamped;
+          rangeEl.value = clamped;
+          if (formatter) {
+            formatter(inputEl, clamped);
+          } else {
+            inputEl.value = clamped;
+          }
+          render();
+        }
+        rangeEl.addEventListener("input", (e) => update(e.target.value));
+        inputEl.addEventListener("input", (e) => update(e.target.value));
+      }
+
+      // Initialize
+      syncInput(document.getElementById("loanRange"), document.getElementById("loanInput"), "loanAmount", false, formatInputINR);
+      syncInput(document.getElementById("rateRange"), document.getElementById("rateInput"), "annualRate", true);
+      syncInput(document.getElementById("tenureRange"), document.getElementById("tenureInput"), "tenure", false);
+
+      document.getElementById("tenureUnit").addEventListener("change", (e) => {
+        state.tenureUnit = e.target.value;
+        const label = document.getElementById("tenureUnitLabel");
+        label.textContent = state.tenureUnit === "years" ? "Years" : "Months";
+        const rangeEl = document.getElementById("tenureRange");
+        const inputEl = document.getElementById("tenureInput");
+        if (state.tenureUnit === "months") {
+          rangeEl.max = 360;
+          inputEl.max = 360;
+        } else {
+          rangeEl.max = 30;
+          inputEl.max = 30;
+        }
+        render();
+      });
+
+      document.getElementById("yearlyBtn").addEventListener("click", () => {
+        document.getElementById("yearlyBtn").classList.add("active");
+        document.getElementById("monthlyBtn").classList.remove("active");
+        renderSchedule();
+      });
+
+      document.getElementById("monthlyBtn").addEventListener("click", () => {
+        document.getElementById("monthlyBtn").classList.add("active");
+        document.getElementById("yearlyBtn").classList.remove("active");
+        renderSchedule();
+      });
+
+      // Initial render
+      render();
+    </script>
+  </body>
+</html>
