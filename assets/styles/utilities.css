@@ -163,6 +163,16 @@
   cursor: pointer;
   transition: var(--transition);
   font-family: var(--font-base);
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 700px) {
+  .btn {
+    font-size: 15px;
+    padding: 14px 28px;
+    min-height: 48px;
+  }
 }
 
 .btn-primary {

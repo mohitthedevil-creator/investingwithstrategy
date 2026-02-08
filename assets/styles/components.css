@@ -17,6 +17,7 @@ header {
   padding: 16px var(--section-gap);
   max-width: 1400px;
   margin: 0 auto;
+  min-height: 60px;
 }
 
 .logo {
@@ -57,8 +58,12 @@ nav a.active {
   background: none;
   border: none;
   color: var(--brand);
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
+  padding: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media (max-width: 900px) {
@@ -73,7 +78,9 @@ nav a.active {
 
 @media (max-width: 700px) {
   .mobile-menu-toggle {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   nav ul.nav-links {
@@ -87,6 +94,7 @@ nav a.active {
     gap: 0;
     padding: 8px 0;
     display: none;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.1);
   }
   
   nav ul.nav-links.active {
@@ -99,7 +107,11 @@ nav a.active {
   
   nav ul.nav-links a {
     display: block;
-    padding: 12px var(--section-gap);
+    padding: 16px var(--section-gap);
+    font-size: 15px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -108,6 +120,12 @@ nav a.active {
   padding: 60px 0 40px 0;
   text-align: center;
   background: linear-gradient(180deg, rgba(13, 148, 136, 0.03) 0%, rgba(13, 148, 136, 0) 100%);
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding: 40px 0 32px 0;
+  }
 }
 
 .hero-badge {
@@ -296,11 +314,37 @@ nav a.active {
 @media (max-width: 900px) {
   .featured-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
   }
   
   .featured-card {
-    padding: 24px 20px;
+    padding: 20px 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .featured-strip {
+    padding: 24px 0;
+  }
+  
+  .featured-card {
+    padding: 20px;
+    min-height: 120px;
+  }
+  
+  .card-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+  
+  .featured-card h3 {
+    font-size: 17px;
+    margin-bottom: 6px;
+  }
+  
+  .featured-card p {
+    font-size: 14px;
+    line-height: 1.5;
   }
 }
 
@@ -308,6 +352,12 @@ nav a.active {
 .category-section {
   margin: 0;
   padding: 48px 0;
+}
+
+@media (max-width: 700px) {
+  .category-section {
+    padding: 32px 0;
+  }
 }
 
 .category-section:nth-child(even) {
@@ -348,6 +398,31 @@ nav a.active {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   height: 100%;
+  min-height: 140px;
+}
+
+@media (max-width: 700px) {
+  .tool-card {
+    padding: 20px;
+    min-height: 160px;
+    border-radius: 12px;
+  }
+  
+  .tool-card h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+  
+  .tool-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  
+  .tool-card .open-btn {
+    font-size: 14px;
+    padding: 8px 0;
+  }
 }
 
 .tool-card::after {
@@ -445,6 +520,18 @@ footer {
   border-top: 1px solid var(--border);
   padding: 32px 0;
   margin-top: 64px;
+}
+
+@media (max-width: 700px) {
+  footer {
+    padding: 24px 0;
+    margin-top: 48px;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 12px;
+  }
 }
 
 .footer-content {
