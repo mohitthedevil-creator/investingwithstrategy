@@ -7,6 +7,8 @@
     <meta name="description" content="Free Investment Calculator for India: calculate SIP, lumpsum and annual step-up returns. See charts, year-wise growth, total corpus and find when you can reach ₹5 crore." />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://financialcalc.ai/investment-calculator" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="favicon.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Investment Calculator (SIP + Lumpsum + Step-Up) | ₹5 Crore Goal" />
     <meta property="og:description" content="Estimate SIP + lumpsum future value with annual step-up. Visualize growth and find when you can reach ₹5 crore." />
@@ -1556,6 +1558,34 @@
       syncInput(els.rateRange, els.rateInput, "rate");
       syncInput(els.timeRange, els.timeInput, "time");
       render();
+
+      // Mobile Menu Toggle
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const nav = document.querySelector('nav');
+
+      if (mobileToggle && nav) {
+        mobileToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          nav.classList.toggle('active');
+        });
+      }
+
+      // Close mobile menu when clicking on a link
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks) {
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', function() {
+            if (nav) nav.classList.remove('active');
+          });
+        });
+      }
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (nav && !e.target.closest('nav') && !e.target.closest('.mobile-menu-toggle')) {
+          nav.classList.remove('active');
+        }
+      });
     </script>
   </body>
 </html>

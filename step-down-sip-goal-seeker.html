@@ -7,6 +7,8 @@
     <meta name="description" content="Free Step-Down SIP Goal Seeker Calculator for India: determine the required starting SIP with yearly step-down to reach your target corpus. See year-wise schedule and growth projection." />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://financialcalc.ai/step-down-sip-goal-seeker" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="favicon.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Step-Down SIP Goal Seeker Calculator | Find Required SIP for ₹X Target" />
     <meta property="og:description" content="Calculate the starting SIP amount needed to reach your financial goal with yearly step-down reductions. Perfect for salary-linked SIP planning." />
@@ -1169,6 +1171,34 @@
 
       // Initial render
       render();
+
+      // Mobile Menu Toggle
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const nav = document.querySelector('nav');
+
+      if (mobileToggle && nav) {
+        mobileToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          nav.classList.toggle('active');
+        });
+      }
+
+      // Close mobile menu when clicking on a link
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks) {
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', function() {
+            if (nav) nav.classList.remove('active');
+          });
+        });
+      }
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (nav && !e.target.closest('nav') && !e.target.closest('.mobile-menu-toggle')) {
+          nav.classList.remove('active');
+        }
+      });
     </script>
   </body>
 </html>

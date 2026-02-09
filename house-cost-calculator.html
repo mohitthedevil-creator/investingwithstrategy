@@ -7,6 +7,8 @@
     <meta name="description" content="Free House Cost Calculator for India. Calculate real cost of buying a house including loan, taxes, maintenance. See year-by-year breakdown and remaining balance." />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://financialcalc.ai/house-cost-calculator" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="favicon.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="House Cost Calculator | Real Cost of Home Loan in India" />
     <meta property="og:description" content="Calculate the real cost of buying a house including home loan EMI, taxes, maintenance, and insurance. Get year-by-year breakdown." />
@@ -1430,6 +1432,13 @@
           });
         });
       }
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (nav && !e.target.closest('nav') && !e.target.closest('.mobile-menu-toggle')) {
+          nav.classList.remove('active');
+        }
+      });
     });
   </script>
   </body>

@@ -7,6 +7,8 @@
     <meta name="description" content="Free Step-Up SIP Calculator for India. Calculate future value, total invested and gains with annual SIP step-up. See charts and FAQs." />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://financialcalc.ai/step-up-sip-calculator" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="shortcut icon" href="favicon.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Step-Up SIP Calculator | Annual Step-Up SIP Returns" />
     <meta property="og:description" content="Estimate Step-Up SIP future value with annual increases. Get invested amount, gains, and visual growth charts." />
@@ -1139,6 +1141,34 @@
       syncInput(els.stepupRange, els.stepupInput, "stepup");
 
       calculate();
+
+      // Mobile Menu Toggle
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const nav = document.querySelector('nav');
+
+      if (mobileToggle && nav) {
+        mobileToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          nav.classList.toggle('active');
+        });
+      }
+
+      // Close mobile menu when clicking on a link
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks) {
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', function() {
+            if (nav) nav.classList.remove('active');
+          });
+        });
+      }
+
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (nav && !e.target.closest('nav') && !e.target.closest('.mobile-menu-toggle')) {
+          nav.classList.remove('active');
+        }
+      });
     </script>
   </body>
 </html>
