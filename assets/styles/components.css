@@ -32,6 +32,10 @@ header {
   gap: 8px;
 }
 
+.home-logo {
+  font-size: 18px;
+}
+
 nav {
   flex-grow: 1;
   display: flex;
