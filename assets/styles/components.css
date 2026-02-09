@@ -18,6 +18,7 @@ header {
   max-width: 1400px;
   margin: 0 auto;
   min-height: 60px;
+  position: relative;
 }
 
 .logo {
@@ -29,6 +30,12 @@ header {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+nav {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
 }
 
 nav ul {
@@ -64,6 +71,7 @@ nav a.active {
   min-width: 44px;
   min-height: 44px;
   -webkit-tap-highlight-color: transparent;
+  margin-left: auto;
 }
 
 @media (max-width: 900px) {
@@ -77,31 +85,48 @@ nav a.active {
 }
 
 @media (max-width: 700px) {
+  .header-content {
+    flex-direction: row;
+  }
+
   .mobile-menu-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
+    order: 2;
   }
   
-  nav ul.nav-links {
+  .logo {
+    order: 1;
+    flex-grow: 1;
+  }
+  
+  nav {
+    order: 3;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
+    width: 100%;
+    flex-direction: column;
     background: var(--card);
     border-bottom: 1px solid var(--border);
-    flex-direction: column;
-    gap: 0;
-    padding: 8px 0;
-    display: none;
     box-shadow: 0 4px 12px rgba(13, 148, 136, 0.1);
+    display: none;
   }
   
-  nav ul.nav-links.active {
+  nav.active {
     display: flex;
   }
   
-  nav ul.nav-links li {
+  nav ul {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    padding: 8px 0;
+  }
+  
+  nav ul li {
     width: 100%;
   }
   
@@ -112,6 +137,11 @@ nav a.active {
     min-height: 48px;
     display: flex;
     align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  nav ul.nav-links a:last-child {
+    border-bottom: none;
   }
 }
 
@@ -188,12 +218,20 @@ nav a.active {
   font-size: 15px;
   font-family: var(--font-base);
   transition: var(--transition);
+  background: var(--card);
+  color: var(--ink);
 }
 
 .search-box input:focus {
   outline: none;
   border-color: var(--brand);
   box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .search-box input::placeholder {
+    color: var(--muted);
+  }
 }
 
 .search-box::after {
@@ -213,6 +251,12 @@ nav a.active {
   margin: 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+}
+
+@media (prefers-color-scheme: dark) {
+  .featured-strip {
+    background: var(--card);
+  }
 }
 
 .section-intro {

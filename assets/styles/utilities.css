@@ -125,10 +125,22 @@
   box-shadow: 0 16px 40px rgba(13, 148, 136, 0.18);
 }
 
+@media (prefers-color-scheme: dark) {
+  .card:hover {
+    box-shadow: 0 16px 40px rgba(13, 148, 136, 0.25);
+  }
+}
+
 .card-featured {
   border: 2px solid var(--brand);
   position: relative;
   background: linear-gradient(135deg, rgba(13, 148, 136, 0.02) 0%, rgba(94, 234, 212, 0.02) 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .card-featured {
+    background: linear-gradient(135deg, rgba(13, 148, 136, 0.1) 0%, rgba(94, 234, 212, 0.05) 100%);
+  }
 }
 
 .card-featured::before {
@@ -198,6 +210,19 @@
   color: white;
 }
 
+@media (prefers-color-scheme: dark) {
+  .btn-secondary {
+    background: var(--card);
+    color: var(--brand);
+    border: 2px solid var(--brand);
+  }
+
+  .btn-secondary:hover {
+    background: var(--brand);
+    color: white;
+  }
+}
+
 .btn-sm {
   padding: 8px 16px;
   font-size: 12px;
@@ -214,6 +239,13 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .pill {
+    background: rgba(13, 148, 136, 0.2);
+    color: #5eead4;
+  }
 }
 
 /* Visibility */

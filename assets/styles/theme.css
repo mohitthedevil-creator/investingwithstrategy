@@ -1,6 +1,6 @@
 /* Theme Variables - Matching Investment Calculator Design */
 :root {
-  /* Colors */
+  /* Light Mode Colors */
   --bg: #f0fdf9;
   --ink: #0f2f2e;
   --muted: #64748b;
@@ -31,6 +31,22 @@
   
   /* Transitions */
   --transition: all 0.2s ease;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Mode Colors */
+    --bg: #0f1419;
+    --ink: #f0fdf9;
+    --muted: #94a3b8;
+    --brand: #14b8a6;
+    --brand-2: #0d9488;
+    --accent: #5eead4;
+    --card: #1a2330;
+    --border: #2d4a47;
+    --shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  }
 }
 
 * {
