@@ -1149,6 +1149,34 @@
       syncInput(els.cagrRange, els.cagrInput, "cagr");
 
       calculate();
+
+      // Mobile Menu Toggle
+      const mobileToggle = document.querySelector('.mobile-menu-toggle');
+      const nav = document.querySelector('nav');
+      
+      if (mobileToggle && nav) {
+        mobileToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          nav.classList.toggle('active');
+        });
+      }
+      
+      // Close mobile menu when clicking on a link
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks) {
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', function() {
+            if (nav) nav.classList.remove('active');
+          });
+        });
+      }
+      
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (nav && !e.target.closest('nav') && !e.target.closest('.mobile-menu-toggle')) {
+          nav.classList.remove('active');
+        }
+      });
     </script>
   </body>
 </html>
