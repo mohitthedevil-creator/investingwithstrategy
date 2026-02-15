@@ -736,8 +736,8 @@
           <div class="field">
             <label>Monthly SIP <span class="unit">INR</span></label>
             <div class="input-row">
-              <input id="sipRange" type="range" min="500" max="200000" step="500" aria-label="Monthly SIP Amount in Rupees" />
-              <input id="sipInput" type="number" min="500" max="200000" step="500" aria-label="Monthly SIP Amount in Rupees" />
+              <input id="sipRange" type="range" min="0" max="200000" step="500" aria-label="Monthly SIP Amount in Rupees" />
+              <input id="sipInput" type="number" min="0" max="200000" step="500" aria-label="Monthly SIP Amount in Rupees" />
             </div>
           </div>
           <div class="field">
@@ -806,8 +806,8 @@
         <div class="field">
           <label>Monthly SIP <span class="unit">INR</span></label>
           <div class="input-row">
-            <input id="sip2Range" type="range" min="500" max="200000" step="500" value="15000" / aria-label="Monthly SIP Amount (Scenario 2) Slider">
-            <input id="sip2Input" type="number" min="500" max="200000" step="500" value="15000" / aria-label="Monthly SIP Amount (Scenario 2) Input">
+            <input id="sip2Range" type="range" min="0" max="200000" step="500" value="15000" / aria-label="Monthly SIP Amount (Scenario 2) Slider">
+            <input id="sip2Input" type="number" min="0" max="200000" step="500" value="15000" / aria-label="Monthly SIP Amount (Scenario 2) Input">
           </div>
         </div>
         <div class="field">
@@ -1232,12 +1232,18 @@
         return sip * factor;
       }
 
-      function fmtCompact(value) {
-        if (!Number.isFinite(value) || value <= 0) return "₹ 0";
-        const abs = Math.abs(value);
-        if (abs >= 1e7) return "₹ " + (value / 1e7).toFixed(2) + " Cr";
-        if (abs >= 1e5) return "₹ " + (value / 1e5).toFixed(2) + " L";
-        return fmt.format(value);
+      function formatInCrLakh(value) {
+        if (value === 0) return "₹ 0";
+        const crore = 10000000;
+        const lakh = 100000;
+        
+        if (Math.abs(value) >= crore) {
+          return "₹ " + (value / crore).toFixed(2) + " Cr";
+        } else if (Math.abs(value) >= lakh) {
+          return "₹ " + (value / lakh).toFixed(2) + " L";
+        } else {
+          return fmt.format(value);
+        }
       }
 
 
@@ -1255,7 +1261,7 @@
             var(--accent) ${investedDeg}deg,
             var(--accent) 360deg
           )`;
-          ringLabel.textContent = `Total ${fmtCompact(fv)}`;
+          ringLabel.textContent = `Total ${formatInCrLakh(fv)}`;
         }
       }
 
@@ -1329,7 +1335,7 @@
                   bodyFont: { size: 13 },
                   callbacks: {
                     label: function (context) {
-                      return fmtCompact(context.parsed.y);
+                      return formatInCrLakh(context.parsed.y);
                     },
                   },
                 },
@@ -1342,7 +1348,7 @@
                   },
                   ticks: {
                     callback: function (value) {
-                      return fmtCompact(value);
+                      return formatInCrLakh(value);
                     },
                   },
                 },
@@ -1367,9 +1373,9 @@
         const invested = state.sip * months;
         const gains = Math.max(0, fv - invested);
 
-        els.fvValue.textContent = fmtCompact(fv);
-        els.investedValue.textContent = fmtCompact(invested);
-        els.gainValue.textContent = fmtCompact(gains);
+        els.fvValue.textContent = formatInCrLakh(fv);
+        els.investedValue.textContent = formatInCrLakh(invested);
+        els.gainValue.textContent = formatInCrLakh(gains);
 
         updateRingChart(invested, gains, fv);
         updateGrowthChart();
@@ -1469,7 +1475,7 @@
                   bodyFont: { size: 13 },
                   callbacks: {
                     label: function (context) {
-                      return context.dataset.label + ": " + fmtCompact(context.parsed.y);
+                      return context.dataset.label + ": " + formatInCrLakh(context.parsed.y);
                     },
                   },
                 },
@@ -1482,7 +1488,7 @@
                   },
                   ticks: {
                     callback: function (value) {
-                      return fmtCompact(value);
+                      return formatInCrLakh(value);
                     },
                   },
                 },
@@ -1531,7 +1537,7 @@
             var(--accent) ${investedDeg}deg,
             var(--accent) 360deg
           )`;
-          ringLabel.textContent = `Total ${fmtCompact(fv)}`;
+          ringLabel.textContent = `Total ${formatInCrLakh(fv)}`;
         }
       }
 
@@ -1544,9 +1550,9 @@
         const fv = futureValueFromSip(state2.sip, state2.cagr, months);
         const invested = state2.sip * months;
         const gains = Math.max(0, fv - invested);
-        els2Results.fvValue.textContent = fmtCompact(fv);
-        els2Results.investedValue.textContent = fmtCompact(invested);
-        els2Results.gainValue.textContent = fmtCompact(gains);
+        els2Results.fvValue.textContent = formatInCrLakh(fv);
+        els2Results.investedValue.textContent = formatInCrLakh(invested);
+        els2Results.gainValue.textContent = formatInCrLakh(gains);
         updateRingChart2(invested, gains, fv);
         if (typeof updateComparisonChart === 'function') {
           updateComparisonChart();
